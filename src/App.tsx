@@ -4,9 +4,9 @@ import Header from "./components/Header";
 
 function App() {
   return (
-    <div className="min-h-screen relative">
+    <div className="relative min-h-screen">
       <Header />
-      <main className=" max-w-[100vw] pl-3 pb-16 ">
+      <main className=" max-w-[100vw] pb-16 pl-3 ">
         <FretboardEditor />
       </main>
       <Footer />
