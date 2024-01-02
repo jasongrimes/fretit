@@ -5,9 +5,9 @@ export default function Footer() {
         <p className="leading-loose">
           Made with ❤️ by{" "}
           <a href="https://jasonkgrimes.com" className="link">
-            Jason K. Grimes
+            Jason Grimes
           </a>
-          . <span className="whitespace-nowrap">Copyright © 2024.</span>
+          . <span className="whitespace-nowrap">Copyright © 2024</span>
         </p>
       </aside>
     </footer>

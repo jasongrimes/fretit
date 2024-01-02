@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="relative min-h-svh">
       <Header />
-      <main className=" max-w-[100vw] pb-16 pl-3 ">
+      <main className=" max-w-[100vw] pb-24">
         <FretboardEditor />
       </main>
       <Footer />
