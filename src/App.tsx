@@ -4,7 +4,7 @@ import Header from "./components/Header";
 
 function App() {
   return (
-    <div className="relative min-h-svh">
+    <div className="relative min-h-screen">
       <Header />
       <main className=" max-w-[100vw] pb-24">
         <FretboardEditor />
