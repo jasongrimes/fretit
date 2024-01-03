@@ -13,6 +13,7 @@ export const DEFAULT_FRETBOARD_SETTINGS: FretboardSettings = {
   numFrets: 7,
   isMovable: false,
   lowestFret: 0,
+  pointerBehavior: "pick",
 };
 
 export const DEFAULT_LABELING_SETTINGS: LabelingSettings = {

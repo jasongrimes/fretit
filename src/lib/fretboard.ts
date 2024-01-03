@@ -8,6 +8,7 @@ export interface FretboardSettings {
   lowestFret: number;
   fretMarkers: number[];
   doubleFretMarkers: number[];
+  pointerBehavior: "pick" | "toggle" | "edit";
 }
 
 export interface FretboardDiagram {
