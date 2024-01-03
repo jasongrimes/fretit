@@ -60,7 +60,7 @@ export default function FretboardControls() {
             ) : (
               <IconChevronUp className="h-5 w-5" />
             )}
-            <span className={collapsed ? "hidden" : ""}>Chords</span>
+            <span className={collapsed ? "hidden" : ""}>Diagrams</span>
           </a>
         </li>
 
@@ -184,12 +184,12 @@ export default function FretboardControls() {
                 <span className={collapsed ? "hidden" : ""}>Open</span>
               </a>
             </li>
-            <li>
+            {/* <li>
               <a>
                 <IconDeviceFloppy className="h-5 w-5" />
                 <span className={collapsed ? "hidden" : ""}>Save</span>
               </a>
-            </li>
+            </li> */}
             <li>
               <a>
                 <IconPhoto className="h-5 w-5" />
