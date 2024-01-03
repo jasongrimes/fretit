@@ -1,3 +1,4 @@
+import { DEFAULT_DIAGRAM, DEFAULT_FRETBOARD_SETTINGS } from "../constants";
 import Fretboard, {
   DiagramLabelingScheme,
   FretboardDiagram,
@@ -12,9 +13,8 @@ import FretboardSettingsForm from "./FretboardSettingsForm";
 import { Interval, Note } from "tonal";
 
 export default function FretboardEditor() {
-  const settings = fretboardData.settings;
-
-  const diagram = updateDiagramLabels(fretboardData.diagrams[0], settings);
+  const settings = DEFAULT_FRETBOARD_SETTINGS;
+  const diagram = DEFAULT_DIAGRAM;
 
   return (
     <div className="fretboard-editor mx-auto max-w-lg flex">
@@ -28,39 +28,6 @@ export default function FretboardEditor() {
     </div>
   );
 }
-
-const fretboardData = {
-  uid: "xY32ch",
-  name: null,
-  settings: {
-    tuning: ["E4", "B3", "G3", "D3", "A2", "E2"],
-    numFrets: 12,
-    isMovable: false,
-    lowestFret: 0,
-    fretMarkers: [3, 5, 7, 9, 12, 15, 17, 19, 21, 24],
-    doubleFretMarkers: [12, 24],
-  },
-  diagrams: [
-    {
-      uid: "abc123",
-      name: "C",
-      longName: "C major",
-      sortOrder: 0,
-      labeling: {
-        preferSharps: false,
-        scheme: "chordInterval" as DiagramLabelingScheme,
-        intervalRef: [5, 3] as FretboardLocation,
-      },
-      stops: [
-        { location: [5, 3] as FretboardLocation, label: "C" },
-        { location: [4, 2] as FretboardLocation, label: "E" },
-        { location: [3, 0] as FretboardLocation, label: "G" },
-        { location: [2, 1] as FretboardLocation, label: "C" },
-      ],
-      overlays: undefined,
-    },
-  ],
-};
 
 function updateDiagramLabels(
   diagram: FretboardDiagram,

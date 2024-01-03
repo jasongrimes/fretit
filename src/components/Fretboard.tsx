@@ -1,21 +1,23 @@
 import "./Fretboard.css";
 
 export interface FretboardSettings {
+  instrument: string;
   tuning: string[];
   numFrets: number;
-  isMovable?: boolean;
-  lowestFret?: number;
-  fretMarkers?: number[];
-  doubleFretMarkers?: number[];
+  isMovable: boolean;
+  lowestFret: number;
+  fretMarkers: number[];
+  doubleFretMarkers: number[];
 }
 
 export interface FretboardDiagram {
-  uid?: string;
-  name?: string;
-  longName?: string;
-  overlays?: FretboardDiagramDot[];
-  stops?: FretboardDiagramDot[];
+  uid: string | null;
+  name: string;
+  longName: string;
+  sortOrder: number;
   labeling: LabelingSettings;
+  stops: FretboardDiagramDot[];
+  overlays?: FretboardDiagramDot[];
 }
 
 export interface LabelingSettings {
@@ -25,18 +27,11 @@ export interface LabelingSettings {
 }
 
 export type DiagramLabelingScheme =
+  | "none"
   | "scaleInterval"
   | "chordInterval"
   | "pitch"
   | "pitchClass";
-
-/*
-export interface FretboardDiagramOverlays {
-  dots: FretboardDiagramDot[];
-  // autolabel?: "scaleInterval" | "chordInterval" | "pitch" | "pitchClass";
-  // intervalRef?: FretboardLocation;
-}
-*/
 
 export interface FretboardDiagramDot {
   location: FretboardLocation;
