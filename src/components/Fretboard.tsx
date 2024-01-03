@@ -1,9 +1,8 @@
 import "./Fretboard.css";
 
-export interface FretboardSettingsData {
+export interface FretboardSettings {
   tuning: string[];
   numFrets: number;
-  preferSharps: boolean;
   isMovable?: boolean;
   lowestFret?: number;
   fretMarkers?: number[];
@@ -16,7 +15,20 @@ export interface FretboardDiagram {
   longName?: string;
   overlays?: FretboardDiagramDot[];
   stops?: FretboardDiagramDot[];
+  labeling: LabelingSettings;
 }
+
+export interface LabelingSettings {
+  preferSharps: boolean;
+  scheme: DiagramLabelingScheme;
+  intervalRef?: FretboardLocation;
+}
+
+export type DiagramLabelingScheme =
+  | "scaleInterval"
+  | "chordInterval"
+  | "pitch"
+  | "pitchClass";
 
 /*
 export interface FretboardDiagramOverlays {
@@ -39,7 +51,7 @@ export type FretboardLocation = [stringNum: number, fretNum: number];
 // Fretboard component
 //
 interface FretboardProps {
-  settings: FretboardSettingsData;
+  settings: FretboardSettings;
   diagram?: FretboardDiagram;
 }
 export default function Fretboard({ settings, diagram }: FretboardProps) {
@@ -71,7 +83,7 @@ export default function Fretboard({ settings, diagram }: FretboardProps) {
 // <String> component
 //
 interface StringProps {
-  settings: FretboardSettingsData;
+  settings: FretboardSettings;
   stringNum: number;
   stopDots: FretboardDiagramDot[];
 }
