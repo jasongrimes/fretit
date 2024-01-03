@@ -1,6 +1,7 @@
 import Fretboard, {
   DiagramLabelingScheme,
   FretboardDiagram,
+  FretboardDiagramDot,
   FretboardSettings,
   LabelingSettings,
   type FretboardLocation,
@@ -68,7 +69,7 @@ function updateDiagramLabels(
         label: getLocationLabel(dot.location, settings, diagram.labeling),
       };
     }
-  });
+  }) as FretboardDiagramDot[];
   return {
     ...diagram,
     stops: stops,
