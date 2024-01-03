@@ -17,9 +17,13 @@ export default function FretboardEditor() {
   const diagram = updateDiagramLabels(fretboardData.diagrams[0], settings);
 
   return (
-    <div className="fretboard-editor mx-auto max-w-96">
-      <Fretboard settings={settings} diagram={diagram} />
-      <FretboardControls />
+    <div className="fretboard-editor mx-auto max-w-lg flex">
+      <div className="flex-grow">
+        <Fretboard settings={settings} diagram={diagram} />
+      </div>
+      <div className="pl-3 pr-1 flex-grow-0">
+        <FretboardControls />
+      </div>
       <FretboardSettingsForm />
     </div>
   );
