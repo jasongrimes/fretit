@@ -83,6 +83,7 @@ interface StringProps {
   stopDots: FretboardDiagramDot[];
 }
 function String({ settings, stringNum, stopDots = [] }: StringProps) {
+  const isMuted = stopDots.length === 0;
   // Assemble <FretNote> list
   const fretNotes = [];
   for (let fretNum = 0; fretNum <= settings.numFrets; fretNum++) {
@@ -114,8 +115,8 @@ function String({ settings, stringNum, stopDots = [] }: StringProps) {
   }
 
   return (
-    <div className="string">
-      <StringMuteControl />
+    <div className={`string ${isMuted ? "muted" : ""}`}>
+      <StringMuteControl isMuted={isMuted} />
       {fretNotes}
     </div>
   );
@@ -124,8 +125,21 @@ function String({ settings, stringNum, stopDots = [] }: StringProps) {
 //
 // <StringMuteControl>
 //
-function StringMuteControl() {
-  return <div className="string-mute-control"></div>;
+interface StringMuteControlProps {
+  isMuted: boolean;
+}
+function StringMuteControl({ isMuted }: StringMuteControlProps) {
+  return (
+    <div className="flex h-[30px] flex-shrink-0 flex-grow-0 flex-col items-center justify-center bg-gray-950">
+      {isMuted ? (
+        <span className="absolute top-[60px] z-[2] font-bold text-gray-700">x</span>
+      ) : (
+        <button className="btn btn-square btn-outline btn-primary btn-sm absolute z-10 bg-gray-950">
+          x
+        </button>
+      )}
+    </div>
+  );
 }
 
 //

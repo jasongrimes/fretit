@@ -1,6 +1,5 @@
 import { DEFAULT_DIAGRAM, DEFAULT_FRETBOARD_SETTINGS } from "../constants";
 import Fretboard, {
-  DiagramLabelingScheme,
   FretboardDiagram,
   FretboardDiagramDot,
   FretboardSettings,
@@ -17,11 +16,11 @@ export default function FretboardEditor() {
   const diagram = DEFAULT_DIAGRAM;
 
   return (
-    <div className="fretboard-editor mx-auto max-w-lg flex">
+    <div className="fretboard-editor mx-auto flex max-w-lg">
       <div className="flex-grow">
         <Fretboard settings={settings} diagram={diagram} />
       </div>
-      <div className="pl-3 pr-1 flex-grow-0">
+      <div className="flex-grow-0 pl-3 pr-1">
         <FretboardControls />
       </div>
       <FretboardSettingsForm />

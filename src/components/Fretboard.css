@@ -28,7 +28,8 @@
   transform: translateX(calc(var(--string-width) / 2 * 1px));
 }
 .string.muted:before {
-  opacity: 0.5;
+  opacity: 0.4;
+  box-shadow: none;
 }
 .string.sounding:before {
   animation: horizontal-shaking 0.1s infinite;
