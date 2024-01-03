@@ -1,9 +1,9 @@
-import {
+import type {
   FretboardDiagram,
   FretboardLocation,
-  type FretboardSettings,
-  type LabelingSettings,
-} from "./components/Fretboard";
+  FretboardSettings,
+  LabelingSettings,
+} from "./lib/fretboard";
 
 export const DEFAULT_FRETBOARD_SETTINGS: FretboardSettings = {
   instrument: "Guitar",

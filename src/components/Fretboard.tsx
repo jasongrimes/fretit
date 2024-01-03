@@ -1,46 +1,10 @@
+import type {
+  FretboardDiagram,
+  FretboardDiagramDot,
+  FretboardSettings,
+} from "../lib/fretboard";
+import { filterDotsByFret, filterDotsByString } from "../lib/fretboard";
 import "./Fretboard.css";
-
-export interface FretboardSettings {
-  instrument: string;
-  tuning: string[];
-  numFrets: number;
-  isMovable: boolean;
-  lowestFret: number;
-  fretMarkers: number[];
-  doubleFretMarkers: number[];
-}
-
-export interface FretboardDiagram {
-  uid: string | null;
-  name: string;
-  longName: string;
-  sortOrder: number;
-  labeling: LabelingSettings;
-  stops: FretboardDiagramDot[];
-  overlays?: FretboardDiagramDot[];
-}
-
-export interface LabelingSettings {
-  preferSharps: boolean;
-  scheme: DiagramLabelingScheme;
-  intervalRef?: FretboardLocation;
-}
-
-export type DiagramLabelingScheme =
-  | "none"
-  | "scaleInterval"
-  | "chordInterval"
-  | "pitch"
-  | "pitchClass";
-
-export interface FretboardDiagramDot {
-  location: FretboardLocation;
-  label: string;
-  noAutoLabel?: boolean;
-  customStyle?: string;
-}
-
-export type FretboardLocation = [stringNum: number, fretNum: number];
 
 //
 // Fretboard component
@@ -132,7 +96,9 @@ function StringMuteControl({ isMuted }: StringMuteControlProps) {
   return (
     <div className="flex h-[30px] flex-shrink-0 flex-grow-0 flex-col items-center justify-center bg-gray-950">
       {isMuted ? (
-        <span className="absolute top-[60px] z-[2] font-bold text-gray-700">x</span>
+        <span className="absolute top-[60px] z-[2] font-bold text-gray-700">
+          x
+        </span>
       ) : (
         <button className="btn btn-square btn-outline btn-primary btn-sm absolute z-10 bg-gray-950">
           x
@@ -182,16 +148,3 @@ function FretNoteDot({ label = "" }: { label?: string }) {
 //
 // Helper functions
 //
-function filterDotsByString(
-  stringNum: number,
-  dots: FretboardDiagramDot[] = [],
-): FretboardDiagramDot[] {
-  return dots.filter((dot) => dot.location[0] === stringNum);
-}
-
-function filterDotsByFret(
-  fretNum: number,
-  dots: FretboardDiagramDot[] = [],
-): FretboardDiagramDot[] {
-  return dots.filter((dot) => dot.location[1] === fretNum);
-}
