@@ -16,9 +16,9 @@ export const DEFAULT_FRETBOARD_SETTINGS: FretboardSettings = {
 };
 
 export const DEFAULT_LABELING_SETTINGS: LabelingSettings = {
-  preferSharps: false,
-  scheme: "pitch",
-  intervalRef: undefined,
+  preferSharps: true,
+  scheme: "pitchClass",
+  intervalRef: [5, 3],
 };
 
 export const DEFAULT_DIAGRAM: FretboardDiagram = {

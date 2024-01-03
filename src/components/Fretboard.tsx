@@ -3,7 +3,11 @@ import type {
   FretboardDiagramDot,
   FretboardSettings,
 } from "../lib/fretboard";
-import { filterDotsByFret, filterDotsByString } from "../lib/fretboard";
+import {
+  findDotByString,
+  getLocationLabel,
+  removeDotByLocation,
+} from "../lib/fretboard";
 import "./Fretboard.css";
 
 //
@@ -11,10 +15,32 @@ import "./Fretboard.css";
 //
 interface FretboardProps {
   settings: FretboardSettings;
-  diagram?: FretboardDiagram;
+  diagram: FretboardDiagram;
+  onSetDiagram: (diagram: FretboardDiagram) => void;
 }
-export default function Fretboard({ settings, diagram }: FretboardProps) {
+export default function Fretboard({
+  settings,
+  diagram,
+  onSetDiagram,
+}: FretboardProps) {
   const numStrings = settings.tuning.length;
+
+  function handleSetStop(stringNum: number, fretNum: number) {
+    const label = getLocationLabel(
+      [stringNum, fretNum],
+      settings,
+      diagram.labeling,
+    );
+    
+    const newDot = {
+      location: [stringNum, fretNum],
+      label: label,
+    } as FretboardDiagramDot;
+    
+    const newStops = diagram.stops.filter((dot) => dot.location[0] !== stringNum);
+    newStops.push(newDot);
+    onSetDiagram({...diagram, stops: newStops});
+  }
 
   const strings = settings.tuning.map((pitch, stringIndex) => {
     const stringNum = stringIndex + 1;
@@ -23,7 +49,8 @@ export default function Fretboard({ settings, diagram }: FretboardProps) {
         key={stringNum}
         settings={settings}
         stringNum={stringNum}
-        stopDots={filterDotsByString(stringNum, diagram?.stops)}
+        stopDot={findDotByString(diagram?.stops, stringNum)}
+        onSetStop={handleSetStop}
       />
     );
   });
@@ -44,10 +71,20 @@ export default function Fretboard({ settings, diagram }: FretboardProps) {
 interface StringProps {
   settings: FretboardSettings;
   stringNum: number;
-  stopDots: FretboardDiagramDot[];
+  stopDot?: FretboardDiagramDot;
+  onSetStop: (stringNum: number, fretNum: number) => void;
 }
-function String({ settings, stringNum, stopDots = [] }: StringProps) {
-  const isMuted = stopDots.length === 0;
+function String({ settings, stringNum, stopDot, onSetStop }: StringProps) {
+  const isMuted = stopDot === undefined;
+
+  function handleClickFretNote(fretNum: number) {
+    if (stopDot?.location[1] !== fretNum) {
+      onSetStop(stringNum, fretNum);
+    } else {
+      console.log(`Fret ${fretNum} is already stopped.`);
+    }
+  }
+
   // Assemble <FretNote> list
   const fretNotes = [];
   for (let fretNum = 0; fretNum <= settings.numFrets; fretNum++) {
@@ -64,14 +101,16 @@ function String({ settings, stringNum, stopDots = [] }: StringProps) {
 
     // Add <FretNoteDot>
     let fretNoteDot;
-    const fretStopDots = filterDotsByFret(fretNum, stopDots);
-    if (fretStopDots.length) {
-      fretNoteDot = <FretNoteDot label={fretStopDots[0].label} />;
+    if (stopDot?.location[1] === fretNum) {
+      fretNoteDot = <FretNoteDot label={stopDot.label} />;
     }
 
     // Add <FretNote>
     fretNotes.push(
-      <FretNote key={stringNum + "," + fretNum}>
+      <FretNote
+        key={stringNum + "," + fretNum}
+        onClick={() => handleClickFretNote(fretNum)}
+      >
         {fretMarker}
         {fretNoteDot}
       </FretNote>,
@@ -129,9 +168,14 @@ function FretMarker({ double, fretNum }: FretMarkerProps) {
 //
 interface FretNoteProps {
   children?: React.ReactNode;
+  onClick: () => void;
 }
-function FretNote({ children }: FretNoteProps) {
-  return <div className="fret-note">{children}</div>;
+function FretNote({ children, onClick }: FretNoteProps) {
+  return (
+    <div className="fret-note" onClick={onClick}>
+      {children}
+    </div>
+  );
 }
 
 //

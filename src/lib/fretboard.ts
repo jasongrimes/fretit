@@ -42,11 +42,18 @@ export interface FretboardDiagramDot {
 
 export type FretboardLocation = [stringNum: number, fretNum: number];
 
+export function findDotByString(
+  dots: FretboardDiagramDot[],
+  stringNum: number,
+) {
+  return dots.find((dot) => dot.location[0] === stringNum);
+}
 
-// export function setDiagramStop(diagram: FretboardDiagram, stringNum: number, fretNum: number, dot: FretboardDiagramDot | null) {
+export function removeDotByLocation(dots: FretboardDiagramDot[], location: FretboardLocation) {
+  return dots.filter((dot) => dot.location[0] !== location[0] || dot.location[1] !== location[1]);
+}
 
-// }
-
+/*
 export function filterDotsByString(
   stringNum: number,
   dots: FretboardDiagramDot[] = [],
@@ -60,8 +67,9 @@ export function filterDotsByFret(
 ): FretboardDiagramDot[] {
   return dots.filter((dot) => dot.location[1] === fretNum);
 }
+*/
 
-function updateDiagramLabels(
+export function updateDiagramLabels(
   diagram: FretboardDiagram,
   settings: FretboardSettings,
 ): FretboardDiagram {
@@ -82,6 +90,7 @@ function updateDiagramLabels(
 function getLocationPitch(
   location: FretboardLocation,
   settings: FretboardSettings,
+  labeling: LabelingSettings,
 ) {
   const [stringNum, fretNum] = location;
   const lowestFret = settings.lowestFret ?? 0;
@@ -90,22 +99,20 @@ function getLocationPitch(
     throw new Error(`Unknown tuning for string ${stringNum}`);
   }
 
-  const pitch = Note.transpose(
-    stringPitch,
-    Interval.fromSemitones(lowestFret + fretNum),
-  );
+  const stringMidi = Note.midi(stringPitch) ?? 0;
+  if (labeling.preferSharps) {
+    return Note.fromMidiSharps(stringMidi + lowestFret + fretNum);
+  }
 
-  // TODO: Handle preferred accidentals
-  return pitch;
+  return Note.fromMidi(stringMidi + lowestFret + fretNum);
 }
 
-function getLocationLabel(
+export function getLocationLabel(
   location: FretboardLocation,
   settings: FretboardSettings,
   labeling: LabelingSettings,
 ) {
-  const pitch = getLocationPitch(location, settings);
-
+  const pitch = getLocationPitch(location, settings, labeling);
   switch (labeling.scheme) {
     case "pitch":
       return pitch;
@@ -115,7 +122,8 @@ function getLocationLabel(
     case "scaleInterval": {
       const pitchMidi = Note.midi(pitch) ?? 0;
       const intervalRef = labeling.intervalRef ?? [settings.tuning.length, 0];
-      const refMidi = Note.midi(getLocationPitch(intervalRef, settings)) ?? 0;
+      const refMidi =
+        Note.midi(getLocationPitch(intervalRef, settings, labeling)) ?? 0;
       const semitones = pitchMidi - refMidi;
       const interval = Interval.get(Interval.fromSemitones(semitones));
       // prettier-ignore
