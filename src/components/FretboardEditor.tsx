@@ -126,7 +126,6 @@ function getLocationLabel(
       const intervalRef = labeling.intervalRef ?? [settings.tuning.length, 0];
       const refMidi = Note.midi(getLocationPitch(intervalRef, settings)) ?? 0;
       const semitones = pitchMidi - refMidi;
-      console.log(refMidi, pitchMidi, semitones);
       const interval = Interval.get(Interval.fromSemitones(semitones));
       // prettier-ignore
       let intervalName = `${interval.alt === -1 ? "b" : interval.alt === 1 ? "#" : "" }${interval.simple === 8 ? 1 : interval.simple}`;
