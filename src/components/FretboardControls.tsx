@@ -2,7 +2,6 @@ import {
   IconChevronDown,
   IconChevronUp,
   IconClick,
-  IconDeviceFloppy,
   IconFolderOpen,
   IconMusicBolt,
   IconPhoto,
@@ -14,8 +13,13 @@ import {
   IconVolume,
 } from "@tabler/icons-react";
 import { useState } from "react";
+// import { testSound, testSoundSimple } from "../util/testSound";
+// import makePlayer, { SoundPlayer } from "../util/sound";
 
-export default function FretboardControls() {
+interface FretboardControlsProps {
+  onStrum: () => void;
+}
+export default function FretboardControls({ onStrum }: FretboardControlsProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [collapsedChords, setCollapsedChords] = useState(false);
   const [collapsedEdit, setCollapsedEdit] = useState(false);
@@ -32,19 +36,25 @@ export default function FretboardControls() {
     setCollapsedEdit(!collapsedEdit);
   }
 
+  function handleSoundClick() {
+  }
+  function handleStrumClick() {
+    onStrum();
+  }
+
   return (
     <div className={collapsed ? "w-16" : ""}>
       <ul className="menu rounded-box bg-base-200 text-base-content">
         {/* Play controls*/}
         <li>
-          <a>
+          <a onClick={handleSoundClick}>
             <IconVolume className="h-5 w-5" />
             <span className={collapsed ? "hidden" : ""}>Sound</span>
           </a>
         </li>
 
         <li className="">
-          <a>
+          <a onClick={handleStrumClick}>
             <IconMusicBolt className="h-5 w-5" />
             <span className={collapsed ? "hidden" : ""}>Strum</span>
           </a>

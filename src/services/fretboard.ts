@@ -19,6 +19,7 @@ export interface FretboardDiagram {
   labeling: LabelingSettings;
   stops: FretboardDiagramDot[];
   overlays?: FretboardDiagramDot[];
+  voicing: number[];
 }
 
 export interface LabelingSettings {

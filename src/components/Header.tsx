@@ -2,7 +2,7 @@ import { IconMusicHeart } from "@tabler/icons-react";
 
 export default function Header() {
   return (
-    <div className="sticky top-0 z-10 h-16 w-full bg-base-100/90 text-base-content shadow-md backdrop-blur">
+    <div className="sticky top-0 z-20 h-16 w-full bg-base-100/90 text-base-content shadow-md backdrop-blur">
       <nav className="navbar w-full">
         <div className="navbar-start"></div>
         <div className="navbar-center">

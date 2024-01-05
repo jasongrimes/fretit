@@ -1,9 +1,7 @@
 import type {
   FretboardDiagram,
-  FretboardDiagramDot,
   FretboardSettings,
-} from "../lib/fretboard";
-import { findDotByString, getLocationLabel } from "../lib/fretboard";
+} from "../services/fretboard";
 import "./Fretboard.css";
 
 //
@@ -12,19 +10,24 @@ import "./Fretboard.css";
 interface FretboardProps {
   settings: FretboardSettings;
   diagram: FretboardDiagram;
-  onSetDiagram: (diagram: FretboardDiagram) => void;
+  onSetVoicing: (voicing: number[]) => void;
+  onPlay: (stringNum: number, fretNum: number, delay?: number) => void;
 }
 export default function Fretboard({
   settings,
   diagram,
-  onSetDiagram,
+  onSetVoicing,
+  onPlay,
 }: FretboardProps) {
   const numStrings = settings.tuning.length;
 
-  //
-  // Event handlers
-  //
-  function handleStopSet(stringNum: number, fretNum: number | null) {
+  function handleStopString(stringNum: number, fretNum: number) {
+    const newVoicing = diagram.voicing;
+    newVoicing[stringNum - 1] = fretNum ?? -1;
+    onSetVoicing(newVoicing);
+    onPlay(stringNum, fretNum);
+    
+    /*
     // Remove any existing stops on this string.
     const newStops = diagram.stops.filter(
       (dot) => dot.location[0] !== stringNum,
@@ -46,20 +49,21 @@ export default function Fretboard({
     }
 
     onSetDiagram({ ...diagram, stops: newStops });
+    */
   }
 
   //
   // Assemble <String>
   //
-  const strings = settings.tuning.map((pitch, stringIndex) => {
+  const strings = diagram.voicing.map((fretNum, stringIndex) => {
     const stringNum = stringIndex + 1;
     return (
       <String
         key={stringNum}
         settings={settings}
         stringNum={stringNum}
-        stopDot={findDotByString(diagram?.stops, stringNum)}
-        handleStopSet={handleStopSet}
+        stoppedFret={fretNum}
+        handleStopFret={(fretNum: number) => { handleStopString(stringNum, fretNum) }}
       />
     );
   });
@@ -80,16 +84,18 @@ export default function Fretboard({
 interface StringProps {
   settings: FretboardSettings;
   stringNum: number;
-  stopDot?: FretboardDiagramDot;
-  handleStopSet: (stringNum: number, fretNum: number | null) => void;
+  stoppedFret: number;
+  handleStopFret: (fretNum: number) => void;
 }
-function String({ settings, stringNum, stopDot, handleStopSet }: StringProps) {
-  const isMuted = stopDot === undefined;
+function String({ settings, stringNum, stoppedFret, handleStopFret }: StringProps) {
+  const isMuted = stoppedFret < 0;
 
   //
   // Event handlers
   //
-  function handleFretNoteClick(fretNum: number) {
+  function handleClickFret(fretNum: number) {
+    handleStopFret(fretNum);
+    /*
     if (stopDot?.location[1] !== fretNum) {
       handleStopSet(stringNum, fretNum);
     } else {
@@ -98,10 +104,11 @@ function String({ settings, stringNum, stopDot, handleStopSet }: StringProps) {
         handleStopSet(stringNum, null);
       }
     }
+    */
   }
 
-  function handleMuteClick() {
-    handleStopSet(stringNum, null);
+  function handleClickMute() {
+    handleStopFret(-1);
   }
 
   // Assemble <FretNote> list
@@ -120,15 +127,15 @@ function String({ settings, stringNum, stopDot, handleStopSet }: StringProps) {
 
     // Add <FretNoteDot>
     let fretNoteDot;
-    if (stopDot?.location[1] === fretNum) {
-      fretNoteDot = <FretNoteDot label={stopDot.label} />;
+    if (stoppedFret === fretNum) {
+      fretNoteDot = <FretNoteDot label="" />;
     }
 
     // Add <FretNote>
     fretNotes.push(
       <FretNote
         key={stringNum + "," + fretNum}
-        onClick={() => handleFretNoteClick(fretNum)}
+        onClick={() => handleClickFret(fretNum)}
       >
         {fretMarker}
         {fretNoteDot}
@@ -138,7 +145,7 @@ function String({ settings, stringNum, stopDot, handleStopSet }: StringProps) {
 
   return (
     <div className={`string ${isMuted ? "muted" : ""}`}>
-      <StringMuteControl isMuted={isMuted} onClick={handleMuteClick} />
+      <StringMuteControl isMuted={isMuted} onClick={handleClickMute} />
       {fretNotes}
     </div>
   );
@@ -161,7 +168,7 @@ function StringMuteControl({ isMuted, onClick }: StringMuteControlProps) {
       ) : (
         <button
           onClick={onClick}
-          className="btn btn-square btn-outline btn-primary btn-sm absolute z-10 bg-gray-950"
+          className="btn btn-square btn-outline btn-primary btn-sm absolute z-10 mt-px bg-gray-950"
         >
           x
         </button>
@@ -211,7 +218,3 @@ function FretNoteDot({ label = "" }: { label?: string }) {
     </div>
   );
 }
-
-//
-// Helper functions
-//
