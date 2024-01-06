@@ -15,6 +15,7 @@ interface FretboardProps {
   diagram: FretboardDiagram;
   onSetVoicing: (voicing: number[]) => void;
   handlePluck: (stringNum: number, fretNum: number) => void;
+  stringNodes: Map<number, HTMLElement>;
 }
 export default function Fretboard({
   settings,
@@ -22,6 +23,7 @@ export default function Fretboard({
   diagram,
   onSetVoicing, // TODO: rename to setVoicing
   handlePluck,
+  stringNodes,
 }: FretboardProps) {
   const numStrings = settings.tuning.length;
 
@@ -49,6 +51,7 @@ export default function Fretboard({
           handleStopString(stringNum, fretNum);
         }}
         labeler={labeler}
+        stringNodes={stringNodes}
       />
     );
   });
@@ -72,6 +75,7 @@ interface StringProps {
   stoppedFret: number;
   handleStopFret: (fretNum: number) => void;
   labeler: FretboardLabeler;
+  stringNodes: Map<number, HTMLElement>;
 }
 function String({
   settings,
@@ -79,6 +83,7 @@ function String({
   stoppedFret,
   handleStopFret,
   labeler,
+  stringNodes,
 }: StringProps) {
   const isMuted = stoppedFret < 0;
 
@@ -128,7 +133,16 @@ function String({
   }
 
   return (
-    <div className={`string ${isMuted ? "muted" : ""}`}>
+    <div
+      className={`string ${isMuted ? "muted" : ""}`}
+      ref={(node) => {
+        if (node) {
+          stringNodes.set(stringNum, node);
+        } else {
+          stringNodes.delete(stringNum);
+        }
+      }}
+    >
       <StringMuteControl isMuted={isMuted} onClick={handleClickMute} />
       {fretNotes}
     </div>

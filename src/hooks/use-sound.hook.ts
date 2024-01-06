@@ -5,11 +5,13 @@ interface UseSoundProps {
   tuning: number[];
   instrument?: string;
   muted?: boolean;
+  onPlayString?: (stringNum: number) => void;
 }
 export default function useSound({
   tuning,
   instrument = undefined,
   muted = false,
+  onPlayString
 }: UseSoundProps) {
   const playerRef = useRef<SoundPlayer | null>(null);
 
@@ -29,11 +31,10 @@ export default function useSound({
     if (muted) {
       return;
     }
-    playerRef.current?.play(stringNum, fretNum, delay);
+    playerRef.current?.play(stringNum, fretNum, delay, onPlayString ? () => onPlayString(stringNum) : undefined );
   };
 
   const strum = (voicing: number[], delayOffset = 0.05) => {
-    // !muted && playerRef.current?.strum(voicing, delayOffset);
     if (muted) {
       return;
     }

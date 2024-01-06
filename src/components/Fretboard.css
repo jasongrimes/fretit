@@ -34,6 +34,14 @@
 .string.sounding:before {
   animation: horizontal-shaking 0.1s infinite;
 }
+.string.plucked:before {
+  animation: dim 0.5s;
+}
+
+@keyframes dim {
+  0% { filter: brightness(75%); }
+  100% { filter: brightness(1); }
+}
 
 /* prettier-ignore */
 /* @keyframes horizontal-shaking {

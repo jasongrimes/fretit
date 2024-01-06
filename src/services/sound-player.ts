@@ -15,7 +15,12 @@ export default class SoundPlayer {
     this.tuning = tuning;
   }
 
-  play(stringNum: number, fretNum: number, delay = 0) {
+  play(
+    stringNum: number,
+    fretNum: number,
+    delay = 0,
+    onStart: (() => void) | undefined = undefined,
+  ) {
     this.mute(stringNum);
     if (fretNum < 0) {
       return;
@@ -28,6 +33,7 @@ export default class SoundPlayer {
         note: midi,
         velocity: 127,
         time: this.audioContext.currentTime + delay,
+        onStart,
       });
     });
   }

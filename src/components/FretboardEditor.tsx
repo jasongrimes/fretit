@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import useSound from "../hooks/use-sound.hook";
 import {
   DEFAULT_DIAGRAM,
@@ -9,6 +9,8 @@ import Fretboard from "./Fretboard";
 import FretboardControls from "./FretboardControls";
 import FretboardSettingsForm from "./FretboardSettingsForm";
 
+const animationEnabled = true;
+
 export default function FretboardEditor() {
   const [fretboardSettings, setFretboardSettings] = useState(
     DEFAULT_FRETBOARD_SETTINGS,
@@ -18,43 +20,31 @@ export default function FretboardEditor() {
   );
   const [diagram, setDiagram] = useState(DEFAULT_DIAGRAM);
   const [muted, setMuted] = useState(false);
+  const stringsRef = useRef<Map<number, HTMLElement>|null>(null);
 
-/*
-  const [stringsSounding, setStringsSounding] = useState<Record<number, number>>({});
-  const [soundingStrings, setSoundingStrings] = useState<number[]>([]);
-  const soundingStringsRef = useRef<number[]>([]);
-  const stringSoundingTimeoutsRef = useRef<Record<number, number>>({});
-  */
-
-  function setStringSounding(stringNum: number, sounding: boolean) {
-    /*
-    console.log("setStringSounding", stringNum, sounding);
-    // Clear any existing timeouts
-    if (stringSoundingTimeoutsRef.current[stringNum]) {
-      clearTimeout(stringSoundingTimeoutsRef.current[stringNum]);
+  function getStringNodes() {
+    if (!stringsRef.current) {
+      stringsRef.current = new Map<number, HTMLElement>();
     }
-    if (sounding) {
-      // Add to the list of currently sounding strings
-      if (!soundingStringsRef.current.includes(stringNum)) {
-        soundingStringsRef.current.push(stringNum);
+    return stringsRef.current;
+  }
+
+  // Animation when playing a string.
+  function onPlayString(stringNum: number) {
+    if (animationEnabled) {
+      const node = getStringNodes().get(stringNum);
+      if (node?.classList.contains("plucked")) {
+        node?.classList.remove("plucked");
+        void node?.offsetHeight; // Hack to force DOM reflow so we can restart the animation.
       }
-      // Set a timeout to remove it from the list of sounding strings
-      stringSoundingTimeoutsRef.current[stringNum] = setTimeout(() => setStringSounding(stringNum, false), 2000);
-    } else {
-      // Remove it from the list of sounding strings
-      soundingStringsRef.current = soundingStringsRef.current.filter((val) => val !== stringNum);
-      delete stringSoundingTimeoutsRef.current[stringNum];
+      node?.classList.add("plucked");
     }
-    setSoundingStrings([...soundingStringsRef.current]);
-    console.log("soundingStrings", soundingStringsRef.current);
-    console.log("stringSoundingTimeouts", stringSoundingTimeoutsRef.current);
-    */
   }
 
   const { play, strum } = useSound({
     tuning: fretboardSettings.tuning,
     muted: muted,
-//    setStringSounding
+    onPlayString
   });
 
   function setVoicing(voicing: number[]) {
@@ -68,6 +58,8 @@ export default function FretboardEditor() {
   function handlePluck(stringNum: number, fretNum: number) {
     play(stringNum, fretNum);
   }
+
+  
 
   function handleSetMuted(muted: boolean) {
     // if (muted) {
@@ -85,6 +77,7 @@ export default function FretboardEditor() {
           diagram={diagram}
           onSetVoicing={setVoicing}
           handlePluck={handlePluck}
+          stringNodes={getStringNodes()}
         />
       </div>
       <div className="flex-grow-0 pl-3 pr-1">
