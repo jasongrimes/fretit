@@ -2,12 +2,22 @@
   --string-width: 10;
 }
 
+body {
+  touch-action: manipulation;
+}
+
 .fretboard {
   display: flex;
   flex-direction: row-reverse;
   width: 100%;
   min-height: fit-content;
   background: #be975b url(/wood-vertical.png);
+  /* Disable long-press text selection on mobile */
+  -webkit-user-select: none;
+  user-select: none;
+  /* Prevent default touch actions like double-tap zoom, long-press select, etc.,
+   but still allow multi-touch zooming. */
+  touch-action: pinch-zoom;
 }
 
 .string {
@@ -39,8 +49,12 @@
 }
 
 @keyframes dim {
-  0% { filter: brightness(75%); }
-  100% { filter: brightness(1); }
+  0% {
+    filter: brightness(75%);
+  }
+  100% {
+    filter: brightness(1);
+  }
 }
 
 /* prettier-ignore */

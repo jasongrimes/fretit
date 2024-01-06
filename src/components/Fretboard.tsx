@@ -1,3 +1,4 @@
+import { PointerEvent } from "react";
 import {
   FretboardDiagram,
   FretboardLabeler,
@@ -36,22 +37,29 @@ export default function Fretboard({
     handlePluck(stringNum, fretNum);
   }
 
+  function handlePointerDown(event: PointerEvent<HTMLDivElement>) {
+    // @ts-expect-error React PointerEvent doesn't support releasePointerCapture yet.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    event.target.releasePointerCapture(event.pointerId);
+  }
+
   //
   // Assemble <String>
   //
-  const strings = diagram.voicing.map((fretNum, stringIndex) => {
+  const strings = diagram.voicing.map((stoppedFret, stringIndex) => {
     const stringNum = stringIndex + 1;
     return (
       <String
         key={stringNum}
         settings={settings}
         stringNum={stringNum}
-        stoppedFret={fretNum}
+        stoppedFret={stoppedFret}
         handleStopFret={(fretNum: number) => {
           handleStopString(stringNum, fretNum);
         }}
         labeler={labeler}
         stringNodes={stringNodes}
+        handlePluckString={() => handlePluck(stringNum, stoppedFret)}
       />
     );
   });
@@ -60,6 +68,7 @@ export default function Fretboard({
     <div
       className="fretboard"
       style={{ "--num-strings": numStrings } as React.CSSProperties}
+      onPointerDown={handlePointerDown}
     >
       {strings}
     </div>
@@ -76,6 +85,7 @@ interface StringProps {
   handleStopFret: (fretNum: number) => void;
   labeler: FretboardLabeler;
   stringNodes: Map<number, HTMLElement>;
+  handlePluckString: () => void;
 }
 function String({
   settings,
@@ -84,15 +94,34 @@ function String({
   handleStopFret,
   labeler,
   stringNodes,
+  handlePluckString,
 }: StringProps) {
   const isMuted = stoppedFret < 0;
 
+  // Prevent double "plucks" when clicking on a fret.
+  // Track when pointer is initially pressed down on this string,
+  // so we can ignore the pointerleave event in that case.
+  let pointerPressed = false;
+  function handlePointerDown() {
+    pointerPressed = true;
+  }
+
+  function handlePointerLeave(event: PointerEvent<HTMLDivElement>) {
+    // event.pressure doesn't work in ios safari.
+    if (!pointerPressed && (event.pressure > 0 || event.pointerType === "touch")) {
+      handlePluckString();
+    }
+    pointerPressed = false;
+  }
+
   function handleClickFret(fretNum: number) {
     handleStopFret(fretNum);
+    pointerPressed = false;
   }
 
   function handleClickMute() {
     handleStopFret(-1);
+    pointerPressed = false;
   }
 
   // Assemble <FretNote> list
@@ -132,6 +161,7 @@ function String({
     );
   }
 
+  // Render <String>
   return (
     <div
       className={`string ${isMuted ? "muted" : ""}`}
@@ -142,6 +172,8 @@ function String({
           stringNodes.delete(stringNum);
         }
       }}
+      onPointerDown={handlePointerDown}
+      onPointerLeave={handlePointerLeave}
     >
       <StringMuteControl isMuted={isMuted} onClick={handleClickMute} />
       {fretNotes}
