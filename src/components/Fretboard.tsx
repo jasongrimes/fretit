@@ -1,6 +1,8 @@
-import type {
+import {
   FretboardDiagram,
+  FretboardLabeler,
   FretboardSettings,
+  LabelerSettings,
 } from "../services/fretboard";
 import "./Fretboard.css";
 
@@ -9,47 +11,27 @@ import "./Fretboard.css";
 //
 interface FretboardProps {
   settings: FretboardSettings;
+  labelerSettings: LabelerSettings;
   diagram: FretboardDiagram;
   onSetVoicing: (voicing: number[]) => void;
   onPlay: (stringNum: number, fretNum: number, delay?: number) => void;
 }
 export default function Fretboard({
   settings,
+  labelerSettings,
   diagram,
   onSetVoicing,
   onPlay,
 }: FretboardProps) {
   const numStrings = settings.tuning.length;
 
+  const labeler = new FretboardLabeler(settings.tuning, labelerSettings);
+
   function handleStopString(stringNum: number, fretNum: number) {
     const newVoicing = diagram.voicing;
     newVoicing[stringNum - 1] = fretNum ?? -1;
     onSetVoicing(newVoicing);
     onPlay(stringNum, fretNum);
-    
-    /*
-    // Remove any existing stops on this string.
-    const newStops = diagram.stops.filter(
-      (dot) => dot.location[0] !== stringNum,
-    );
-
-    if (fretNum !== null) {
-      const label = getLocationLabel(
-        [stringNum, fretNum],
-        settings,
-        diagram.labeling,
-      );
-
-      const newDot = {
-        location: [stringNum, fretNum],
-        label: label,
-      } as FretboardDiagramDot;
-
-      newStops.push(newDot);
-    }
-
-    onSetDiagram({ ...diagram, stops: newStops });
-    */
   }
 
   //
@@ -63,7 +45,10 @@ export default function Fretboard({
         settings={settings}
         stringNum={stringNum}
         stoppedFret={fretNum}
-        handleStopFret={(fretNum: number) => { handleStopString(stringNum, fretNum) }}
+        handleStopFret={(fretNum: number) => {
+          handleStopString(stringNum, fretNum);
+        }}
+        labeler={labeler}
       />
     );
   });
@@ -86,25 +71,19 @@ interface StringProps {
   stringNum: number;
   stoppedFret: number;
   handleStopFret: (fretNum: number) => void;
+  labeler: FretboardLabeler;
 }
-function String({ settings, stringNum, stoppedFret, handleStopFret }: StringProps) {
+function String({
+  settings,
+  stringNum,
+  stoppedFret,
+  handleStopFret,
+  labeler,
+}: StringProps) {
   const isMuted = stoppedFret < 0;
 
-  //
-  // Event handlers
-  //
   function handleClickFret(fretNum: number) {
     handleStopFret(fretNum);
-    /*
-    if (stopDot?.location[1] !== fretNum) {
-      handleStopSet(stringNum, fretNum);
-    } else {
-      console.log(`Fret ${fretNum} is already stopped.`);
-      if (settings.pointerBehavior === "toggle") {
-        handleStopSet(stringNum, null);
-      }
-    }
-    */
   }
 
   function handleClickMute() {
@@ -113,7 +92,11 @@ function String({ settings, stringNum, stoppedFret, handleStopFret }: StringProp
 
   // Assemble <FretNote> list
   const fretNotes = [];
-  for (let fretNum = 0; fretNum <= settings.numFrets; fretNum++) {
+  for (
+    let fretNum = settings.lowestFret;
+    fretNum <= settings.highestFret;
+    fretNum++
+  ) {
     // Add <FretMarker> on first string
     let fretMarker;
     if (stringNum === 1 && settings.fretMarkers?.includes(fretNum)) {
@@ -126,9 +109,10 @@ function String({ settings, stringNum, stoppedFret, handleStopFret }: StringProp
     }
 
     // Add <FretNoteDot>
+    const label = labeler.getLocationLabel([stringNum, fretNum]);
     let fretNoteDot;
     if (stoppedFret === fretNum) {
-      fretNoteDot = <FretNoteDot label="" />;
+      fretNoteDot = <FretNoteDot label={label} />;
     }
 
     // Add <FretNote>

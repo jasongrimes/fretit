@@ -1,18 +1,25 @@
 import { useState } from "react";
-import { Note } from "tonal";
-import { DEFAULT_DIAGRAM, DEFAULT_FRETBOARD_SETTINGS } from "../constants";
+import useSound from "../hooks/use-sound.hook";
+import {
+  DEFAULT_DIAGRAM,
+  DEFAULT_FRETBOARD_SETTINGS,
+  DEFAULT_LABELER_SETTINGS,
+} from "../services/fretboard";
 import Fretboard from "./Fretboard";
 import FretboardControls from "./FretboardControls";
 import FretboardSettingsForm from "./FretboardSettingsForm";
-import useSound from "../hooks/use-sound.hook";
 
-export default function FretboardEditor() {  
-  const [settings, setSettings] = useState(DEFAULT_FRETBOARD_SETTINGS);
+export default function FretboardEditor() {
+  const [fretboardSettings, setFretboardSettings] = useState(
+    DEFAULT_FRETBOARD_SETTINGS,
+  );
+  const [labelerSettings, setLabelerSettings] = useState(
+    DEFAULT_LABELER_SETTINGS,
+  );
   const [diagram, setDiagram] = useState(DEFAULT_DIAGRAM);
 
-  const tuning = settings.tuning.map((pitch) => Note.midi(pitch) ?? 0);
-  const { play, strum } = useSound({ tuning });
-  
+  const { play, strum } = useSound({ tuning: fretboardSettings.tuning });
+
   function setVoicing(voicing: number[]) {
     setDiagram({ ...diagram, voicing });
   }
@@ -25,7 +32,8 @@ export default function FretboardEditor() {
     <div className="fretboard-editor mx-auto flex max-w-lg">
       <div className="flex-grow">
         <Fretboard
-          settings={settings}
+          settings={fretboardSettings}
+          labelerSettings={labelerSettings}
           diagram={diagram}
           onSetVoicing={setVoicing}
           onPlay={play}
