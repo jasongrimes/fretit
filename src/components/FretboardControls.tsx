@@ -11,6 +11,7 @@ import {
   IconSettings,
   IconShare,
   IconVolume,
+  IconVolumeOff,
 } from "@tabler/icons-react";
 import { useState } from "react";
 // import { testSound, testSoundSimple } from "../util/testSound";
@@ -18,8 +19,14 @@ import { useState } from "react";
 
 interface FretboardControlsProps {
   onStrum: () => void;
+  muted: boolean;
+  setMuted: (muted: boolean) => void;
 }
-export default function FretboardControls({ onStrum }: FretboardControlsProps) {
+export default function FretboardControls({
+  onStrum,
+  muted = false,
+  setMuted,
+}: FretboardControlsProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [collapsedChords, setCollapsedChords] = useState(false);
   const [collapsedEdit, setCollapsedEdit] = useState(false);
@@ -37,6 +44,7 @@ export default function FretboardControls({ onStrum }: FretboardControlsProps) {
   }
 
   function handleSoundClick() {
+    setMuted(!muted);
   }
   function handleStrumClick() {
     onStrum();
@@ -48,7 +56,11 @@ export default function FretboardControls({ onStrum }: FretboardControlsProps) {
         {/* Play controls*/}
         <li>
           <a onClick={handleSoundClick}>
-            <IconVolume className="h-5 w-5" />
+            {muted ? (
+              <IconVolumeOff className="h-5 w-5" />
+            ) : (
+              <IconVolume className="h-5 w-5" />
+            )}
             <span className={collapsed ? "hidden" : ""}>Sound</span>
           </a>
         </li>

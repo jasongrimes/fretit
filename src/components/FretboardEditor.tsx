@@ -17,8 +17,12 @@ export default function FretboardEditor() {
     DEFAULT_LABELER_SETTINGS,
   );
   const [diagram, setDiagram] = useState(DEFAULT_DIAGRAM);
+  const [muted, setMuted] = useState(false);
 
-  const { play, strum } = useSound({ tuning: fretboardSettings.tuning });
+  const { play, strum } = useSound({
+    tuning: fretboardSettings.tuning,
+    muted: muted,
+  });
 
   function setVoicing(voicing: number[]) {
     setDiagram({ ...diagram, voicing });
@@ -40,7 +44,11 @@ export default function FretboardEditor() {
         />
       </div>
       <div className="flex-grow-0 pl-3 pr-1">
-        <FretboardControls onStrum={() => handleStrum()} />
+        <FretboardControls
+          onStrum={() => handleStrum()}
+          muted={muted}
+          setMuted={setMuted}
+        />
       </div>
       <FretboardSettingsForm />
     </div>

@@ -11,19 +11,17 @@ export default function useSound({
   instrument = undefined,
   muted = false,
 }: UseSoundProps) {
-  console.log("Entered useSound"); // ,tuning, instrument, muted);
   const playerRef = useRef<SoundPlayer | null>(null);
 
   useEffect(() => {
-    console.log("Entered useEffect");
+    // console.log("Entered useEffect");
     if (!muted && playerRef.current === null) {
       playerRef.current = new SoundPlayer(tuning, instrument);
     }
 
     return () => {
-      console.log("Entered useEffect cleanup");
+      // console.log("Entered useEffect cleanup");
       playerRef.current?.cleanup();
-      //playerRef.current = null;
     };
   }, [instrument, tuning, muted]);
 
@@ -32,7 +30,6 @@ export default function useSound({
   };
 
   const strum = (voicing: number[], delayOffset?: number) => {
-    console.log(voicing);
     !muted && playerRef.current?.strum(voicing, delayOffset);
   };
 

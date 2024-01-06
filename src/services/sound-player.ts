@@ -21,10 +21,8 @@ export default class SoundPlayer {
       return;
     }
     const midi: number = this.tuning[stringNum - 1] + fretNum;
-    console.log("Playing midi note:", midi);
 
     void this.audioContext.resume().then(() => {
-      // The Soundfont type definition from smplr is incorrect, causing typescript linting errors. Silence them for now.
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       this.stringMuters[stringNum - 1] = this.player.start({
         note: midi,
@@ -51,6 +49,8 @@ export default class SoundPlayer {
 
   cleanup() {
     //void this.audioContext.close();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    this.player.stop();
     this.stringMuters = this.tuning.map(() => undefined);
   }
 }
