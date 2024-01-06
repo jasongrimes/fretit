@@ -16,8 +16,8 @@ export default class SoundPlayer {
   }
 
   play(stringNum: number, fretNum: number, delay = 0) {
+    this.mute(stringNum);
     if (fretNum < 0) {
-      this.mute(stringNum);
       return;
     }
     const midi: number = this.tuning[stringNum - 1] + fretNum;
@@ -32,6 +32,7 @@ export default class SoundPlayer {
     });
   }
 
+  /*
   strum(voicing: number[], delayOffset = 0.03) {
     let delay = 0;
     for (let i = voicing.length; i >= 0; i--) {
@@ -41,6 +42,7 @@ export default class SoundPlayer {
       }
     }
   }
+  */
 
   mute(stringNum: number) {
     this.stringMuters[stringNum - 1]?.();

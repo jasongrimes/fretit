@@ -26,11 +26,24 @@ export default function useSound({
   }, [instrument, tuning, muted]);
 
   const play = (stringNum: number, fretNum: number, delay?: number) => {
-    !muted && playerRef.current?.play(stringNum, fretNum, delay);
+    if (muted) {
+      return;
+    }
+    playerRef.current?.play(stringNum, fretNum, delay);
   };
 
-  const strum = (voicing: number[], delayOffset?: number) => {
-    !muted && playerRef.current?.strum(voicing, delayOffset);
+  const strum = (voicing: number[], delayOffset = 0) => {
+    // !muted && playerRef.current?.strum(voicing, delayOffset);
+    if (muted) {
+      return;
+    }
+    let delay = 0;
+    for (let i = voicing.length; i >= 0; i--) {
+      if (voicing[i] >= 0) {
+        play(i + 1, voicing[i], delay * delayOffset);
+        delay++;
+      }
+    }
   };
 
   return { play, strum, loading: playerRef.current === null };
