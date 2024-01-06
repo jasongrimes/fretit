@@ -14,14 +14,14 @@ interface FretboardProps {
   labelerSettings: LabelerSettings;
   diagram: FretboardDiagram;
   onSetVoicing: (voicing: number[]) => void;
-  onPlay: (stringNum: number, fretNum: number, delay?: number) => void;
+  handlePluck: (stringNum: number, fretNum: number) => void;
 }
 export default function Fretboard({
   settings,
   labelerSettings,
   diagram,
-  onSetVoicing,
-  onPlay,
+  onSetVoicing, // TODO: rename to setVoicing
+  handlePluck,
 }: FretboardProps) {
   const numStrings = settings.tuning.length;
 
@@ -31,7 +31,7 @@ export default function Fretboard({
     const newVoicing = diagram.voicing;
     newVoicing[stringNum - 1] = fretNum ?? -1;
     onSetVoicing(newVoicing);
-    onPlay(stringNum, fretNum);
+    handlePluck(stringNum, fretNum);
   }
 
   //

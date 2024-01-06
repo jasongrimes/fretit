@@ -20,12 +20,12 @@ import { useState } from "react";
 interface FretboardControlsProps {
   onStrum: () => void;
   muted: boolean;
-  setMuted: (muted: boolean) => void;
+  onSetMuted: (muted: boolean) => void;
 }
 export default function FretboardControls({
   onStrum,
   muted = false,
-  setMuted,
+  onSetMuted,
 }: FretboardControlsProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [collapsedChords, setCollapsedChords] = useState(false);
@@ -44,7 +44,7 @@ export default function FretboardControls({
   }
 
   function handleSoundClick() {
-    setMuted(!muted);
+    onSetMuted(!muted);
   }
   function handleStrumClick() {
     onStrum();
