@@ -38,18 +38,6 @@ export default class SoundPlayer {
     });
   }
 
-  /*
-  strum(voicing: number[], delayOffset = 0.03) {
-    let delay = 0;
-    for (let i = voicing.length; i >= 0; i--) {
-      if (voicing[i] >= 0) {
-        this.play(i + 1, voicing[i], delay * delayOffset);
-        delay++;
-      }
-    }
-  }
-  */
-
   mute(stringNum: number) {
     this.stringMuters[stringNum - 1]?.();
     this.stringMuters[stringNum - 1] = undefined;
