@@ -32,7 +32,7 @@ export default function useSound({
     playerRef.current?.play(stringNum, fretNum, delay);
   };
 
-  const strum = (voicing: number[], delayOffset = 0) => {
+  const strum = (voicing: number[], delayOffset = 0.05) => {
     // !muted && playerRef.current?.strum(voicing, delayOffset);
     if (muted) {
       return;
