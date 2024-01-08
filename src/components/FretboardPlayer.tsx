@@ -12,7 +12,7 @@ import FretboardSettingsForm from "./FretboardSettingsForm";
 
 const animationEnabled = true;
 
-export default function FretboardEditor() {
+export default function FretboardPlayer() {
   const [fretboardSettings, setFretboardSettings] = useState(
     DEFAULT_FRETBOARD_SETTINGS,
   );
@@ -65,7 +65,7 @@ export default function FretboardEditor() {
   }
 
   function handleSetLabelingScheme(scheme: LabelingScheme) {
-    setLabelerSettings({...labelerSettings, scheme});
+    setLabelerSettings({ ...labelerSettings, scheme });
   }
 
   return (

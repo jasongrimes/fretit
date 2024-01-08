@@ -1,5 +1,5 @@
 import Footer from "./components/Footer";
-import FretboardEditor from "./components/FretboardEditor";
+import FretboardPlayer from "./components/FretboardPlayer";
 import Header from "./components/Header";
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
     <div className="relative min-h-screen">
       <Header />
       <main className=" max-w-[100vw] pb-24">
-        <FretboardEditor />
+        <FretboardPlayer />
       </main>
       <Footer />
     </div>
