@@ -1,19 +1,20 @@
 import {
   IconChevronDown,
   IconChevronUp,
+  IconCircleLetterA,
   IconClick,
   IconFolderOpen,
   IconMusicBolt,
   IconPhoto,
   IconPlaylist,
   IconPlaylistAdd,
-  IconPointerPin,
   IconSettings,
   IconShare,
   IconVolume,
   IconVolumeOff,
 } from "@tabler/icons-react";
 import { useState } from "react";
+import { LabelerSettings, LabelingScheme } from "../services/fretboard";
 // import { testSound, testSoundSimple } from "../util/testSound";
 // import makePlayer, { SoundPlayer } from "../util/sound";
 
@@ -21,15 +22,21 @@ interface FretboardControlsProps {
   onStrum: () => void;
   muted: boolean;
   onSetMuted: (muted: boolean) => void;
+  labelerSettings: LabelerSettings;
+  onSetLabelingScheme: (scheme: LabelingScheme) => void;
 }
 export default function FretboardControls({
   onStrum,
   muted = false,
   onSetMuted,
+  labelerSettings,
+  onSetLabelingScheme,
 }: FretboardControlsProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [collapsedChords, setCollapsedChords] = useState(false);
   const [collapsedEdit, setCollapsedEdit] = useState(false);
+
+  const labelingScheme = labelerSettings.scheme;
 
   function handleToggleCollapsed() {
     setCollapsed(!collapsed);
@@ -169,17 +176,79 @@ export default function FretboardControls({
         {!collapsedEdit && (
           <>
             <li>
-              <a className="active">
+              <a className="">
                 <IconClick className="h-5 w-5" />
                 <span className={collapsed ? "hidden" : ""}>Pick</span>
               </a>
             </li>
 
             <li>
-              <a>
-                <IconPointerPin className="h-5 w-5" />
-                <span className={collapsed ? "hidden" : ""}>Overlay</span>
-              </a>
+              {/* <a> */}
+              {/* <IconCircleLetterR className="h-5 w-5" />
+                <span className={collapsed ? "hidden" : ""}>Labels <IconChevronDown className="inline w-3"/></span> */}
+              <details className="dropdown dropdown-end">
+                <summary className={collapsed ? "gap-0 after:w-0" : ""}>
+                  <IconCircleLetterA className="h-5 w-5" />
+                  <span className={collapsed ? "hidden" : ""}>Labels</span>
+                </summary>
+                <ul className="menu dropdown-content z-[1] w-52 rounded-box bg-base-100 p-2 shadow">
+                  <li>
+                    <a
+                      className={
+                        labelerSettings.scheme === "none" ? "active" : ""
+                      }
+                      onClick={() => onSetLabelingScheme("none")}
+                    >
+                      None
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={
+                        labelerSettings.scheme === "pitchClass" ? "active" : ""
+                      }
+                      onClick={() => onSetLabelingScheme("pitchClass")}
+                    >
+                      Note name (C)
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={
+                        labelerSettings.scheme === "pitch" ? "active" : ""
+                      }
+                      onClick={() => onSetLabelingScheme("pitch")}
+                    >
+                      Note with octave (C4)
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={
+                        labelerSettings.scheme === "chordInterval"
+                          ? "active"
+                          : ""
+                      }
+                      onClick={() => onSetLabelingScheme("chordInterval")}
+                    >
+                      Chord interval (R..7)
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={
+                        labelerSettings.scheme === "scaleInterval"
+                          ? "active"
+                          : ""
+                      }
+                      onClick={() => onSetLabelingScheme("scaleInterval")}
+                    >
+                      Scale interval (1..7)
+                    </a>
+                  </li>
+                </ul>
+              </details>
+              {/* </a> */}
             </li>
 
             <li></li>

@@ -50,7 +50,7 @@ export interface FretboardDiagram {
   name: string;
   longName: string;
   sortOrder: number;
-  labeling: LabelerSettings;
+  // labeling: LabelerSettings;
   voicing: number[];
 }
 export const DEFAULT_DIAGRAM: FretboardDiagram = {
@@ -58,7 +58,7 @@ export const DEFAULT_DIAGRAM: FretboardDiagram = {
   name: "C",
   longName: "C major",
   sortOrder: 0,
-  labeling: DEFAULT_LABELER_SETTINGS,
+  // labeling: DEFAULT_LABELER_SETTINGS, // TODO: Move to fretboard settings?
   voicing: [-1, 1, 0, 2, 3, -1],
 };
 

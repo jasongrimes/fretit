@@ -4,6 +4,7 @@ import {
   DEFAULT_DIAGRAM,
   DEFAULT_FRETBOARD_SETTINGS,
   DEFAULT_LABELER_SETTINGS,
+  LabelingScheme,
 } from "../services/fretboard";
 import Fretboard from "./Fretboard";
 import FretboardControls from "./FretboardControls";
@@ -20,7 +21,7 @@ export default function FretboardEditor() {
   );
   const [diagram, setDiagram] = useState(DEFAULT_DIAGRAM);
   const [muted, setMuted] = useState(false);
-  const stringsRef = useRef<Map<number, HTMLElement>|null>(null);
+  const stringsRef = useRef<Map<number, HTMLElement> | null>(null);
 
   function getStringNodes() {
     if (!stringsRef.current) {
@@ -44,7 +45,7 @@ export default function FretboardEditor() {
   const { play, strum } = useSound({
     tuning: fretboardSettings.tuning,
     muted: muted,
-    onPlayString
+    onPlayString,
   });
 
   function setVoicing(voicing: number[]) {
@@ -59,13 +60,12 @@ export default function FretboardEditor() {
     play(stringNum, fretNum);
   }
 
-  
-
   function handleSetMuted(muted: boolean) {
-    // if (muted) {
-    //   setSoundingStrings([]);
-    // }
     setMuted(muted);
+  }
+
+  function handleSetLabelingScheme(scheme: LabelingScheme) {
+    setLabelerSettings({...labelerSettings, scheme});
   }
 
   return (
@@ -85,6 +85,8 @@ export default function FretboardEditor() {
           onStrum={() => handleStrum()}
           muted={muted}
           onSetMuted={handleSetMuted}
+          labelerSettings={labelerSettings}
+          onSetLabelingScheme={handleSetLabelingScheme}
         />
       </div>
       <FretboardSettingsForm />
