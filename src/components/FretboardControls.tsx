@@ -1,17 +1,19 @@
 import {
   IconChevronDown,
   IconChevronUp,
-  IconCircleLetterA,
+  IconCircleFilled,
+  IconCircleLetterC,
+  IconCircleLetterR,
+  IconCircleNumber1,
   IconClick,
   IconFolderOpen,
   IconMusicBolt,
   IconPhoto,
-  IconPlaylist,
-  IconPlaylistAdd,
   IconSettings,
   IconShare,
   IconVolume,
   IconVolumeOff,
+  IconX,
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { LabelerSettings, LabelingScheme } from "../services/fretboard";
@@ -55,10 +57,18 @@ export default function FretboardControls({
     onStrum();
   }
 
+  let labelerIcons = {
+    pitchClass: <IconCircleLetterC className="h-5 w-5" />,
+    // prettier-ignore
+    pitch: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" width="24" height="24" viewBox="0 0 1024 1024"><path fill="currentColor" d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448s448-200.6 448-448S759.4 64 512 64m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372s372 166.6 372 372s-166.6 372-372 372m218-572.1h-50.4c-4.4 0-8 3.6-8 8v384.2c0 4.4 3.6 8 8 8H730c4.4 0 8-3.6 8-8V319.9c0-4.4-3.6-8-8-8m-281.4 49.6c49.5 0 83.1 31.5 87 77.6c.4 4.2 3.8 7.4 8 7.4h52.6c2.4 0 4.4-2 4.4-4.4c0-81.2-64-138.1-152.3-138.1C345.4 304 286 373.5 286 488.4v49c0 114 59.4 182.6 162.3 182.6c88 0 152.3-55.1 152.3-132.5c0-2.4-2-4.4-4.4-4.4h-52.7c-4.2 0-7.6 3.2-8 7.3c-4.2 43-37.7 72.4-87 72.4c-61.1 0-95.6-44.9-95.6-125.2v-49.3c.1-81.4 34.6-126.8 95.7-126.8" /></svg>,
+    chordInterval: <IconCircleLetterR className="h-5 w-5" />,
+    scaleInterval: <IconCircleNumber1 className="h-5 w-5" />,
+    none: <IconCircleFilled className="h-5 w-5" />,
+  };
+
   return (
     <div className={collapsed ? "w-16" : ""}>
       <ul className="menu rounded-box bg-base-200 text-base-content">
-        {/* Play controls*/}
         <li>
           <a onClick={handleSoundClick}>
             {muted ? (
@@ -70,6 +80,72 @@ export default function FretboardControls({
           </a>
         </li>
 
+        {/* Labeling scheme */}
+        <li className="hidden">
+          <details className="dropdown dropdown-end">
+            <summary className={collapsed ? "gap-0 after:w-0" : ""}>
+              {labelerIcons[labelerSettings.scheme]}
+              <span className={collapsed ? "hidden" : ""}>Labels</span>
+            </summary>
+            <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-100 p-2 shadow">
+              <li className="menu-title">Note labels</li>
+              <li>
+                <a
+                  className={
+                    labelerSettings.scheme === "pitchClass" ? "active" : ""
+                  }
+                  onClick={() => onSetLabelingScheme("pitchClass")}
+                >
+                  {labelerIcons.pitchClass}
+                  Note name
+                </a>
+              </li>
+              <li>
+                <a
+                  className={labelerSettings.scheme === "pitch" ? "active" : ""}
+                  onClick={() => onSetLabelingScheme("pitch")}
+                >
+                  {labelerIcons.pitch}
+                  Note + octave
+                </a>
+              </li>
+              <li>
+                <a
+                  className={
+                    labelerSettings.scheme === "chordInterval" ? "active" : ""
+                  }
+                  onClick={() => onSetLabelingScheme("chordInterval")}
+                >
+                  {labelerIcons.chordInterval}
+                  Chord interval
+                </a>
+              </li>
+              <li>
+                <a
+                  className={
+                    labelerSettings.scheme === "scaleInterval" ? "active" : ""
+                  }
+                  onClick={() => onSetLabelingScheme("scaleInterval")}
+                >
+                  {labelerIcons.scaleInterval}
+                  Scale degree
+                </a>
+              </li>
+              <li>
+                <a
+                  className={labelerSettings.scheme === "none" ? "active" : ""}
+                  onClick={() => onSetLabelingScheme("none")}
+                >
+                  {labelerIcons.none}
+                  None
+                </a>
+              </li>
+            </ul>
+          </details>
+        </li>
+
+        <li></li>
+
         <li className="">
           <a onClick={handleStrumClick}>
             <IconMusicBolt className="h-5 w-5" />
@@ -77,223 +153,63 @@ export default function FretboardControls({
           </a>
         </li>
 
-        <li></li>
-
-        {/* Chord chart controls  */}
-        <li>
-          <a className="text-gray-500" onClick={handleToggleCollapsedChords}>
-            {collapsedChords ? (
-              <IconChevronDown className="h-5 w-5" />
-            ) : (
-              <IconChevronUp className="h-5 w-5" />
-            )}
-            <span className={collapsed ? "hidden" : ""}>Diagrams</span>
+        <li className="">
+          <a onClick={handleStrumClick}>
+            <IconX className="h-5 w-5" />
+            <span className={collapsed ? "hidden" : ""}>Mute</span>
           </a>
         </li>
 
-        <li></li>
-
-        {!collapsedChords && (
-          <>
-            <li className="w-full">
-              <a className="block w-full truncate text-clip px-0 text-center text-accent">
-                C
-              </a>
-            </li>
-            <li className="w-full">
-              <a className="block w-full truncate text-clip px-0 text-center text-accent">
-                Dm
-              </a>
-            </li>
-            <li className="w-full">
-              <a className="block w-full truncate text-clip px-0 text-center text-accent">
-                Em
-              </a>
-            </li>
-            <li className="w-full">
-              <a className="block w-full truncate text-clip px-0 text-center text-accent">
-                F
-              </a>
-            </li>
-            <li className="w-full">
-              <a className="block w-full truncate text-clip px-0 text-center text-accent">
-                G
-              </a>
-            </li>
-            <li className="w-full">
-              <a className="block w-full truncate text-clip px-0 text-center text-accent">
-                Am
-              </a>
-            </li>
-            <li className="w-full">
-              <a className="block w-full truncate text-clip px-0 text-center text-accent">
-                Bdim
-              </a>
-            </li>
-            <li className="w-full">
-              <a className="block w-full truncate text-clip px-0 text-center text-accent">
-                G7
-              </a>
-            </li>
-
-            {!collapsedEdit && (
-              <>
-                <li>
-                  <a>
-                    <IconPlaylistAdd className="h-5 w-5" />
-                    <span className={collapsed ? "hidden" : ""}>Add </span>
-                  </a>
-                </li>
-
-                <li>
-                  <a>
-                    <IconPlaylist className="h-5 w-5" />
-                    <span className={collapsed ? "hidden" : ""}>Arrange</span>
-                  </a>
-                </li>
-              </>
-            )}
-
-            <li></li>
-          </>
-        )}
-
-        <li>
-          <a className="text-gray-500" onClick={handleToggleCollapsedEdit}>
-            {collapsedEdit ? (
-              <IconChevronDown className="h-5 w-5" />
-            ) : (
-              <IconChevronUp className="h-5 w-5" />
-            )}
-            <span className={collapsed ? "hidden" : ""}>Edit</span>
-          </a>
+        {/* Chord grips  */}
+        <li className="menu-title text-center">
+          <span className={collapsed ? "invisible w-0" : ""}>Chords</span>
         </li>
 
+        <>
+          <li className="w-full">
+            <a className="block w-full truncate text-clip px-0 text-center text-accent">
+              C
+            </a>
+          </li>
+          <li className="w-full">
+            <a className="block w-full truncate text-clip px-0 text-center text-accent">
+              Dm
+            </a>
+          </li>
+          <li className="w-full">
+            <a className="block w-full truncate text-clip px-0 text-center text-accent">
+              Em
+            </a>
+          </li>
+          <li className="w-full">
+            <a className="block w-full truncate text-clip px-0 text-center text-accent">
+              F
+            </a>
+          </li>
+          <li className="w-full">
+            <a className="block w-full truncate text-clip px-0 text-center text-accent">
+              G
+            </a>
+          </li>
+          <li className="w-full">
+            <a className="block w-full truncate text-clip px-0 text-center text-accent">
+              Am
+            </a>
+          </li>
+          <li className="w-full">
+            <a className="block w-full truncate text-clip px-0 text-center text-accent">
+              Bdim
+            </a>
+          </li>
+          <li className="w-full">
+            <a className="block w-full truncate text-clip px-0 text-center text-accent">
+              G7
+            </a>
+          </li>
+        </>
+
+
         <li></li>
-
-        {!collapsedEdit && (
-          <>
-            <li>
-              <a className="">
-                <IconClick className="h-5 w-5" />
-                <span className={collapsed ? "hidden" : ""}>Pick</span>
-              </a>
-            </li>
-
-            <li>
-              {/* <a> */}
-              {/* <IconCircleLetterR className="h-5 w-5" />
-                <span className={collapsed ? "hidden" : ""}>Labels <IconChevronDown className="inline w-3"/></span> */}
-              <details className="dropdown dropdown-end">
-                <summary className={collapsed ? "gap-0 after:w-0" : ""}>
-                  <IconCircleLetterA className="h-5 w-5" />
-                  <span className={collapsed ? "hidden" : ""}>Labels</span>
-                </summary>
-                <ul className="menu dropdown-content z-[1] w-52 rounded-box bg-base-100 p-2 shadow">
-                  <li>
-                    <a
-                      className={
-                        labelerSettings.scheme === "none" ? "active" : ""
-                      }
-                      onClick={() => onSetLabelingScheme("none")}
-                    >
-                      None
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className={
-                        labelerSettings.scheme === "pitchClass" ? "active" : ""
-                      }
-                      onClick={() => onSetLabelingScheme("pitchClass")}
-                    >
-                      Note name (C)
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className={
-                        labelerSettings.scheme === "pitch" ? "active" : ""
-                      }
-                      onClick={() => onSetLabelingScheme("pitch")}
-                    >
-                      Note with octave (C4)
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className={
-                        labelerSettings.scheme === "chordInterval"
-                          ? "active"
-                          : ""
-                      }
-                      onClick={() => onSetLabelingScheme("chordInterval")}
-                    >
-                      Chord interval (R..7)
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className={
-                        labelerSettings.scheme === "scaleInterval"
-                          ? "active"
-                          : ""
-                      }
-                      onClick={() => onSetLabelingScheme("scaleInterval")}
-                    >
-                      Scale interval (1..7)
-                    </a>
-                  </li>
-                </ul>
-              </details>
-              {/* </a> */}
-            </li>
-
-            <li></li>
-
-            {/* <li>
-          <a>
-            <TrashIcon className="h-5 w-5" />
-            <span className={collapsed ? "hidden" : ""}>Clear</span>
-          </a>
-        </li>
-
-        <li></li> */}
-
-            <li>
-              <a>
-                <IconSettings className="h-5 w-5" />
-                <span className={collapsed ? "hidden" : ""}>Settings</span>
-              </a>
-            </li>
-
-            <li>
-              <a>
-                <IconFolderOpen className="h-5 w-5" />
-                <span className={collapsed ? "hidden" : ""}>Open</span>
-              </a>
-            </li>
-            {/* <li>
-              <a>
-                <IconDeviceFloppy className="h-5 w-5" />
-                <span className={collapsed ? "hidden" : ""}>Save</span>
-              </a>
-            </li> */}
-            <li>
-              <a>
-                <IconPhoto className="h-5 w-5" />
-                <span className={collapsed ? "hidden" : ""}>Export</span>
-              </a>
-            </li>
-            <li>
-              <a>
-                <IconShare className="h-5 w-5" />
-                <span className={collapsed ? "hidden" : ""}>Share</span>
-              </a>
-            </li>
-            <li></li>
-          </>
-        )}
 
         <li>
           <a className="text-gray-500" onClick={handleToggleCollapsed}>

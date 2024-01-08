@@ -69,7 +69,7 @@ export default function FretboardPlayer() {
   }
 
   return (
-    <div className="fretboard-editor mx-auto flex max-w-lg">
+    <div className="fretboard-player mx-auto flex max-w-lg  overflow-x-hidden">
       <div className="flex-grow">
         <Fretboard
           settings={fretboardSettings}
@@ -80,7 +80,7 @@ export default function FretboardPlayer() {
           stringNodes={getStringNodes()}
         />
       </div>
-      <div className="flex-grow-0 pl-3 pr-1">
+      <div className="flex-grow-0 pl-2 pr-1">
         <FretboardControls
           onStrum={() => handleStrum()}
           muted={muted}

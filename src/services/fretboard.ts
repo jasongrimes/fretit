@@ -14,7 +14,7 @@ export const DEFAULT_FRETBOARD_SETTINGS: FretboardSettings = {
   instrument: "Guitar",
   tuning: [64, 59, 55, 50, 45, 40],
   lowestFret: 0,
-  highestFret: 7,
+  highestFret: 12,
   fretMarkers: [3, 5, 7, 9, 12, 15, 17, 19, 21, 24],
   doubleFretMarkers: [12, 24],
 };
