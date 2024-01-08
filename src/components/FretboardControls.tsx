@@ -36,8 +36,6 @@ export default function FretboardControls({
   const [collapsedChords, setCollapsedChords] = useState(false);
   const [collapsedEdit, setCollapsedEdit] = useState(false);
 
-  const labelingScheme = labelerSettings.scheme;
-
   function handleToggleCollapsed() {
     setCollapsed(!collapsed);
   }
