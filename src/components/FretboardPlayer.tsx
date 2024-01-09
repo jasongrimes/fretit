@@ -16,7 +16,9 @@ import FretboardSettingsForm from "./FretboardSettingsForm";
 const animationEnabled = true;
 
 export default function FretboardPlayer() {
-  const [settings, setSettings] = useState<DiagramSettings>(DEFAULT_DIAGRAM_SETTINGS);
+  const [settings, setSettings] = useState<DiagramSettings>(
+    DEFAULT_DIAGRAM_SETTINGS,
+  );
   const instrument = INSTRUMENTS[settings.instrument];
   const grips = DEFAULT_GRIPS;
   const emptyGrip: ChordGrip = {
@@ -24,7 +26,7 @@ export default function FretboardPlayer() {
     voicing: instrument.tuning.map(() => -1),
   };
   const [currentGrip, setCurrentGrip] = useState(grips[0] ?? emptyGrip);
-  
+
   const [soundEnabled, setSoundEnabled] = useState(true);
 
   const labeler = new FretboardLabeler({
@@ -69,13 +71,15 @@ export default function FretboardPlayer() {
   // Event handlers
   //
   function setVoicing(voicing: number[]) {
-    setCurrentGrip({ ...emptyGrip, voicing });
+    setCurrentGrip({ ...currentGrip, voicing });
   }
 
   function handleSetGrip(gripName: string) {
-    const grip = grips.find((grip) => grip.name === gripName) ?? emptyGrip;
-    setCurrentGrip({ ...grip });
-    strum(grip.voicing);
+    const grip = grips.find((grip) => grip.name === gripName);
+    if (grip) {
+      setCurrentGrip({ ...grip });
+      strum(grip.voicing);
+    }
   }
 
   function handleMuteAllStrings() {

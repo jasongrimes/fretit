@@ -30,7 +30,7 @@ export const DEFAULT_DIAGRAM_SETTINGS: DiagramSettings = {
   lowestFret: 0,
   highestFret: 12,
   tonic: "C",
-  labeling: "chordInterval",
+  labeling: "scaleInterval",
   preferSharps: false,
 };
 
