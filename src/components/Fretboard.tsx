@@ -1,6 +1,6 @@
 import { PointerEvent } from "react";
 import {
-  FretboardDiagram,
+  ChordGrip,
   FretboardLabeler,
   FretboardSettings,
   LabelerSettings,
@@ -13,7 +13,7 @@ import "./Fretboard.css";
 interface FretboardProps {
   settings: FretboardSettings;
   labelerSettings: LabelerSettings;
-  diagram: FretboardDiagram;
+  grip: ChordGrip;
   onSetVoicing: (voicing: number[]) => void;
   handlePluck: (stringNum: number, fretNum: number) => void;
   stringNodes: Map<number, HTMLElement>;
@@ -21,7 +21,7 @@ interface FretboardProps {
 export default function Fretboard({
   settings,
   labelerSettings,
-  diagram,
+  grip,
   onSetVoicing, // TODO: rename to setVoicing
   handlePluck,
   stringNodes,
@@ -31,7 +31,7 @@ export default function Fretboard({
   const labeler = new FretboardLabeler(settings.tuning, labelerSettings);
 
   function handleStopString(stringNum: number, fretNum: number) {
-    const newVoicing = diagram.voicing;
+    const newVoicing = grip.voicing.slice();
     newVoicing[stringNum - 1] = fretNum ?? -1;
     onSetVoicing(newVoicing);
     handlePluck(stringNum, fretNum);
@@ -46,7 +46,7 @@ export default function Fretboard({
   //
   // Assemble <String>
   //
-  const strings = diagram.voicing.map((stoppedFret, stringIndex) => {
+  const strings = grip.voicing.map((stoppedFret, stringIndex) => {
     const stringNum = stringIndex + 1;
     return (
       <String
@@ -108,7 +108,10 @@ function String({
 
   function handlePointerLeave(event: PointerEvent<HTMLDivElement>) {
     // event.pressure doesn't work in ios safari.
-    if (!pointerPressed && (event.pressure > 0 || event.pointerType === "touch")) {
+    if (
+      !pointerPressed &&
+      (event.pressure > 0 || event.pointerType === "touch")
+    ) {
       handlePluckString();
     }
     pointerPressed = false;

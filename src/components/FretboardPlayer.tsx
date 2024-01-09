@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import useSound from "../hooks/use-sound.hook";
 import {
-  DEFAULT_DIAGRAM,
+  DEFAULT_GRIPS,
   DEFAULT_FRETBOARD_SETTINGS,
   DEFAULT_LABELER_SETTINGS,
   LabelingScheme,
@@ -13,14 +13,17 @@ import FretboardSettingsForm from "./FretboardSettingsForm";
 const animationEnabled = true;
 
 export default function FretboardPlayer() {
-  const [fretboardSettings, setFretboardSettings] = useState(
+  const [fretboardSettings /*, setFretboardSettings*/] = useState(
     DEFAULT_FRETBOARD_SETTINGS,
   );
   const [labelerSettings, setLabelerSettings] = useState(
     DEFAULT_LABELER_SETTINGS,
   );
-  const [diagram, setDiagram] = useState(DEFAULT_DIAGRAM);
-  const [muted, setMuted] = useState(false);
+  const grips = DEFAULT_GRIPS;
+  // const [diagram, setDiagram] = useState(DEFAULT_DIAGRAM);
+  const emptyGrip = { name: "", voicing: fretboardSettings.tuning.map(() => -1) };
+  const [grip, setGrip] = useState(grips[0] ?? emptyGrip);
+  const [soundEnabled, setSoundEnabled] = useState(true);
   const stringsRef = useRef<Map<number, HTMLElement> | null>(null);
 
   function getStringNodes() {
@@ -42,26 +45,37 @@ export default function FretboardPlayer() {
     }
   }
 
-  const { play, strum } = useSound({
+  const { play, strum, muteAll } = useSound({
     tuning: fretboardSettings.tuning,
-    muted: muted,
+    muted: !soundEnabled,
     onPlayString,
   });
 
   function setVoicing(voicing: number[]) {
-    setDiagram({ ...diagram, voicing });
+    setGrip({ ...emptyGrip, voicing });
+  }
+
+  function handleSetGrip(gripName: string) {
+    const grip = grips.find((grip) => grip.name === gripName) ?? emptyGrip;
+    setGrip(grip);
+    strum(grip.voicing);
+  }
+
+  function handleMuteAllStrings() {
+    setGrip({ ...grip, voicing: fretboardSettings.tuning.map(() => -1) });
+    muteAll();
   }
 
   function handleStrum() {
-    strum(diagram.voicing);
+    strum(grip.voicing);
   }
 
   function handlePluck(stringNum: number, fretNum: number) {
     play(stringNum, fretNum);
   }
 
-  function handleSetMuted(muted: boolean) {
-    setMuted(muted);
+  function handleSetSoundEnabled(enabled: boolean) {
+    setSoundEnabled(enabled);
   }
 
   function handleSetLabelingScheme(scheme: LabelingScheme) {
@@ -74,7 +88,7 @@ export default function FretboardPlayer() {
         <Fretboard
           settings={fretboardSettings}
           labelerSettings={labelerSettings}
-          diagram={diagram}
+          grip={grip}
           onSetVoicing={setVoicing}
           handlePluck={handlePluck}
           stringNodes={getStringNodes()}
@@ -83,10 +97,13 @@ export default function FretboardPlayer() {
       <div className="flex-grow-0 pl-2 pr-1">
         <FretboardControls
           onStrum={() => handleStrum()}
-          muted={muted}
-          onSetMuted={handleSetMuted}
+          soundEnabled={soundEnabled}
+          onSetSoundEnabled={handleSetSoundEnabled}
           labelerSettings={labelerSettings}
           onSetLabelingScheme={handleSetLabelingScheme}
+          onMuteAllStrings={handleMuteAllStrings}
+          grips={DEFAULT_GRIPS}
+          onSetGrip={handleSetGrip}
         />
       </div>
       <FretboardSettingsForm />

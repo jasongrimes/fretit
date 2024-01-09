@@ -45,6 +45,7 @@ export const DEFAULT_LABELER_SETTINGS: LabelerSettings = {
   tonic: "C",
 };
 
+/*
 export interface FretboardDiagram {
   uid: string | null;
   name: string;
@@ -53,14 +54,71 @@ export interface FretboardDiagram {
   // labeling: LabelerSettings;
   voicing: number[];
 }
-export const DEFAULT_DIAGRAM: FretboardDiagram = {
-  uid: null,
+export const DEFAULT_GRIP: ChordGrip = {
   name: "C",
   longName: "C major",
   sortOrder: 0,
   // labeling: DEFAULT_LABELER_SETTINGS, // TODO: Move to fretboard settings?
   voicing: [-1, 1, 0, 2, 3, -1],
 };
+*/
+
+export interface ChordGrip {
+  name: string;
+  longName?: string;
+  root?: string;
+  voicing: number[];
+}
+export const DEFAULT_GRIPS: ChordGrip[] = [
+  {
+    name: "C",
+    longName: "C major",
+    root: "C",
+    voicing: [0, 1, 0, 2, 3, -1],
+  },
+  {
+    name: "Dm",
+    longName: "D minor",
+    root: "D",
+    voicing: [1, 3, 2, 0, -1, -1],
+  },
+  {
+    name: "Em",
+    longName: "E minor",
+    root: "E",
+    voicing: [0, 0, 0, 2, 2, 0],
+  },
+  {
+    name: "F",
+    longName: "F major",
+    root: "F",
+    voicing: [1, 1, 2, 3, 3, 1],
+  },
+  {
+    name: "G",
+    longName: "G major",
+    root: "G",
+    voicing: [3, 0, 0, 0, 2, 3],
+  },
+  {
+    name: "Am",
+    longName: "A minor",
+    root: "A",
+    voicing: [0, 1, 2, 2, 0, -1],
+  },
+  {
+    name: "Bdim",
+    longName: "B diminished",
+    root: "B",
+    voicing: [1, 0, -1, 0, 2, -1],
+  },
+  {
+    name: "G7",
+    longName: "G dominant 7",
+    root: "G",
+    voicing: [1, 0, 0, 0, 2, 3],
+  },
+];
 
 /**
  * Fretboard labeler

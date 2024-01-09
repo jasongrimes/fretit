@@ -1,1 +1,0 @@
-- Rename FretboardLocation to FretboardPoint?
