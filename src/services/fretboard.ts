@@ -1,21 +1,14 @@
 import { Interval, Note } from "tonal";
 
-export type FretboardLocation = [stringNum: number, fretNum: number];
-
+//
+// Types
+//
 export interface Instrument {
   name: string;
   tuning: number[];
   fretMarkers: number[];
   doubleFretMarkers: number[];
 }
-export const INSTRUMENTS: Record<string, Instrument> = {
-  Guitar: {
-    name: "Guitar",
-    tuning: [64, 59, 55, 50, 45, 40],
-    fretMarkers: [3, 5, 7, 9, 12, 15, 17, 19, 21, 24],
-    doubleFretMarkers: [12, 24],
-  },
-};
 
 export interface DiagramSettings {
   instrument: string;
@@ -25,21 +18,6 @@ export interface DiagramSettings {
   labeling: LabelingScheme;
   preferSharps: boolean;
 }
-export const DEFAULT_DIAGRAM_SETTINGS: DiagramSettings = {
-  instrument: "Guitar",
-  lowestFret: 0,
-  highestFret: 12,
-  tonic: "C",
-  labeling: "scaleInterval",
-  preferSharps: false,
-};
-
-export interface FretboardControlSettings {
-  pointerBehavior: "pick" | "toggle" | "edit";
-}
-export const DEFAULT_CONTROL_SETTINGS: FretboardControlSettings = {
-  pointerBehavior: "pick",
-};
 
 export type LabelingScheme =
   | "none"
@@ -53,6 +31,31 @@ export interface ChordGrip {
   root?: string;
   voicing: number[];
 }
+
+export type FretboardLocation = [stringNum: number, fretNum: number];
+
+//
+// Constants
+//
+
+export const INSTRUMENTS: Record<string, Instrument> = {
+  Guitar: {
+    name: "Guitar",
+    tuning: [64, 59, 55, 50, 45, 40],
+    fretMarkers: [3, 5, 7, 9, 12, 15, 17, 19, 21, 24],
+    doubleFretMarkers: [12, 24],
+  },
+};
+
+export const DEFAULT_DIAGRAM_SETTINGS: DiagramSettings = {
+  instrument: "Guitar",
+  lowestFret: 0,
+  highestFret: 12,
+  tonic: "C",
+  labeling: "scaleInterval",
+  preferSharps: false,
+};
+
 export const DEFAULT_GRIPS: ChordGrip[] = [
   {
     name: "C",
@@ -85,7 +88,7 @@ export const DEFAULT_GRIPS: ChordGrip[] = [
     voicing: [0, 1, 2, 2, 0, -1],
   },
   {
-    name: "Bdim",
+    name: "B°",
     root: "B",
     voicing: [1, 0, -1, 0, 2, -1],
   },
@@ -99,13 +102,6 @@ export const DEFAULT_GRIPS: ChordGrip[] = [
 /**
  * Fretboard labeler
  */
-export interface LabelerConfig {
-  tuning: number[];
-  labelingScheme: LabelingScheme;
-  tonic: string;
-  root?: string;
-  preferSharps: boolean;
-}
 export class FretboardLabeler {
   tuning: number[];
   scheme: LabelingScheme;
@@ -119,7 +115,13 @@ export class FretboardLabeler {
     tonic,
     root,
     preferSharps,
-  }: LabelerConfig) {
+  }: {
+    tuning: number[];
+    labelingScheme: LabelingScheme;
+    tonic: string;
+    root?: string;
+    preferSharps: boolean;
+  }) {
     this.tuning = tuning;
     this.scheme = labelingScheme;
     this.root = root;

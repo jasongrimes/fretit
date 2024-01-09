@@ -132,25 +132,6 @@ export default function FretboardControls({
 
         <li></li>
 
-        {/* Chord grips  */}
-        <li className="menu-title flex-row gap-2">
-          <IconChartGridDots className="h-5 w-5" />
-          <span className={collapsed ? "hidden" : ""}>Chords</span>
-        </li>
-
-        {grips.map((grip) => {
-          return (
-            <li className="w-full" key={grip.name}>
-              <a
-                className="block w-full truncate text-clip px-0 text-center text-accent"
-                onClick={() => onSetGrip(grip.name)}
-              >
-                {grip.name}
-              </a>
-            </li>
-          );
-        })}
-
         <li className="">
           <a onClick={handleStrumClick}>
             <IconMusicBolt className="h-5 w-5" />
@@ -165,6 +146,27 @@ export default function FretboardControls({
           </a>
         </li>
 
+
+        {/* Chord grips  */}
+        <li className="menu-title flex-row gap-2">
+          <IconChartGridDots className="h-5 w-5" />
+          <span className={collapsed ? "hidden" : ""}>Chords</span>
+        </li>
+
+        {grips.map((grip) => {
+          return (
+            <li className="w-full" key={grip.name}>
+              <a
+                className={`block w-full truncate text-clip text-accent text-center px-0`}
+                onClick={() => onSetGrip(grip.name)}
+              >
+                {grip.name}
+              </a>
+            </li>
+          );
+        })}
+
+        
         <li></li>
 
         <li>
