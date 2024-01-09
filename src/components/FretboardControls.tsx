@@ -25,6 +25,7 @@ interface FretboardControlsProps {
   onMuteAllStrings: () => void;
   grips: ChordGrip[];
   onSetGrip: (grip: string) => void;
+  currentGrip: ChordGrip;
 }
 export default function FretboardControls({
   onStrum,
@@ -35,6 +36,7 @@ export default function FretboardControls({
   onMuteAllStrings,
   grips,
   onSetGrip,
+  currentGrip,
 }: FretboardControlsProps) {
   const [collapsed, setCollapsed] = useState(false);
 
@@ -157,7 +159,7 @@ export default function FretboardControls({
           return (
             <li className="w-full" key={grip.name}>
               <a
-                className={`block w-full truncate text-clip text-accent text-center px-0`}
+                className={`block w-full truncate text-clip text-accent text-center px-0 ${currentGrip.name === grip.name ? "active" : ""}`}
                 onClick={() => onSetGrip(grip.name)}
               >
                 {grip.name}

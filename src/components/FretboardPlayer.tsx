@@ -126,6 +126,7 @@ export default function FretboardPlayer() {
           onMuteAllStrings={handleMuteAllStrings}
           grips={DEFAULT_GRIPS}
           onSetGrip={handleSetGrip}
+          currentGrip={currentGrip}
         />
       </div>
       <FretboardSettingsForm />
