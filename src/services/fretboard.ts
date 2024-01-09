@@ -99,8 +99,8 @@ export const GRIPS_OPEN: ChordGrip[] = [
     voicing: [1, 0, 0, 0, 2, 3],
   },
 ];
-// A-shape I chord (third position)
-export const DEFAULT_GRIPS: ChordGrip[] = [
+// A-shape I chord (III position)
+export const GRIPS_III: ChordGrip[] = [
   {
     name: "C",
     root: "C",
@@ -143,6 +143,93 @@ export const DEFAULT_GRIPS: ChordGrip[] = [
   },
 ];
 
+// G-shape I chord (V position)
+export const GRIPS_V: ChordGrip[] = [
+  {
+    name: "C",
+    root: "C",
+    voicing: [8, 5, 5, 5, 7, 8],
+  },
+  {
+    name: "Dm",
+    root: "D",
+    voicing: [5, 6, 7, 7, 5, -1],
+  },
+  {
+    name: "Em",
+    root: "E",
+    voicing: [-1, 5, 4, 5, 7, -1],
+  },
+  {
+    name: "F",
+    root: "F",
+    voicing: [5, 6, 5, 7, 8, -1],
+  },
+  {
+    name: "G",
+    root: "G",
+    voicing: [7, 8, 7, 5, -1, -1],
+  },
+  {
+    name: "Am",
+    root: "A",
+    voicing: [5, 5, 5, 7, 7, 5],
+  },
+  {
+    name: "B°",
+    root: "B",
+    voicing: [7, 6, 7, -1, -1, 7],
+  },
+  {
+    name: "G7",
+    root: "G",
+    voicing: [7, 6, 7, 5, -1, -1],
+  },
+];
+
+// E-shape I chord (VIII position)
+export const DEFAULT_GRIPS: ChordGrip[] = [
+  {
+    name: "C",
+    root: "C",
+    voicing: [8, 8, 9, 10, 10, 8],
+  },
+  {
+    name: "Dm",
+    root: "D",
+    voicing: [10, 10, 10, -1, -1, 10],
+  },
+  {
+    name: "Em",
+    root: "E",
+    voicing: [7, 8, 9, 9, 7, -1],
+  },
+  {
+    name: "F",
+    root: "F",
+    voicing: [8, 10, 10, 10, 8, -1],
+  },
+  {
+    name: "G",
+    root: "G",
+    voicing: [7, 8, 7, 9, 10, -1],
+  },
+  {
+    name: "Am",
+    root: "A",
+    voicing: [8, 10, 9, 7, -1, -1],
+  },
+  {
+    name: "B°",
+    root: "B",
+    voicing: [-1, -1, 10, 9, 8, 10],
+  },
+  {
+    name: "G7",
+    root: "G",
+    voicing: [-1, 8, 10, 9, 10, -1],
+  },
+];
 
 /**
  * Fretboard labeler

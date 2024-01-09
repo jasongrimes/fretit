@@ -89,6 +89,7 @@ export default function FretboardPlayer() {
 
   function handleStrum() {
     strum(currentGrip.voicing);
+    console.log(currentGrip.voicing);
   }
 
   function handlePluck(stringNum: number, fretNum: number) {
