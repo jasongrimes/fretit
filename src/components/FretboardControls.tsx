@@ -28,7 +28,7 @@ interface FretboardControlsProps {
 }
 export default function FretboardControls({
   onStrum,
-  soundEnabled = false,
+  soundEnabled,
   onSetSoundEnabled,
   labeler,
   onSetLabelingScheme,
