@@ -12,17 +12,15 @@ import {
 import { useState } from "react";
 import {
   ChordGrip,
-  LabelerSettings,
+  FretboardLabeler,
   LabelingScheme,
 } from "../services/fretboard";
-// import { testSound, testSoundSimple } from "../util/testSound";
-// import makePlayer, { SoundPlayer } from "../util/sound";
 
 interface FretboardControlsProps {
   onStrum: () => void;
   soundEnabled: boolean;
   onSetSoundEnabled: (enabled: boolean) => void;
-  labelerSettings: LabelerSettings;
+  labeler: FretboardLabeler;
   onSetLabelingScheme: (scheme: LabelingScheme) => void;
   onMuteAllStrings: () => void;
   grips: ChordGrip[];
@@ -32,7 +30,7 @@ export default function FretboardControls({
   onStrum,
   soundEnabled = false,
   onSetSoundEnabled,
-  labelerSettings,
+  labeler,
   onSetLabelingScheme,
   onMuteAllStrings,
   grips,
@@ -78,16 +76,14 @@ export default function FretboardControls({
         <li>
           <details className="dropdown dropdown-end">
             <summary className={collapsed ? "gap-0 after:w-0" : ""}>
-              {labelerIcons[labelerSettings.scheme]}
+              {labelerIcons[labeler.scheme]}
               <span className={collapsed ? "hidden" : ""}>Labels</span>
             </summary>
             <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-100 p-2 shadow">
               <li className="menu-title">Note labels</li>
               <li>
                 <a
-                  className={
-                    labelerSettings.scheme === "pitchClass" ? "active" : ""
-                  }
+                  className={labeler.scheme === "pitchClass" ? "active" : ""}
                   onClick={() => onSetLabelingScheme("pitchClass")}
                 >
                   {labelerIcons.pitchClass}
@@ -96,7 +92,7 @@ export default function FretboardControls({
               </li>
               <li>
                 <a
-                  className={labelerSettings.scheme === "pitch" ? "active" : ""}
+                  className={labeler.scheme === "pitch" ? "active" : ""}
                   onClick={() => onSetLabelingScheme("pitch")}
                 >
                   {labelerIcons.pitch}
@@ -105,9 +101,7 @@ export default function FretboardControls({
               </li>
               <li>
                 <a
-                  className={
-                    labelerSettings.scheme === "chordInterval" ? "active" : ""
-                  }
+                  className={labeler.scheme === "chordInterval" ? "active" : ""}
                   onClick={() => onSetLabelingScheme("chordInterval")}
                 >
                   {labelerIcons.chordInterval}
@@ -116,9 +110,7 @@ export default function FretboardControls({
               </li>
               <li>
                 <a
-                  className={
-                    labelerSettings.scheme === "scaleInterval" ? "active" : ""
-                  }
+                  className={labeler.scheme === "scaleInterval" ? "active" : ""}
                   onClick={() => onSetLabelingScheme("scaleInterval")}
                 >
                   {labelerIcons.scaleInterval}
@@ -127,7 +119,7 @@ export default function FretboardControls({
               </li>
               <li>
                 <a
-                  className={labelerSettings.scheme === "none" ? "active" : ""}
+                  className={labeler.scheme === "none" ? "active" : ""}
                   onClick={() => onSetLabelingScheme("none")}
                 >
                   {labelerIcons.none}
@@ -142,8 +134,8 @@ export default function FretboardControls({
 
         {/* Chord grips  */}
         <li className="menu-title flex-row gap-2">
-            <IconChartGridDots className="h-5 w-5" />
-            <span className={collapsed ? "hidden" : ""}>Chords</span>
+          <IconChartGridDots className="h-5 w-5" />
+          <span className={collapsed ? "hidden" : ""}>Chords</span>
         </li>
 
         {grips.map((grip) => {

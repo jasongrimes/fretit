@@ -1,18 +1,19 @@
 import { PointerEvent } from "react";
 import {
   ChordGrip,
+  DiagramSettings,
   FretboardLabeler,
-  FretboardSettings,
-  LabelerSettings,
+  Instrument,
 } from "../services/fretboard";
 import "./Fretboard.css";
 
 //
-// Fretboard component
+// <Fretboard> component
 //
 interface FretboardProps {
-  settings: FretboardSettings;
-  labelerSettings: LabelerSettings;
+  settings: DiagramSettings;
+  instrument: Instrument;
+  labeler: FretboardLabeler;
   grip: ChordGrip;
   onSetVoicing: (voicing: number[]) => void;
   handlePluck: (stringNum: number, fretNum: number) => void;
@@ -20,15 +21,14 @@ interface FretboardProps {
 }
 export default function Fretboard({
   settings,
-  labelerSettings,
+  instrument,
+  labeler,
   grip,
-  onSetVoicing, // TODO: rename to setVoicing
+  onSetVoicing, // TODO: rename to setVoicing?
   handlePluck,
   stringNodes,
 }: FretboardProps) {
-  const numStrings = settings.tuning.length;
-
-  const labeler = new FretboardLabeler(settings.tuning, labelerSettings);
+  const numStrings = instrument.tuning.length;
 
   function handleStopString(stringNum: number, fretNum: number) {
     const newVoicing = grip.voicing.slice();
@@ -52,6 +52,7 @@ export default function Fretboard({
       <String
         key={stringNum}
         settings={settings}
+        instrument={instrument}
         stringNum={stringNum}
         stoppedFret={stoppedFret}
         handleStopFret={(fretNum: number) => {
@@ -79,7 +80,8 @@ export default function Fretboard({
 // <String> component
 //
 interface StringProps {
-  settings: FretboardSettings;
+  settings: DiagramSettings;
+  instrument: Instrument;
   stringNum: number;
   stoppedFret: number;
   handleStopFret: (fretNum: number) => void;
@@ -89,6 +91,7 @@ interface StringProps {
 }
 function String({
   settings,
+  instrument,
   stringNum,
   stoppedFret,
   handleStopFret,
@@ -136,20 +139,22 @@ function String({
   ) {
     // Add <FretMarker> on first string
     let fretMarker;
-    if (stringNum === 1 && settings.fretMarkers?.includes(fretNum)) {
+    if (stringNum === 1 && instrument.fretMarkers?.includes(fretNum)) {
       fretMarker = (
         <FretMarker
-          double={!!settings.doubleFretMarkers?.includes(fretNum)}
+          double={!!instrument.doubleFretMarkers?.includes(fretNum)}
           fretNum={fretNum}
         />
       );
     }
 
     // Add <FretNoteDot>
-    const label = labeler.getLocationLabel([stringNum, fretNum]);
     let fretNoteDot;
     if (stoppedFret === fretNum) {
-      fretNoteDot = <FretNoteDot label={label} />;
+      const label = labeler.getLocationLabel([stringNum, fretNum]);
+      const style = labeler.getLocationStyle([stringNum, fretNum]);
+      console.log(style);
+      fretNoteDot = <FretNoteDot label={label} style={style} />;
     }
 
     // Add <FretNote>
@@ -244,9 +249,21 @@ function FretNote({ children, onClick }: FretNoteProps) {
 //
 // <FretNoteDot>
 //
-function FretNoteDot({ label = "" }: { label?: string }) {
+function FretNoteDot({
+  label = "",
+  style,
+}: {
+  label?: string;
+  style?: string;
+}) {
+  const extraClasses =
+    style === "root"
+      ? "bg-primary text-primary-content"
+      : "bg-accent text-accent-content";
   return (
-    <div className="fret-note-dot opacity-1 absolute bottom-0 z-10 flex size-8 items-center justify-center rounded-full bg-accent text-accent-content">
+    <div
+      className={`fret-note-dot opacity-1 absolute bottom-0 z-10 flex size-8 items-center justify-center rounded-full ${extraClasses}`}
+    >
       {label}
     </div>
   );

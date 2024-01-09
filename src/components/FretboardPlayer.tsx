@@ -1,9 +1,12 @@
 import { useRef, useState } from "react";
 import useSound from "../hooks/use-sound.hook";
 import {
+  ChordGrip,
+  DEFAULT_DIAGRAM_SETTINGS,
   DEFAULT_GRIPS,
-  DEFAULT_FRETBOARD_SETTINGS,
-  DEFAULT_LABELER_SETTINGS,
+  DiagramSettings,
+  FretboardLabeler,
+  INSTRUMENTS,
   LabelingScheme,
 } from "../services/fretboard";
 import Fretboard from "./Fretboard";
@@ -13,27 +16,35 @@ import FretboardSettingsForm from "./FretboardSettingsForm";
 const animationEnabled = true;
 
 export default function FretboardPlayer() {
-  const [fretboardSettings /*, setFretboardSettings*/] = useState(
-    DEFAULT_FRETBOARD_SETTINGS,
-  );
-  const [labelerSettings, setLabelerSettings] = useState(
-    DEFAULT_LABELER_SETTINGS,
-  );
+  const [settings, setSettings] = useState<DiagramSettings>(DEFAULT_DIAGRAM_SETTINGS);
+  const instrument = INSTRUMENTS[settings.instrument];
   const grips = DEFAULT_GRIPS;
-  // const [diagram, setDiagram] = useState(DEFAULT_DIAGRAM);
-  const emptyGrip = { name: "", voicing: fretboardSettings.tuning.map(() => -1) };
-  const [grip, setGrip] = useState(grips[0] ?? emptyGrip);
+  const emptyGrip: ChordGrip = {
+    name: "",
+    voicing: instrument.tuning.map(() => -1),
+  };
+  const [currentGrip, setCurrentGrip] = useState(grips[0] ?? emptyGrip);
+  
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const stringsRef = useRef<Map<number, HTMLElement> | null>(null);
 
+  const labeler = new FretboardLabeler({
+    tuning: instrument.tuning,
+    labelingScheme: settings.labeling,
+    tonic: settings.tonic,
+    root: currentGrip.root,
+    preferSharps: settings.preferSharps,
+  });
+
+  //
+  // Support string animation when playing
+  //
+  const stringsRef = useRef<Map<number, HTMLElement> | null>(null);
   function getStringNodes() {
     if (!stringsRef.current) {
       stringsRef.current = new Map<number, HTMLElement>();
     }
     return stringsRef.current;
   }
-
-  // Animation when playing a string.
   function onPlayString(stringNum: number) {
     if (animationEnabled) {
       const node = getStringNodes().get(stringNum);
@@ -45,29 +56,35 @@ export default function FretboardPlayer() {
     }
   }
 
+  //
+  // Sound player
+  //
   const { play, strum, muteAll } = useSound({
-    tuning: fretboardSettings.tuning,
+    tuning: instrument.tuning,
     muted: !soundEnabled,
     onPlayString,
   });
 
+  //
+  // Event handlers
+  //
   function setVoicing(voicing: number[]) {
-    setGrip({ ...emptyGrip, voicing });
+    setCurrentGrip({ ...emptyGrip, voicing });
   }
 
   function handleSetGrip(gripName: string) {
     const grip = grips.find((grip) => grip.name === gripName) ?? emptyGrip;
-    setGrip(grip);
+    setCurrentGrip({ ...grip });
     strum(grip.voicing);
   }
 
   function handleMuteAllStrings() {
-    setGrip({ ...grip, voicing: fretboardSettings.tuning.map(() => -1) });
+    setCurrentGrip({ ...currentGrip, voicing: emptyGrip.voicing });
     muteAll();
   }
 
   function handleStrum() {
-    strum(grip.voicing);
+    strum(currentGrip.voicing);
   }
 
   function handlePluck(stringNum: number, fretNum: number) {
@@ -79,16 +96,17 @@ export default function FretboardPlayer() {
   }
 
   function handleSetLabelingScheme(scheme: LabelingScheme) {
-    setLabelerSettings({ ...labelerSettings, scheme });
+    setSettings({ ...settings, labeling: scheme });
   }
 
   return (
     <div className="fretboard-player mx-auto flex max-w-lg  overflow-x-hidden">
       <div className="flex-grow">
         <Fretboard
-          settings={fretboardSettings}
-          labelerSettings={labelerSettings}
-          grip={grip}
+          settings={settings}
+          instrument={instrument}
+          labeler={labeler}
+          grip={currentGrip}
           onSetVoicing={setVoicing}
           handlePluck={handlePluck}
           stringNodes={getStringNodes()}
@@ -99,7 +117,7 @@ export default function FretboardPlayer() {
           onStrum={() => handleStrum()}
           soundEnabled={soundEnabled}
           onSetSoundEnabled={handleSetSoundEnabled}
-          labelerSettings={labelerSettings}
+          labeler={labeler}
           onSetLabelingScheme={handleSetLabelingScheme}
           onMuteAllStrings={handleMuteAllStrings}
           grips={DEFAULT_GRIPS}
