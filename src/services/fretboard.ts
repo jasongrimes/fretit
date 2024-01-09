@@ -56,7 +56,8 @@ export const DEFAULT_DIAGRAM_SETTINGS: DiagramSettings = {
   preferSharps: false,
 };
 
-export const DEFAULT_GRIPS: ChordGrip[] = [
+// C-shape I chord (open position)
+export const GRIPS_OPEN: ChordGrip[] = [
   {
     name: "C",
     root: "C",
@@ -98,6 +99,50 @@ export const DEFAULT_GRIPS: ChordGrip[] = [
     voicing: [1, 0, 0, 0, 2, 3],
   },
 ];
+// A-shape I chord (third position)
+export const DEFAULT_GRIPS: ChordGrip[] = [
+  {
+    name: "C",
+    root: "C",
+    voicing: [3, 5, 5, 5, 3, -1],
+  },
+  {
+    name: "Dm",
+    root: "D",
+    voicing: [-1, 3, 2, 3, 5, -1],
+  },
+  {
+    name: "Em",
+    root: "E",
+    voicing: [3, 5, 4, 2, -1, -1],
+  },
+  {
+    name: "F",
+    root: "F",
+    voicing: [5, 6, 5, 3, -1, -1],
+  },
+  {
+    name: "G",
+    root: "G",
+    voicing: [3, 3, 4, 5, 5, 3],
+  },
+  {
+    name: "Am",
+    root: "A",
+    voicing: [5, 5, 5, -1, -1, 5],
+  },
+  {
+    name: "B°",
+    root: "B",
+    voicing: [-1, 3, 4, 3, 2, -1],
+  },
+  {
+    name: "G7",
+    root: "G",
+    voicing: [-1, 3, 4, 3, -1, 3],
+  },
+];
+
 
 /**
  * Fretboard labeler
