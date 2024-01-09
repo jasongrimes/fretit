@@ -43,6 +43,10 @@ export default class SoundPlayer {
     this.stringMuters[stringNum - 1] = undefined;
   }
 
+  muteAll() {
+    this.player.stop();
+  }
+
   cleanup() {
     //void this.audioContext.close();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access

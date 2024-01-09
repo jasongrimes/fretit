@@ -47,5 +47,9 @@ export default function useSound({
     }
   };
 
-  return { play, strum, loading: playerRef.current === null };
+  const muteAll = () => {
+    playerRef.current?.muteAll();
+  };
+
+  return { play, strum, muteAll, loading: playerRef.current === null };
 }
