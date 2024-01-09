@@ -153,7 +153,6 @@ function String({
     if (stoppedFret === fretNum) {
       const label = labeler.getLocationLabel([stringNum, fretNum]);
       const style = labeler.getLocationStyle([stringNum, fretNum]);
-      console.log(style);
       fretNoteDot = <FretNoteDot label={label} style={style} />;
     }
 

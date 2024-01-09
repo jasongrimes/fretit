@@ -178,7 +178,6 @@ export class FretboardLabeler {
   }
 
   getLocationStyle(location: FretboardLocation) {
-    console.log(this.root, this.getLocationPitchClass(location));
     if (this.root === this.getLocationPitchClass(location)) {
       return "root";
     }
