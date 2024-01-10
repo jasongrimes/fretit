@@ -1,6 +1,7 @@
 import {
   IconArrowsMaximize,
   IconArrowsMinimize,
+  IconArrowsVertical,
   IconChartGridDots,
   IconChevronsDown,
   IconChevronsUp,
@@ -80,7 +81,10 @@ export default function PositionPlayerControls({
           </a>
         </li>
         <li>
-          <a>Open (C)</a>
+          <a>
+            <IconArrowsVertical className="h-5 w-5" />
+            Open (C)
+          </a>
         </li>
         <li>
           <a>
@@ -132,13 +136,31 @@ export default function PositionPlayerControls({
 
         {/* Labeling scheme */}
         <li>
-          <details className="dropdown dropdown-end">
+          <details className="dropdown dropdown-top dropdown-end">
             <summary className={maximized ? "gap-0 after:w-0" : ""}>
               {labelerIcons[labeler.scheme]}
               <span className={maximized ? "hidden" : ""}>Labels</span>
             </summary>
             <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-100 p-2 shadow">
               <li className="menu-title">Note labels</li>
+              <li>
+                <a
+                  className={labeler.scheme === "scaleInterval" ? "active" : ""}
+                  onClick={() => onSetLabelingScheme("scaleInterval")}
+                >
+                  {labelerIcons.scaleInterval}
+                  Scale degree
+                </a>
+              </li>
+              <li>
+                <a
+                  className={labeler.scheme === "chordInterval" ? "active" : ""}
+                  onClick={() => onSetLabelingScheme("chordInterval")}
+                >
+                  {labelerIcons.chordInterval}
+                  Chord interval
+                </a>
+              </li>
               <li>
                 <a
                   className={labeler.scheme === "pitchClass" ? "active" : ""}
@@ -157,24 +179,8 @@ export default function PositionPlayerControls({
                   Note + octave
                 </a>
               </li>
-              <li>
-                <a
-                  className={labeler.scheme === "chordInterval" ? "active" : ""}
-                  onClick={() => onSetLabelingScheme("chordInterval")}
-                >
-                  {labelerIcons.chordInterval}
-                  Chord interval
-                </a>
-              </li>
-              <li>
-                <a
-                  className={labeler.scheme === "scaleInterval" ? "active" : ""}
-                  onClick={() => onSetLabelingScheme("scaleInterval")}
-                >
-                  {labelerIcons.scaleInterval}
-                  Scale degree
-                </a>
-              </li>
+              
+              
               <li>
                 <a
                   className={labeler.scheme === "none" ? "active" : ""}
