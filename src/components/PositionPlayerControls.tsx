@@ -1,7 +1,7 @@
 import {
   IconArrowsMaximize,
   IconArrowsMinimize,
-  IconArrowsVertical,
+  IconArrowsMoveVertical,
   IconChartGridDots,
   IconChevronsDown,
   IconChevronsUp,
@@ -71,26 +71,17 @@ export default function PositionPlayerControls({
       <ul className="menu rounded-box bg-base-200 text-base-content">
         <li>
           <a>
-            <IconKey className="h-5 w-5" />C major
+            {maximized ? (
+              <div className="w-full text-center">C</div>
+            ) : (
+              <>
+                <IconKey className="h-5 w-5" />C major
+              </>
+            )}
           </a>
         </li>
 
-        <li>
-          <a>
-            <IconChevronsUp className="h-5 w-5" />
-          </a>
-        </li>
-        <li>
-          <a>
-            <IconArrowsVertical className="h-5 w-5" />
-            Open (C)
-          </a>
-        </li>
-        <li>
-          <a>
-            <IconChevronsDown className="h-5 w-5" />
-          </a>
-        </li>
+        <li></li>
 
         {/* Chord grips  */}
         {grips.map((grip) => {
@@ -110,6 +101,73 @@ export default function PositionPlayerControls({
 
         <li></li>
 
+        {/* Position */}
+        <li className="disabled">
+          <a className="justify-around">
+            <IconChevronsUp className="h-5 w-5" />
+          </a>
+        </li>
+        <li className="w-full">
+          <details className="dropdown dropdown-end dropdown-top">
+            <summary
+              className={
+                maximized
+                  ? "gap-0 after:w-0 truncate px-0 justify-center" //"block w-full gap-0 truncate text-clip px-0 text-center after:w-0"
+                  : ""
+              }
+            >
+              {maximized ? (
+                <>O (C)</>
+              ) : (
+                <>
+                  <IconArrowsMoveVertical className="h-5 w-5" />
+                  Open (C)
+                </>
+              )}
+            </summary>
+            <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-100 p-2 shadow">
+              <li className="menu-title">Position</li>
+              <li>
+                <a className="active">
+                  <b>Open</b>
+                  (C-shape I chord)
+                </a>
+              </li>
+              <li>
+                <a className="">
+                  <b>III</b>
+                  (A-shape I chord)
+                </a>
+              </li>
+              <li>
+                <a className="">
+                  <b>V</b>
+                  (G-shape I chord)
+                </a>
+              </li>
+              <li>
+                <a className="">
+                  <b>VIII</b>
+                  (E-shape I chord)
+                </a>
+              </li>
+              <li>
+                <a className="">
+                  <b>X</b>
+                  (D-shape I chord)
+                </a>
+              </li>
+            </ul>
+          </details>
+        </li>
+        <li>
+          <a className="justify-around">
+            <IconChevronsDown className="h-5 w-5" />
+          </a>
+        </li>
+
+        <li></li>
+
         <li>
           <a onClick={handleSoundClick}>
             {!soundEnabled ? (
@@ -117,7 +175,7 @@ export default function PositionPlayerControls({
             ) : (
               <IconVolume className="h-5 w-5" />
             )}
-            <span className={maximized ? "hidden" : ""}>Sound</span>
+            {!maximized && <>Sound</>}
           </a>
         </li>
 
@@ -136,7 +194,7 @@ export default function PositionPlayerControls({
 
         {/* Labeling scheme */}
         <li>
-          <details className="dropdown dropdown-top dropdown-end">
+          <details className="dropdown dropdown-end dropdown-top">
             <summary className={maximized ? "gap-0 after:w-0" : ""}>
               {labelerIcons[labeler.scheme]}
               <span className={maximized ? "hidden" : ""}>Labels</span>
@@ -179,8 +237,7 @@ export default function PositionPlayerControls({
                   Note + octave
                 </a>
               </li>
-              
-              
+
               <li>
                 <a
                   className={labeler.scheme === "none" ? "active" : ""}
@@ -197,21 +254,21 @@ export default function PositionPlayerControls({
         <li>
           <a>
             <IconChartGridDots className="h-5 w-5" />
-            Scale
+            {!maximized && <>Scale</>}
           </a>
         </li>
 
         <li>
           <a>
             <IconSettings className="h-5 w-5" />
-            Settings
+            {!maximized && <>Settings</>}
           </a>
         </li>
 
         <li>
           <a>
             <IconInfoCircle className="h-5 w-5" />
-            About
+            {!maximized && <>About</>}
           </a>
         </li>
 

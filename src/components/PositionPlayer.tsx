@@ -18,7 +18,7 @@ const animationEnabled = true;
 const DEFAULT_SETTINGS: FretboardSettings = {
   instrument: "Guitar",
   lowestFret: 0,
-  highestFret: 12,
+  highestFret: 15,
   tonic: "C",
   labeling: "scaleInterval",
   preferSharps: false,
