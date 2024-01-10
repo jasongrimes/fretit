@@ -16,7 +16,7 @@ export default function Header() {
               Fret It
             </span>
           </a>
-          <span className="text-2xl pl-2">Position player</span>
+          <span className="text-2xl pl-2">Position Player</span>
         </div>
         <div className="navbar-end"></div>
       </nav>
