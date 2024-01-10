@@ -187,32 +187,6 @@ function String({
 }
 
 //
-// <StringMuteControl>
-//
-interface StringMuteControlProps {
-  isMuted: boolean;
-  onClick: () => void;
-}
-function StringMuteControl({ isMuted, onClick }: StringMuteControlProps) {
-  return (
-    <div className="flex h-[30px] flex-shrink-0 flex-grow-0 flex-col items-center justify-center bg-gray-950">
-      {isMuted ? (
-        <span className="absolute top-[60px] z-[2] font-bold text-gray-700">
-          x
-        </span>
-      ) : (
-        <button
-          onClick={onClick}
-          className="btn btn-square btn-outline btn-primary btn-sm absolute z-10 mt-px bg-gray-950"
-        >
-          x
-        </button>
-      )}
-    </div>
-  );
-}
-
-//
 // <FretMarker>
 //
 interface FretMarkerProps {
