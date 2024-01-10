@@ -2,10 +2,10 @@ import { IconMusicHeart } from "@tabler/icons-react";
 
 export default function Header() {
   return (
-    <div className="sticky top-0 z-20 h-16 w-full bg-base-100/90 text-base-content shadow-md backdrop-blur">
+    <div className="sticky top-0 z-20 h-14 w-full bg-base-100/90 text-base-content shadow-md backdrop-blur">
       <nav className="navbar w-full">
         <div className="navbar-start"></div>
-        <div className="navbar-center">
+        <div className="navbar-center flex gap-1">
           <a
             href="/"
             aria-label="Fret It"
@@ -16,7 +16,7 @@ export default function Header() {
               Fret It
             </span>
           </a>
-          <span className="text-2xl pl-2">Position Player</span>
+          <span className="text-xl md:text-2xl">Position Player</span>
         </div>
         <div className="navbar-end"></div>
       </nav>

@@ -91,6 +91,7 @@ export default function PositionPlayer() {
     }
   }
 
+  /*
   function handleMuteAllStrings() {
     setCurrentGrip({ ...currentGrip, voicing: emptyGrip.voicing });
     muteAll();
@@ -100,6 +101,7 @@ export default function PositionPlayer() {
     strum(currentGrip.voicing);
     console.log(currentGrip.voicing);
   }
+  */
 
   function playLocation([stringNum, fretNum]: FretboardLocation) {
     play(stringNum, fretNum);
@@ -128,12 +130,10 @@ export default function PositionPlayer() {
       </div>
       <div className="flex-grow-0 pl-2 pr-1">
         <PositionPlayerControls
-          onStrum={() => handleStrum()}
           soundEnabled={soundEnabled}
           onSetSoundEnabled={handleSetSoundEnabled}
           labeler={labeler}
           onSetLabelingScheme={handleSetLabelingScheme}
-          onMuteAllStrings={handleMuteAllStrings}
           grips={GRIPS_OPEN}
           onSetGrip={handleSetGrip}
           currentGrip={currentGrip}

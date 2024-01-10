@@ -1,14 +1,15 @@
 import {
   IconArrowsMaximize,
   IconArrowsMinimize,
-  IconArrowsMoveVertical,
-  IconChartGridDots,
+  IconChevronDown,
+  IconChevronUp,
   IconChevronsDown,
   IconChevronsUp,
   IconCircleFilled,
   IconCircleLetterC,
   IconCircleLetterR,
   IconCircleNumber1,
+  IconGridDots,
   IconInfoCircle,
   IconKey,
   IconSettings,
@@ -23,38 +24,35 @@ import {
 } from "../services/fretboard";
 
 interface Props {
-  onStrum: () => void;
   soundEnabled: boolean;
   onSetSoundEnabled: (enabled: boolean) => void;
   labeler: FretboardLabeler;
   onSetLabelingScheme: (scheme: LabelingScheme) => void;
-  onMuteAllStrings: () => void;
   grips: ChordGrip[];
   onSetGrip: (grip: string) => void;
   currentGrip: ChordGrip;
 }
 export default function PositionPlayerControls({
-  onStrum,
   soundEnabled,
   onSetSoundEnabled,
   labeler,
   onSetLabelingScheme,
-  onMuteAllStrings,
   grips,
   onSetGrip,
   currentGrip,
 }: Props) {
   const [maximized, setMaximized] = useState(false);
+  const [showAccordion, setShowAccordion] = useState("chords");
 
   function handleToggleMaximized() {
     setMaximized(!maximized);
   }
+  function handleToggleAccordion() {
+    setShowAccordion(showAccordion === "chords" ? "controls" : "chords");
+  }
 
   function handleSoundClick() {
     onSetSoundEnabled(!soundEnabled);
-  }
-  function handleStrumClick() {
-    onStrum();
   }
 
   const labelerIcons = {
@@ -67,199 +65,9 @@ export default function PositionPlayerControls({
   };
 
   return (
-    <div className={` ${maximized ? "w-16" : ""}`}>
-      <ul className="menu rounded-box bg-base-200 text-base-content">
-        <li>
-          <a>
-            <IconKey className="h-5 w-5" />
-            {!maximized && <>C major</>}
-          </a>
-        </li>
 
-        <li></li>
-
-        {/* Chord grips  */}
-        {grips.map((grip) => {
-          return (
-            <li className="w-full" key={grip.name}>
-              <a
-                className={`block w-full truncate text-clip px-0 text-center text-accent ${
-                  currentGrip.name === grip.name ? "active" : ""
-                }`}
-                onClick={() => onSetGrip(grip.name)}
-              >
-                {grip.name}
-              </a>
-            </li>
-          );
-        })}
-
-        <li></li>
-
-        {/* Position */}
-        <li className="disabled">
-          <a className="justify-around">
-            <IconChevronsUp className="h-5 w-5" />
-          </a>
-        </li>
-        <li className="w-full">
-          <details className="dropdown dropdown-end dropdown-top">
-            <summary
-              className={
-                maximized
-                  ? "justify-center gap-0 truncate px-0 after:w-0" //"block w-full gap-0 truncate text-clip px-0 text-center after:w-0"
-                  : ""
-              }
-            >
-              {maximized ? (
-                <>O (C)</>
-              ) : (
-                <>
-                  <IconArrowsMoveVertical className="h-5 w-5" />
-                  Open (C)
-                </>
-              )}
-            </summary>
-            <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-100 p-2 shadow">
-              <li className="menu-title">Position</li>
-              <li>
-                <a className="active">
-                  <b>Open</b>
-                  (C-shape I chord)
-                </a>
-              </li>
-              <li>
-                <a className="">
-                  <b>III</b>
-                  (A-shape I chord)
-                </a>
-              </li>
-              <li>
-                <a className="">
-                  <b>V</b>
-                  (G-shape I chord)
-                </a>
-              </li>
-              <li>
-                <a className="">
-                  <b>VIII</b>
-                  (E-shape I chord)
-                </a>
-              </li>
-              <li>
-                <a className="">
-                  <b>X</b>
-                  (D-shape I chord)
-                </a>
-              </li>
-            </ul>
-          </details>
-        </li>
-        <li>
-          <a className="justify-around">
-            <IconChevronsDown className="h-5 w-5" />
-          </a>
-        </li>
-
-        <li></li>
-
-        <li>
-          <a onClick={handleSoundClick}>
-            {!soundEnabled ? (
-              <IconVolumeOff className="h-5 w-5" />
-            ) : (
-              <IconVolume className="h-5 w-5" />
-            )}
-            {!maximized && <>Sound</>}
-          </a>
-        </li>
-
-        <li>
-          <a onClick={handleToggleMaximized}>
-            {maximized ? (
-              <IconArrowsMinimize className="h-5 w-5" />
-            ) : (
-              <>
-                <IconArrowsMaximize className="h-5 w-5" />
-                Maximize
-              </>
-            )}
-          </a>
-        </li>
-
-        {/* Labeling scheme */}
-        <li>
-          <details className="dropdown dropdown-end dropdown-top">
-            <summary className={maximized ? "gap-0 after:w-0" : ""}>
-              {labelerIcons[labeler.scheme]}
-              <span className={maximized ? "hidden" : ""}>Labels</span>
-            </summary>
-            <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-100 p-2 shadow">
-              <li className="menu-title">Note labels</li>
-              <li>
-                <a
-                  className={labeler.scheme === "scaleInterval" ? "active" : ""}
-                  onClick={() => onSetLabelingScheme("scaleInterval")}
-                >
-                  {labelerIcons.scaleInterval}
-                  Scale degree
-                </a>
-              </li>
-              <li>
-                <a
-                  className={labeler.scheme === "chordInterval" ? "active" : ""}
-                  onClick={() => onSetLabelingScheme("chordInterval")}
-                >
-                  {labelerIcons.chordInterval}
-                  Chord interval
-                </a>
-              </li>
-              <li>
-                <a
-                  className={labeler.scheme === "pitchClass" ? "active" : ""}
-                  onClick={() => onSetLabelingScheme("pitchClass")}
-                >
-                  {labelerIcons.pitchClass}
-                  Note name
-                </a>
-              </li>
-              <li>
-                <a
-                  className={labeler.scheme === "pitch" ? "active" : ""}
-                  onClick={() => onSetLabelingScheme("pitch")}
-                >
-                  {labelerIcons.pitch}
-                  Note + octave
-                </a>
-              </li>
-
-              <li>
-                <a
-                  className={labeler.scheme === "none" ? "active" : ""}
-                  onClick={() => onSetLabelingScheme("none")}
-                >
-                  {labelerIcons.none}
-                  None
-                </a>
-              </li>
-            </ul>
-          </details>
-        </li>
-
-        <li>
-          <a>
-            <IconChartGridDots className="h-5 w-5" />
-            {!maximized && <>Scale</>}
-          </a>
-        </li>
-
-        <li>
-          <a>
-            <IconSettings className="h-5 w-5" />
-            {!maximized && <>Settings</>}
-          </a>
-        </li>
-
+    <div className={` ${maximized ? "w-16" : "w-32"} `}>
+      <ul className="menu rounded-box bg-base-300 text-base-content fixed">
         <li>
           <a>
             <IconInfoCircle className="h-5 w-5" />
@@ -267,19 +75,220 @@ export default function PositionPlayerControls({
           </a>
         </li>
 
-        {/* <li className="">
-          <a onClick={handleStrumClick}>
-            <IconMusicBolt className="h-5 w-5" />
-            <span className={maximized ? "hidden" : ""}>Strum</span>
+        <li className="menu-title cursor-pointer">
+          <a className="flex gap-1" onClick={handleToggleAccordion}>
+            {showAccordion === "chords" ? (
+              <IconChevronUp className="h-4 w-4" />
+            ) : (
+              <IconChevronDown className="h-4 w-4" />
+            )}
+            {!maximized && <>Chords</>}
           </a>
         </li>
 
-        <li className="">
-          <a onClick={onMuteAllStrings}>
-            <IconX className="h-5 w-5" />
-            <span className={maximized ? "hidden" : ""}>Mute</span>
+        {showAccordion === "chords" && (
+          <>
+            <li>
+              <a>
+                <IconKey className="h-5 w-5" />
+                {!maximized && <>C major</>}
+              </a>
+            </li>
+            {/* Chord grips  */}
+            {grips.map((grip) => {
+              return (
+                <li className="w-full" key={grip.name}>
+                  <a
+                    className={`block flex w-full truncate text-clip px-0 text-center text-accent ${
+                      currentGrip.name === grip.name ? "active" : ""
+                    }`}
+                    onClick={() => onSetGrip(grip.name)}
+                  >
+                    <span className="w-1/2 text-right text-base-content">
+                      I.{" "}
+                    </span>
+                    <span className=" w-1/2 text-left">{grip.name}</span>
+                  </a>
+                </li>
+              );
+            })}
+            {/* Position */}
+            <li className="disabled">
+              <a className="justify-around">
+                <IconChevronsUp className="h-5 w-5" />
+              </a>
+            </li>
+            <li className="w-full">
+              <details className="dropdown dropdown-end dropdown-top">
+                <summary
+                  className={
+                    maximized
+                      ? "justify-center gap-0 truncate px-0 after:w-0" //"block w-full gap-0 truncate text-clip px-0 text-center after:w-0"
+                      : ""
+                  }
+                >
+                  {maximized ? <>O (C)</> : <>Open (C)</>}
+                </summary>
+                <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-100 p-2 shadow">
+                  <li className="menu-title">Position</li>
+                  <li>
+                    <a className="active">
+                      <b>Open</b>
+                      (C-shape I chord)
+                    </a>
+                  </li>
+                  <li>
+                    <a className="">
+                      <b>III</b>
+                      (A-shape I chord)
+                    </a>
+                  </li>
+                  <li>
+                    <a className="">
+                      <b>V</b>
+                      (G-shape I chord)
+                    </a>
+                  </li>
+                  <li>
+                    <a className="">
+                      <b>VIII</b>
+                      (E-shape I chord)
+                    </a>
+                  </li>
+                  <li>
+                    <a className="">
+                      <b>X</b>
+                      (D-shape I chord)
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <a className="justify-around">
+                <IconChevronsDown className="h-5 w-5" />
+              </a>
+            </li>
+          </>
+        )}
+
+        <li className="menu-title cursor-pointer">
+          <a className="flex gap-1" onClick={handleToggleAccordion}>
+            {showAccordion === "controls" ? (
+              <IconChevronUp className="h-4 w-4" />
+            ) : (
+              <IconChevronDown className="h-4 w-4" />
+            )}
+            {!maximized && <>Controls</>}
           </a>
-        </li> */}
+        </li>
+
+        {showAccordion === "controls" && (
+          <>
+            <li>
+              <a onClick={handleSoundClick}>
+                {!soundEnabled ? (
+                  <IconVolumeOff className="h-5 w-5" />
+                ) : (
+                  <IconVolume className="h-5 w-5" />
+                )}
+                {!maximized && <>Sound</>}
+              </a>
+            </li>
+
+            <li>
+              <a onClick={handleToggleMaximized}>
+                {maximized ? (
+                  <IconArrowsMinimize className="h-5 w-5" />
+                ) : (
+                  <>
+                    <IconArrowsMaximize className="h-5 w-5" />
+                    Maximize
+                  </>
+                )}
+              </a>
+            </li>
+
+            {/* Labeling scheme */}
+            <li>
+              <details className="dropdown dropdown-end dropdown-top">
+                <summary className={maximized ? "gap-0 after:w-0" : ""}>
+                  {labelerIcons[labeler.scheme]}
+                  <span className={maximized ? "hidden" : ""}>Labels</span>
+                </summary>
+                <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-100 p-2 shadow">
+                  <li className="menu-title">Note labels</li>
+                  <li>
+                    <a
+                      className={
+                        labeler.scheme === "scaleInterval" ? "active" : ""
+                      }
+                      onClick={() => onSetLabelingScheme("scaleInterval")}
+                    >
+                      {labelerIcons.scaleInterval}
+                      Scale degree
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={
+                        labeler.scheme === "chordInterval" ? "active" : ""
+                      }
+                      onClick={() => onSetLabelingScheme("chordInterval")}
+                    >
+                      {labelerIcons.chordInterval}
+                      Chord interval
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={
+                        labeler.scheme === "pitchClass" ? "active" : ""
+                      }
+                      onClick={() => onSetLabelingScheme("pitchClass")}
+                    >
+                      {labelerIcons.pitchClass}
+                      Note name
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={labeler.scheme === "pitch" ? "active" : ""}
+                      onClick={() => onSetLabelingScheme("pitch")}
+                    >
+                      {labelerIcons.pitch}
+                      Note + octave
+                    </a>
+                  </li>
+
+                  <li>
+                    <a
+                      className={labeler.scheme === "none" ? "active" : ""}
+                      onClick={() => onSetLabelingScheme("none")}
+                    >
+                      {labelerIcons.none}
+                      None
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+
+            <li>
+              <a>
+                <IconGridDots className="h-5 w-5" />
+                {!maximized && <>Scale</>}
+              </a>
+            </li>
+
+            <li>
+              <a>
+                <IconSettings className="h-5 w-5" />
+                {!maximized && <>Settings</>}
+              </a>
+            </li>
+          </>
+        )}
       </ul>
     </div>
   );
