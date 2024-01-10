@@ -12,10 +12,11 @@ export default function Header() {
             className="flex-0 btn btn-ghost gap-2 px-2 md:gap-3"
           >
             <IconMusicHeart size="30" className="h-6 text-yellow-400 md:h-10" />
-            <span className="font-title bg-gradient-to-r from-yellow-100 to-yellow-500 text-2xl [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]  md:text-3xl">
+            <span className=" bg-gradient-to-r from-yellow-100 to-yellow-500 text-2xl [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]  md:text-3xl">
               Fret It
             </span>
           </a>
+          <span className="text-2xl pl-2">Position player</span>
         </div>
         <div className="navbar-end"></div>
       </nav>

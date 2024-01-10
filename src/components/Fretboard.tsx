@@ -1,9 +1,10 @@
 import { PointerEvent } from "react";
 import {
   ChordGrip,
-  DiagramSettings,
+  FretboardSettings,
   FretboardLabeler,
   Instrument,
+  FretboardLocation,
 } from "../services/fretboard";
 import "./Fretboard.css";
 
@@ -11,12 +12,12 @@ import "./Fretboard.css";
 // <Fretboard> component
 //
 interface FretboardProps {
-  settings: DiagramSettings;
+  settings: FretboardSettings;
   instrument: Instrument;
   labeler: FretboardLabeler;
   grip: ChordGrip;
-  onSetVoicing: (voicing: number[]) => void;
-  handlePluck: (stringNum: number, fretNum: number) => void;
+  setStringStop: (location: FretboardLocation) => void;
+  playLocation: (location: FretboardLocation) => void;
   stringNodes: Map<number, HTMLElement>;
 }
 export default function Fretboard({
@@ -24,17 +25,15 @@ export default function Fretboard({
   instrument,
   labeler,
   grip,
-  onSetVoicing, // TODO: rename to setVoicing?
-  handlePluck,
+  setStringStop,
+  playLocation,
   stringNodes,
 }: FretboardProps) {
   const numStrings = instrument.tuning.length;
 
   function handleStopString(stringNum: number, fretNum: number) {
-    const newVoicing = grip.voicing.slice();
-    newVoicing[stringNum - 1] = fretNum ?? -1;
-    onSetVoicing(newVoicing);
-    handlePluck(stringNum, fretNum);
+    setStringStop([stringNum, fretNum]);
+    playLocation([stringNum, fretNum]);
   }
 
   function handlePointerDown(event: PointerEvent<HTMLDivElement>) {
@@ -55,12 +54,12 @@ export default function Fretboard({
         instrument={instrument}
         stringNum={stringNum}
         stoppedFret={stoppedFret}
-        handleStopFret={(fretNum: number) => {
+        onStopFret={(fretNum: number) => {
           handleStopString(stringNum, fretNum);
         }}
         labeler={labeler}
         stringNodes={stringNodes}
-        handlePluckString={() => handlePluck(stringNum, stoppedFret)}
+        onPlayString={() => playLocation([stringNum, stoppedFret])}
       />
     );
   });
@@ -80,24 +79,24 @@ export default function Fretboard({
 // <String> component
 //
 interface StringProps {
-  settings: DiagramSettings;
+  settings: FretboardSettings;
   instrument: Instrument;
   stringNum: number;
   stoppedFret: number;
-  handleStopFret: (fretNum: number) => void;
+  onStopFret: (fretNum: number) => void;
   labeler: FretboardLabeler;
   stringNodes: Map<number, HTMLElement>;
-  handlePluckString: () => void;
+  onPlayString: () => void;
 }
 function String({
   settings,
   instrument,
   stringNum,
   stoppedFret,
-  handleStopFret,
+  onStopFret,
   labeler,
   stringNodes,
-  handlePluckString,
+  onPlayString,
 }: StringProps) {
   const isMuted = stoppedFret < 0;
 
@@ -115,18 +114,18 @@ function String({
       !pointerPressed &&
       (event.pressure > 0 || event.pointerType === "touch")
     ) {
-      handlePluckString();
+      onPlayString();
     }
     pointerPressed = false;
   }
 
   function handleClickFret(fretNum: number) {
-    handleStopFret(fretNum);
+    onStopFret(fretNum);
     pointerPressed = false;
   }
 
   function handleClickMute() {
-    handleStopFret(-1);
+    onStopFret(-1);
     pointerPressed = false;
   }
 

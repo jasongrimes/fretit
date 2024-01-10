@@ -1,13 +1,13 @@
 import Footer from "./components/Footer";
-import FretboardPlayer from "./components/FretboardPlayer";
 import Header from "./components/Header";
+import PositionPlayer from "./components/PositionPlayer";
 
 function App() {
   return (
     <div className="relative min-h-screen">
       <Header />
       <main className=" max-w-[100vw] pb-24">
-        <FretboardPlayer />
+        <PositionPlayer />
       </main>
       <Footer />
     </div>
