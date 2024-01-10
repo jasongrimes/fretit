@@ -1,13 +1,18 @@
 import {
+  IconArrowsMaximize,
+  IconArrowsMinimize,
   IconChartGridDots,
+  IconChevronsDown,
+  IconChevronsUp,
   IconCircleFilled,
   IconCircleLetterC,
   IconCircleLetterR,
   IconCircleNumber1,
-  IconMusicBolt,
+  IconInfoCircle,
+  IconKey,
+  IconSettings,
   IconVolume,
   IconVolumeOff,
-  IconX,
 } from "@tabler/icons-react";
 import { useState } from "react";
 import {
@@ -27,7 +32,7 @@ interface Props {
   onSetGrip: (grip: string) => void;
   currentGrip: ChordGrip;
 }
-export default function PositionPlayerControls ({
+export default function PositionPlayerControls({
   onStrum,
   soundEnabled,
   onSetSoundEnabled,
@@ -64,6 +69,44 @@ export default function PositionPlayerControls ({
     <div className={` ${maximized ? "w-16" : ""}`}>
       <ul className="menu rounded-box bg-base-200 text-base-content">
         <li>
+          <a>
+            <IconKey className="h-5 w-5" />C major
+          </a>
+        </li>
+
+        <li>
+          <a>
+            <IconChevronsUp className="h-5 w-5" />
+          </a>
+        </li>
+        <li>
+          <a>Open (C)</a>
+        </li>
+        <li>
+          <a>
+            <IconChevronsDown className="h-5 w-5" />
+          </a>
+        </li>
+
+        {/* Chord grips  */}
+        {grips.map((grip) => {
+          return (
+            <li className="w-full" key={grip.name}>
+              <a
+                className={`block w-full truncate text-clip px-0 text-center text-accent ${
+                  currentGrip.name === grip.name ? "active" : ""
+                }`}
+                onClick={() => onSetGrip(grip.name)}
+              >
+                {grip.name}
+              </a>
+            </li>
+          );
+        })}
+
+        <li></li>
+
+        <li>
           <a onClick={handleSoundClick}>
             {!soundEnabled ? (
               <IconVolumeOff className="h-5 w-5" />
@@ -71,6 +114,19 @@ export default function PositionPlayerControls ({
               <IconVolume className="h-5 w-5" />
             )}
             <span className={maximized ? "hidden" : ""}>Sound</span>
+          </a>
+        </li>
+
+        <li>
+          <a onClick={handleToggleMaximized}>
+            {maximized ? (
+              <IconArrowsMinimize className="h-5 w-5" />
+            ) : (
+              <>
+                <IconArrowsMaximize className="h-5 w-5" />
+                Maximize
+              </>
+            )}
           </a>
         </li>
 
@@ -132,9 +188,28 @@ export default function PositionPlayerControls ({
           </details>
         </li>
 
-        <li></li>
+        <li>
+          <a>
+            <IconChartGridDots className="h-5 w-5" />
+            Scale
+          </a>
+        </li>
 
-        <li className="">
+        <li>
+          <a>
+            <IconSettings className="h-5 w-5" />
+            Settings
+          </a>
+        </li>
+
+        <li>
+          <a>
+            <IconInfoCircle className="h-5 w-5" />
+            About
+          </a>
+        </li>
+
+        {/* <li className="">
           <a onClick={handleStrumClick}>
             <IconMusicBolt className="h-5 w-5" />
             <span className={maximized ? "hidden" : ""}>Strum</span>
@@ -146,45 +221,7 @@ export default function PositionPlayerControls ({
             <IconX className="h-5 w-5" />
             <span className={maximized ? "hidden" : ""}>Mute</span>
           </a>
-        </li>
-
-
-        {/* Chord grips  */}
-        <li className="menu-title flex-row gap-2">
-          <IconChartGridDots className="h-5 w-5" />
-          <span className={maximized ? "hidden" : ""}>Chords</span>
-        </li>
-
-        {grips.map((grip) => {
-          return (
-            <li className="w-full" key={grip.name}>
-              <a
-                className={`block w-full truncate text-clip text-accent text-center px-0 ${currentGrip.name === grip.name ? "active" : ""}`}
-                onClick={() => onSetGrip(grip.name)}
-              >
-                {grip.name}
-              </a>
-            </li>
-          );
-        })}
-
-        
-        <li></li>
-
-        <li>
-          <a className="text-gray-500" onClick={handleToggleMaximized}>
-            {maximized ? (
-              // prettier-ignore
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 icon-tabler-layout-sidebar-right-expand" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M15 4v16" /><path d="M10 10l-2 2l2 2" /></svg>
-            ) : (
-              <>
-                {/* prettier-ignore */}
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 icon-tabler-layout-sidebar-right-collapse" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M15 4v16" /><path d="M9 10l2 2l-2 2" /></svg>
-                Collapse
-              </>
-            )}
-          </a>
-        </li>
+        </li> */}
       </ul>
     </div>
   );
