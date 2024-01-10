@@ -10,8 +10,8 @@ import {
   LabelingScheme,
 } from "../services/fretboard";
 import Fretboard from "./Fretboard";
-import FretboardControls from "./FretboardControls";
 import FretboardSettingsForm from "./FretboardSettingsForm";
+import PositionPlayerControls from "./PositionPlayerControls";
 
 const animationEnabled = true;
 
@@ -105,7 +105,6 @@ export default function PositionPlayer() {
     play(stringNum, fretNum);
   }
 
-
   function handleSetSoundEnabled(enabled: boolean) {
     setSoundEnabled(enabled);
   }
@@ -128,7 +127,7 @@ export default function PositionPlayer() {
         />
       </div>
       <div className="flex-grow-0 pl-2 pr-1">
-        <FretboardControls
+        <PositionPlayerControls
           onStrum={() => handleStrum()}
           soundEnabled={soundEnabled}
           onSetSoundEnabled={handleSetSoundEnabled}
