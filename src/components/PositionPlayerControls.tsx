@@ -71,13 +71,8 @@ export default function PositionPlayerControls({
       <ul className="menu rounded-box bg-base-200 text-base-content">
         <li>
           <a>
-            {maximized ? (
-              <div className="w-full text-center">C</div>
-            ) : (
-              <>
-                <IconKey className="h-5 w-5" />C major
-              </>
-            )}
+            <IconKey className="h-5 w-5" />
+            {!maximized && <>C major</>}
           </a>
         </li>
 
@@ -112,7 +107,7 @@ export default function PositionPlayerControls({
             <summary
               className={
                 maximized
-                  ? "gap-0 after:w-0 truncate px-0 justify-center" //"block w-full gap-0 truncate text-clip px-0 text-center after:w-0"
+                  ? "justify-center gap-0 truncate px-0 after:w-0" //"block w-full gap-0 truncate text-clip px-0 text-center after:w-0"
                   : ""
               }
             >
