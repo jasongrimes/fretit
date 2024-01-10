@@ -181,7 +181,6 @@ function String({
       onPointerDown={handlePointerDown}
       onPointerLeave={handlePointerLeave}
     >
-      <StringMuteControl isMuted={isMuted} onClick={handleClickMute} />
       {fretNotes}
     </div>
   );
