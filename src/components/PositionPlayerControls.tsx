@@ -65,9 +65,8 @@ export default function PositionPlayerControls({
   };
 
   return (
-
     <div className={` ${maximized ? "w-16" : "w-32"} `}>
-      <ul className="menu rounded-box bg-base-300 text-base-content fixed">
+      <ul className="menu fixed z-10 rounded-box bg-base-300 text-base-content">
         <li>
           <a>
             <IconInfoCircle className="h-5 w-5" />
@@ -112,6 +111,7 @@ export default function PositionPlayerControls({
                 </li>
               );
             })}
+
             {/* Position */}
             <li className="disabled">
               <a className="justify-around">
@@ -129,7 +129,7 @@ export default function PositionPlayerControls({
                 >
                   {maximized ? <>O (C)</> : <>Open (C)</>}
                 </summary>
-                <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-100 p-2 shadow">
+                <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-200 p-2 shadow">
                   <li className="menu-title">Position</li>
                   <li>
                     <a className="active">
@@ -211,12 +211,12 @@ export default function PositionPlayerControls({
 
             {/* Labeling scheme */}
             <li>
-              <details className="dropdown dropdown-end dropdown-top">
+              <details className="dropdown dropdown-end">
                 <summary className={maximized ? "gap-0 after:w-0" : ""}>
                   {labelerIcons[labeler.scheme]}
                   <span className={maximized ? "hidden" : ""}>Labels</span>
                 </summary>
-                <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-100 p-2 shadow">
+                <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-200 p-2 shadow">
                   <li className="menu-title">Note labels</li>
                   <li>
                     <a
