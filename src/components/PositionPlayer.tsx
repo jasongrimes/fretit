@@ -17,7 +17,7 @@ const animationEnabled = true;
 const DEFAULT_SETTINGS: FretboardSettings = {
   instrument: "Guitar",
   lowestFret: 0,
-  highestFret: 15,
+  highestFret: 13,
   tonic: "C",
   labeling: "scaleInterval",
   preferSharps: false,
@@ -33,7 +33,9 @@ export default function PositionPlayer() {
 
   const [cagedPosition, setCagedPosition] = useState("C"); // TODO: Default to lowest caged position for this key
   const [chordNum, setChordNum] = useState("I");
-  const [voicing, setVoicing] = useState(chordCalculator.getChordVoicing(cagedPosition, chordNum));
+  const [voicing, setVoicing] = useState(
+    chordCalculator.getChordVoicing(cagedPosition, chordNum),
+  );
 
   //const positions = C_MAJOR_POSITIONS;
   //const positionNum = positions[cagedPosition].position;
@@ -109,6 +111,7 @@ export default function PositionPlayer() {
     const newVoicing = voicing.slice();
     newVoicing[stringNum - 1] = fretNum;
     setVoicing(newVoicing);
+    console.log(newVoicing);
     // TODO: Set an overlay to track the old chord voicing?
   }
 
