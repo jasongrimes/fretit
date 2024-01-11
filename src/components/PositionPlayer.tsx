@@ -34,7 +34,6 @@ export default function PositionPlayer() {
   const [cagedPosition, setCagedPosition] = useState("C"); // TODO: Default to lowest caged position for this key
   const [chordNum, setChordNum] = useState("I");
 
-
   //const positions = C_MAJOR_POSITIONS;
   //const positionNum = positions[cagedPosition].position;
   // const chordVoicings = positions[cagedPosition].chords;
@@ -42,7 +41,9 @@ export default function PositionPlayer() {
   const voicing = chordCalculator.getChordVoicing(cagedPosition, chordNum);
   const chordList = chordCalculator.getChordList();
   const positionList = chordCalculator.getPositionList();
-  const currentPosition = positionList.find((position) => position.caged === cagedPosition);
+  const currentPosition = positionList.find(
+    (position) => position.caged === cagedPosition,
+  );
   console.log("positionList", positionList);
   console.log("currentPosition", currentPosition);
 
@@ -97,6 +98,7 @@ export default function PositionPlayer() {
   }
   function handleSetCagedPosition(cagedPosition: string) {
     setCagedPosition(cagedPosition);
+    strum(chordCalculator.getChordVoicing(cagedPosition, chordNum));
   }
 
   function setStringStop([stringNum, fretNum]: FretboardLocation) {
