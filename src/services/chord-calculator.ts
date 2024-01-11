@@ -58,6 +58,32 @@ const cagedPositions: Record<string, CagedPosition> = {
       V7: [-1, 3, 4, 3, -1, 3],
     },
   },
+  G: {
+    positionNum: 5,
+    chords: {
+      I: [8, 5, 5, 5, 7, 8],
+      ii: [5, 6, 7, 7, 5, -1],
+      iii: [-1, 5, 4, 5, 7, -1],
+      IV: [5, 6, 5, 7, 8, -1],
+      V: [7, 8, 7, 5, -1, -1],
+      vi: [5, 5, 5, 7, 7, 5],
+      vii: [7, 6, 7, -1, -1, 7],
+      V7: [7, 6, 7, 5, -1, -1],
+    },
+  },
+  E: {
+    positionNum: 8,
+    chords: {
+      I: [8, 8, 9, 10, 10, 8],
+      ii: [10, 10, 10, -1, -1, 10],
+      iii: [7, 8, 9, 9, 7, -1],
+      IV: [8, 10, 10, 10, 8, -1],
+      V: [7, 8, 7, 9, 10, -1],
+      vi: [8, 10, 9, 7, -1, -1],
+      vii: [-1, -1, 10, 9, 8, 10],
+      V7: [-1, 8, 10, 9, 10, -1],
+    },
+  },
 };
 
 // prettier-ignore
@@ -115,7 +141,7 @@ export class ChordCalculator {
   }
 
   getChordVoicing(cagedPosition: string, chordNum: string) {
-    return cagedPositions[cagedPosition]?.chords[chordNum] as number[];
+    return cagedPositions[cagedPosition]?.chords[chordNum].slice();
   }
 
   getPositionList(): Position[] {
@@ -124,12 +150,8 @@ export class ChordCalculator {
       const num = position.positionNum;
       const roman = romanPositions[num];
       const label = roman === "O" ? "Open" : roman;
-      return {
-        caged,
-        num,
-        roman,
-        label,
-      };
+
+      return { caged, num, roman, label };
     });
   }
 }
