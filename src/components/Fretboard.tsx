@@ -1,4 +1,4 @@
-import { PointerEvent } from "react";
+import { PointerEvent, useRef } from "react";
 import {
   FretboardLabeler,
   FretboardLocation,
@@ -99,12 +99,28 @@ function String({
 }: StringProps) {
   const isMuted = stoppedFret < 0;
 
+  const timerRef = useRef<number | null>(null);
+  const handledPress = useRef(false);
+
+  function startPressTimer() {
+    handledPress.current = false;
+    timerRef.current = setTimeout(() => {
+      onStopFret(-1);
+      timerRef.current = null;
+      handledPress.current = true;
+    }, 500);
+  }
+  function clearPressTimer() {
+    timerRef.current && clearTimeout(timerRef.current);
+  }
+
   // Prevent double "plucks" when clicking on a fret.
   // Track when pointer is initially pressed down on this string,
   // so we can ignore the pointerleave event in that case.
   let pointerPressed = false;
   function handlePointerDown() {
     pointerPressed = true;
+    startPressTimer();
   }
 
   function handlePointerLeave(event: PointerEvent<HTMLDivElement>) {
@@ -116,11 +132,19 @@ function String({
       onPlayString();
     }
     pointerPressed = false;
+    clearPressTimer();
   }
 
   function handleClickFret(fretNum: number) {
-    onStopFret(fretNum);
-    pointerPressed = false;
+    if (!handledPress.current) { // Ignore if we already handled a long-press
+      onStopFret(fretNum);
+      pointerPressed = false;
+      clearPressTimer();
+    }
+  }
+
+  function handlePointerUp() {
+    clearPressTimer();
   }
 
   /*
@@ -181,6 +205,7 @@ function String({
       }}
       onPointerDown={handlePointerDown}
       onPointerLeave={handlePointerLeave}
+      onPointerUp={handlePointerUp}
     >
       {fretNotes}
     </div>
