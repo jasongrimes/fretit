@@ -15,19 +15,19 @@ interface FretboardProps {
   settings: FretboardSettings;
   instrument: Instrument;
   labeler: FretboardLabeler;
-  grip: ChordGrip;
   setStringStop: (location: FretboardLocation) => void;
   playLocation: (location: FretboardLocation) => void;
   stringNodes: Map<number, HTMLElement>;
+  voicing: number[];
 }
 export default function Fretboard({
   settings,
   instrument,
   labeler,
-  grip,
   setStringStop,
   playLocation,
   stringNodes,
+  voicing,
 }: FretboardProps) {
   const numStrings = instrument.tuning.length;
 
@@ -45,7 +45,7 @@ export default function Fretboard({
   //
   // Assemble <String>
   //
-  const strings = grip.voicing.map((stoppedFret, stringIndex) => {
+  const strings = voicing.map((stoppedFret, stringIndex) => {
     const stringNum = stringIndex + 1;
     return (
       <String

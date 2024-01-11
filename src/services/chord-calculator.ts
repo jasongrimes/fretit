@@ -1,0 +1,107 @@
+import { Key } from "tonal";
+
+// Chord voicings in each CAGED position
+// in guitar standard tuning,
+// in C major key.
+const positionChords = {
+  C: {
+    positionNum: 0, // Lowest fret
+    chords: {
+      I: [0, 1, 0, 2, 3, -1],
+      ii: [1, 3, 2, 0, -1, -1],
+      iii: [0, 0, 0, 2, 2, 0],
+      IV: [1, 1, 2, 3, 3, 1],
+      V: [3, 0, 0, 0, 2, 3],
+      vi: [0, 1, 2, 2, 0, -1],
+      vii: [1, 0, -1, 0, 2, -1],
+      V7: [1, 0, 0, 0, 2, 3],
+    },
+  },
+  A: {
+    positionNum: 3,
+    chords: {
+      I: [3, 5, 5, 5, 3, -1],
+      ii: [-1, 3, 2, 3, 5, -1],
+      iii: [3, 5, 4, 2, -1, -1],
+      IV: [5, 6, 5, 3, -1, -1],
+      V: [3, 3, 4, 5, 5, 3],
+      vi: [5, 5, 5, -1, -1, 5],
+      vii: [-1, 3, 4, 3, 2, -1],
+      V7: [-1, 3, 4, 3, -1, 3],
+    },
+  },
+};
+
+// prettier-ignore
+const romanPositions = ["O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+
+// Map chord roman numerals to zero-indexed arabic numerals.
+// prettier-ignore
+const chordNumIndex: Record<string, Record<string, number >> = {
+  major: { I: 0, ii: 1, iii: 2, IV: 3, V: 4, vi: 5, vii: 6, V7: 4 },
+  minor: { i: 0, ii: 1, bIII: 2, iv: 3, v: 4, bVI: 5, bVII: 6, V7: 4 }
+}
+
+// prettier-ignore
+const triadSuffixes: Record<string, Record<string, string>> = {
+  major: { I: "", ii: "m", iii: "m", IV: "", V: "", vi: "m", vii: "°", V7: "7" },
+  minor: { i: "m", ii: "°", bIII: "", iv: "m", v: "m", bVI: "", bVII: "", V7: "7" },
+}
+
+export class ChordCalculator {
+  readonly keyTonic: string;
+  readonly keyType: string;
+  readonly scale: string[];
+
+  constructor({
+    keyTonic,
+    keyType,
+  }: {
+    keyTonic: string;
+    keyType: "major" | "minor";
+  }) {
+    this.keyTonic = keyTonic;
+    this.keyType = keyType;
+    this.scale =
+      keyType === "major"
+        ? Key.majorKey(keyTonic).scale.slice()
+        : Key.minorKey(keyTonic).natural.scale.slice();
+  }
+
+  getChordRoot(chordNum: string) {
+    return this.scale[chordNumIndex[this.keyType][chordNum]];
+  }
+
+  getChordName(chordNum: string) {
+    return this.getChordRoot(chordNum) + triadSuffixes[this.keyType][chordNum];
+  }
+
+  getChordList() {
+    return Object.keys(chordNumIndex[this.keyType]).map((roman) => {
+      return {
+        roman,
+        root: this.getChordRoot(roman),
+        name: this.getChordName(roman),
+      }
+    });
+  }
+
+  getChordVoicing(cagedPosition: string, chordNum: string) {
+    return positionChords[cagedPosition]?.chords[chordNum] as number[];
+  }
+
+  getPositionList() {
+    // TODO: Transpose by key, so the position number is correct and the lowest position is listed first.
+    return Object.entries(positionChords).map(([caged, position]) => {
+      const num = position.positionNum;
+      const roman = romanPositions[num];
+      const label = roman === "O" ? "Open" : roman;
+      return {
+        caged,
+        num,
+        roman,
+        label, 
+      };
+    });
+  }
+}

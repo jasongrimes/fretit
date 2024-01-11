@@ -1,9 +1,8 @@
 import { useRef, useState } from "react";
-import { GRIPS_OPEN } from "../data/grips";
 import { INSTRUMENTS } from "../data/instruments";
 import useSound from "../hooks/use-sound.hook";
+import { ChordCalculator } from "../services/chord-calculator";
 import {
-  ChordGrip,
   FretboardLabeler,
   FretboardLocation,
   FretboardSettings,
@@ -27,12 +26,27 @@ const DEFAULT_SETTINGS: FretboardSettings = {
 export default function PositionPlayer() {
   const [settings, setSettings] = useState<FretboardSettings>(DEFAULT_SETTINGS);
   const instrument = INSTRUMENTS[settings.instrument];
-  const grips = GRIPS_OPEN;
-  const emptyGrip: ChordGrip = {
-    name: "",
-    voicing: instrument.tuning.map(() => -1),
-  };
-  const [currentGrip, setCurrentGrip] = useState(grips[0] ?? emptyGrip);
+
+  const keyTonic = "C";
+  const keyType = "major";
+  const chordCalculator = new ChordCalculator({ keyTonic, keyType });
+
+  const [cagedPosition, setCagedPosition] = useState("C"); // TODO: Default to lowest caged position for this key
+  const [chordNum, setChordNum] = useState("I");
+
+
+  //const positions = C_MAJOR_POSITIONS;
+  //const positionNum = positions[cagedPosition].position;
+  // const chordVoicings = positions[cagedPosition].chords;
+  //const voicing = chordVoicings[chordNum];
+  const voicing = chordCalculator.getChordVoicing(cagedPosition, chordNum);
+  const chordList = chordCalculator.getChordList();
+  const positionList = chordCalculator.getPositionList();
+  const currentPosition = positionList.find((position) => position.caged === cagedPosition);
+  console.log("positionList", positionList);
+  console.log("currentPosition", currentPosition);
+
+  // const [currentGrip, setCurrentGrip] = useState(grips[positionShape]);
 
   const [soundEnabled, setSoundEnabled] = useState(true);
 
@@ -40,7 +54,7 @@ export default function PositionPlayer() {
     tuning: instrument.tuning,
     labelingScheme: settings.labeling,
     tonic: settings.tonic,
-    root: currentGrip.root,
+    root: chordCalculator.getChordRoot(chordNum),
     preferSharps: settings.preferSharps,
   });
 
@@ -68,7 +82,7 @@ export default function PositionPlayer() {
   //
   // Sound player
   //
-  const { play, strum, muteAll } = useSound({
+  const { play, strum } = useSound({
     tuning: instrument.tuning,
     muted: !soundEnabled,
     onPlayString: playString,
@@ -77,12 +91,23 @@ export default function PositionPlayer() {
   //
   // Callbacks
   //
+  function handleSetChordNum(chordNum: string) {
+    setChordNum(chordNum);
+    strum(chordCalculator.getChordVoicing(cagedPosition, chordNum));
+  }
+  function handleSetCagedPosition(cagedPosition: string) {
+    setCagedPosition(cagedPosition);
+  }
+
   function setStringStop([stringNum, fretNum]: FretboardLocation) {
+    /*
     const voicing = currentGrip.voicing.slice();
     voicing[stringNum - 1] = fretNum;
     setCurrentGrip({ ...currentGrip, voicing });
+    */
   }
 
+  /*
   function handleSetGrip(gripName: string) {
     const grip = grips.find((grip) => grip.name === gripName);
     if (grip) {
@@ -90,6 +115,7 @@ export default function PositionPlayer() {
       strum(grip.voicing);
     }
   }
+  */
 
   /*
   function handleMuteAllStrings() {
@@ -122,7 +148,7 @@ export default function PositionPlayer() {
           settings={settings}
           instrument={instrument}
           labeler={labeler}
-          grip={currentGrip}
+          voicing={voicing}
           setStringStop={setStringStop}
           playLocation={playLocation}
           stringNodes={getStringNodes()}
@@ -134,9 +160,12 @@ export default function PositionPlayer() {
           onSetSoundEnabled={handleSetSoundEnabled}
           labeler={labeler}
           onSetLabelingScheme={handleSetLabelingScheme}
-          grips={GRIPS_OPEN}
-          onSetGrip={handleSetGrip}
-          currentGrip={currentGrip}
+          chordList={chordList}
+          selectedChordNum={chordNum}
+          onSetChordNum={handleSetChordNum}
+          positionList={positionList}
+          selectedPosition={currentPosition}
+          onSetCagedPosition={handleSetCagedPosition}
         />
       </div>
       <FretboardSettingsForm />

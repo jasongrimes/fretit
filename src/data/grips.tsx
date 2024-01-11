@@ -174,3 +174,44 @@ export const GRIPS_VIII: ChordGrip[] = [
     voicing: [-1, 8, 10, 9, 10, -1],
   },
 ];
+
+// Translate the roman numerals into the arabic number.
+// Used to look up chord roots and names from tonaljs Key.
+export const CHORD_NUM = {
+  I: 1,
+  ii: 2,
+  iii: 3,
+  IV: 4,
+  V: 5,
+  vi: 6,
+  vii: 7,
+  V7: 5,
+};
+export const C_MAJOR_POSITIONS = {
+  C: {
+    position: 0, // Lowest fret
+    chords: {
+      I: [0, 1, 0, 2, 3, -1],
+      ii: [1, 3, 2, 0, -1, -1],
+      iii: [0, 0, 0, 2, 2, 0],
+      IV: [1, 1, 2, 3, 3, 1],
+      V: [3, 0, 0, 0, 2, 3],
+      vi: [0, 1, 2, 2, 0, -1],
+      vii: [1, 0, -1, 0, 2, -1],
+      V7: [1, 0, 0, 0, 2, 3],
+    },
+  },
+  A: {
+    position: 3,
+    chords: {
+      I: [3, 5, 5, 5, 3, -1],
+      ii: [-1, 3, 2, 3, 5, -1],
+      iii: [3, 5, 4, 2, -1, -1],
+      IV: [5, 6, 5, 3, -1, -1],
+      V: [3, 3, 4, 5, 5, 3],
+      vi: [5, 5, 5, -1, -1, 5],
+      vii: [-1, 3, 4, 3, 2, -1],
+      V7: [-1, 3, 4, 3, -1, 3],
+    },
+  },
+};

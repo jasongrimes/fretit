@@ -17,29 +17,28 @@ import {
   IconVolumeOff,
 } from "@tabler/icons-react";
 import { useState } from "react";
-import {
-  ChordGrip,
-  FretboardLabeler,
-  LabelingScheme,
-} from "../services/fretboard";
+import { FretboardLabeler, LabelingScheme } from "../services/fretboard";
 
 interface Props {
   soundEnabled: boolean;
   onSetSoundEnabled: (enabled: boolean) => void;
   labeler: FretboardLabeler;
   onSetLabelingScheme: (scheme: LabelingScheme) => void;
-  grips: ChordGrip[];
-  onSetGrip: (grip: string) => void;
-  currentGrip: ChordGrip;
+  chordList: { root: string; roman: string; name: string }[];
+  selectedChordNum: string;
+  onSetChordNum: (chordNum: string) => void;
 }
 export default function PositionPlayerControls({
   soundEnabled,
   onSetSoundEnabled,
   labeler,
   onSetLabelingScheme,
-  grips,
-  onSetGrip,
-  currentGrip,
+  chordList,
+  selectedChordNum,
+  onSetChordNum,
+  positionList,
+  selectedPosition,
+  onSetCagedPosition,
 }: Props) {
   const [maximized, setMaximized] = useState(false);
   const [showAccordion, setShowAccordion] = useState("chords");
@@ -93,20 +92,20 @@ export default function PositionPlayerControls({
                 {!maximized && <>C major</>}
               </a>
             </li>
-            {/* Chord grips  */}
-            {grips.map((grip) => {
+            {/* Chords */}
+            {chordList.map((chord) => {
               return (
-                <li className="w-full" key={grip.name}>
+                <li className="w-full" key={chord.name}>
                   <a
                     className={`block flex w-full truncate text-clip px-0 text-center text-accent ${
-                      currentGrip.name === grip.name ? "active" : ""
+                      selectedChordNum === chord.roman ? "active" : ""
                     }`}
-                    onClick={() => onSetGrip(grip.name)}
+                    onClick={() => onSetChordNum(chord.roman)}
                   >
                     <span className="w-1/2 text-right text-base-content">
-                      I.{" "}
+                      {chord.roman}:
                     </span>
-                    <span className=" w-1/2 text-left">{grip.name}</span>
+                    <span className=" w-1/2 text-left">{chord.name}</span>
                   </a>
                 </li>
               );
@@ -124,43 +123,37 @@ export default function PositionPlayerControls({
                   className={
                     maximized
                       ? "justify-center gap-0 truncate px-0 after:w-0" //"block w-full gap-0 truncate text-clip px-0 text-center after:w-0"
-                      : ""
+                      : "justify-center"
                   }
                 >
-                  {maximized ? <>O (C)</> : <>Open (C)</>}
+                  {maximized ? (
+                    <>
+                      {selectedPosition.roman} ({selectedPosition.caged})
+                    </>
+                  ) : (
+                    <>
+                      {selectedPosition.label} ({selectedPosition.caged})
+                    </>
+                  )}
                 </summary>
                 <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-200 p-2 shadow">
                   <li className="menu-title">Position</li>
-                  <li>
-                    <a className="active">
-                      <b>Open</b>
-                      (C-shape I chord)
-                    </a>
-                  </li>
-                  <li>
-                    <a className="">
-                      <b>III</b>
-                      (A-shape I chord)
-                    </a>
-                  </li>
-                  <li>
-                    <a className="">
-                      <b>V</b>
-                      (G-shape I chord)
-                    </a>
-                  </li>
-                  <li>
-                    <a className="">
-                      <b>VIII</b>
-                      (E-shape I chord)
-                    </a>
-                  </li>
-                  <li>
-                    <a className="">
-                      <b>X</b>
-                      (D-shape I chord)
-                    </a>
-                  </li>
+                  {positionList.map((position) => {
+                    return (
+                      <li key={position.caged}>
+                        <a onClick={() => onSetCagedPosition(position.caged)}
+                          className={
+                            position.caged === selectedPosition.caged
+                              ? "active"
+                              : ""
+                          }
+                        >
+                          <b>{position.label}</b>({position.caged}-shape I)
+                        </a>
+                      </li>
+                    );
+                  })}
+
                 </ul>
               </details>
             </li>
