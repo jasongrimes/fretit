@@ -60,11 +60,24 @@ export default function PositionPlayerControls({
     onSetSoundEnabled(!soundEnabled);
   }
 
+  function handleSetPosition(position: Position) {
+    onSetCagedPosition(position.caged);
+    scrollToPositionNum(position.num);
+  }
+
   function setPositionIndex(i: number) {
     if (i < 0 || i > positionList.length - 1) {
       return;
     }
-    onSetCagedPosition(positionList[i].caged);
+    handleSetPosition(positionList[i]);
+  }
+
+  function scrollToPositionNum(num: number) {
+    if (num <= 2) {
+      window.scrollTo({top: 0, behavior: "smooth"});
+    } else {
+      document.querySelector(`.fret-note:nth-child(${num - 1})`)?.scrollIntoView({behavior: "smooth"});
+    }
   }
 
   const labelerIcons = {
@@ -134,7 +147,7 @@ export default function PositionPlayerControls({
                     return (
                       <li key={position.caged}>
                         <a
-                          onClick={() => onSetCagedPosition(position.caged)}
+                          onClick={() => handleSetPosition(position)}
                           className={
                             position.caged === selectedPosition.caged
                               ? "active"
