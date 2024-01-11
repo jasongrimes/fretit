@@ -1,5 +1,7 @@
 # Soon
 
+- [ ] Long-press to mute
+
 - [ ] Add remaining position voicings
 
 - [ ] Auto-scroll to selected position
