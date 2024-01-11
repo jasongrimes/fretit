@@ -95,46 +95,22 @@ export default function PositionPlayerControls({
 
         {showAccordion === "chords" && (
           <>
+            
+            {/* Key */}
             <li>
               <a>
                 <IconKey className="h-5 w-5" />
                 {!maximized && <>C major</>}
               </a>
             </li>
-            {/* Chords */}
-            {chordList.map((chord) => {
-              return (
-                <li className="w-full" key={chord.name}>
-                  <a
-                    className={`block flex w-full truncate text-clip px-0 text-center text-accent ${
-                      selectedChordNum === chord.roman ? "active" : ""
-                    }`}
-                    onClick={() => onSetChordNum(chord.roman)}
-                  >
-                    <span className="w-1/2 text-right text-base-content">
-                      {chord.roman}:
-                    </span>
-                    <span className=" w-1/2 text-left">{chord.name}</span>
-                  </a>
-                </li>
-              );
-            })}
 
-            {/* Position */}
-            <li className={selectedPositionIdx === 0 ? "disabled" : ""}>
-              <a
-                className="justify-around"
-                onClick={() => setPositionIndex(selectedPositionIdx - 1)}
-              >
-                <IconChevronsUp className="h-5 w-5" />
-              </a>
-            </li>
+            {/* Position selector */}
             <li className="w-full">
-              <details className="dropdown dropdown-end dropdown-top">
+              <details className="dropdown dropdown-end">
                 <summary
                   className={
                     maximized
-                      ? "justify-center gap-0 truncate px-0 after:w-0" //"block w-full gap-0 truncate text-clip px-0 text-center after:w-0"
+                      ? "justify-center gap-0 truncate px-0 after:w-0"
                       : "justify-center"
                   }
                 >
@@ -169,12 +145,45 @@ export default function PositionPlayerControls({
                 </ul>
               </details>
             </li>
+
+            {/* Chords */}
+            {chordList.map((chord) => {
+              return (
+                <li className="w-full" key={chord.name}>
+                  <a
+                    className={`block flex w-full truncate text-clip px-0 text-center text-accent ${
+                      selectedChordNum === chord.roman ? "active" : ""
+                    }`}
+                    onClick={() => onSetChordNum(chord.roman)}
+                  >
+                    <span className="w-1/2 text-right text-base-content">
+                      {chord.roman}:
+                    </span>
+                    <span className=" w-1/2 text-left">{chord.name}</span>
+                  </a>
+                </li>
+              );
+            })}
+
+            {/* Position */}
+            <li className={selectedPositionIdx === 0 ? "disabled" : ""}>
+              <a
+                className="justify-around"
+                onClick={() => setPositionIndex(selectedPositionIdx - 1)}
+              >
+                <IconChevronsUp className="h-5 w-5" />
+              </a>
+            </li>
+
             <li
               className={
                 selectedPositionIdx >= positionList.length - 1 ? "disabled" : ""
               }
             >
-              <a className="justify-around" onClick={() => setPositionIndex(selectedPositionIdx + 1)}>
+              <a
+                className="justify-around"
+                onClick={() => setPositionIndex(selectedPositionIdx + 1)}
+              >
                 <IconChevronsDown className="h-5 w-5" />
               </a>
             </li>
