@@ -1,9 +1,5 @@
 # Soon
 
-- [ ] Reorganize controls
-  - Move position selector immediately below key selector (Keep next/prev at bottom)
-  - Move settings to the top of the controls section
-  - Move maximize to the bottom
 - [ ] Clean up chord calculator and components
   - Add types
 - [ ] Add remaining position voicings
@@ -14,6 +10,7 @@
 # Next
 
 - [ ] Overlays for scale
+  - Support different labeling schemes: scale degree, note name
 - [ ] Support changing keys
 - [ ] Support changing instrument/tuning
 

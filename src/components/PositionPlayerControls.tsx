@@ -93,9 +93,9 @@ export default function PositionPlayerControls({
           </a>
         </li>
 
+        {/* Chords accordion section */}
         {showAccordion === "chords" && (
           <>
-            
             {/* Key */}
             <li>
               <a>
@@ -201,8 +201,18 @@ export default function PositionPlayerControls({
           </a>
         </li>
 
+        {/* Controls accordion section */}
         {showAccordion === "controls" && (
           <>
+            {/* Settings */}
+            <li>
+              <a>
+                <IconSettings className="h-5 w-5" />
+                {!maximized && <>Settings</>}
+              </a>
+            </li>
+
+            {/* Sound toggle */}
             <li>
               <a onClick={handleSoundClick}>
                 {!soundEnabled ? (
@@ -211,19 +221,6 @@ export default function PositionPlayerControls({
                   <IconVolume className="h-5 w-5" />
                 )}
                 {!maximized && <>Sound</>}
-              </a>
-            </li>
-
-            <li>
-              <a onClick={handleToggleMaximized}>
-                {maximized ? (
-                  <IconArrowsMinimize className="h-5 w-5" />
-                ) : (
-                  <>
-                    <IconArrowsMaximize className="h-5 w-5" />
-                    Maximize
-                  </>
-                )}
               </a>
             </li>
 
@@ -292,6 +289,7 @@ export default function PositionPlayerControls({
               </details>
             </li>
 
+            {/* Scale */}
             <li>
               <a>
                 <IconGridDots className="h-5 w-5" />
@@ -299,10 +297,17 @@ export default function PositionPlayerControls({
               </a>
             </li>
 
+            {/* Maximize */}
             <li>
-              <a>
-                <IconSettings className="h-5 w-5" />
-                {!maximized && <>Settings</>}
+              <a onClick={handleToggleMaximized}>
+                {maximized ? (
+                  <IconArrowsMinimize className="h-5 w-5" />
+                ) : (
+                  <>
+                    <IconArrowsMaximize className="h-5 w-5" />
+                    Maximize
+                  </>
+                )}
               </a>
             </li>
           </>
