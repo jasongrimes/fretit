@@ -37,11 +37,13 @@ export default function PositionPlayerControls({
   selectedChordNum,
   onSetChordNum,
   positionList,
-  selectedPosition,
+  selectedPositionIdx,
   onSetCagedPosition,
 }: Props) {
   const [maximized, setMaximized] = useState(false);
   const [showAccordion, setShowAccordion] = useState("chords");
+
+  const selectedPosition = positionList[selectedPositionIdx];
 
   function handleToggleMaximized() {
     setMaximized(!maximized);
@@ -52,6 +54,13 @@ export default function PositionPlayerControls({
 
   function handleSoundClick() {
     onSetSoundEnabled(!soundEnabled);
+  }
+
+  function setPositionIndex(i: number) {
+    if (i < 0 || i > positionList.length - 1) {
+      return;
+    }
+    onSetCagedPosition(positionList[i].caged);
   }
 
   const labelerIcons = {
@@ -112,8 +121,11 @@ export default function PositionPlayerControls({
             })}
 
             {/* Position */}
-            <li className="disabled">
-              <a className="justify-around">
+            <li className={selectedPositionIdx === 0 ? "disabled" : ""}>
+              <a
+                className="justify-around"
+                onClick={() => setPositionIndex(selectedPositionIdx - 1)}
+              >
                 <IconChevronsUp className="h-5 w-5" />
               </a>
             </li>
@@ -141,7 +153,8 @@ export default function PositionPlayerControls({
                   {positionList.map((position) => {
                     return (
                       <li key={position.caged}>
-                        <a onClick={() => onSetCagedPosition(position.caged)}
+                        <a
+                          onClick={() => onSetCagedPosition(position.caged)}
                           className={
                             position.caged === selectedPosition.caged
                               ? "active"
@@ -153,12 +166,15 @@ export default function PositionPlayerControls({
                       </li>
                     );
                   })}
-
                 </ul>
               </details>
             </li>
-            <li>
-              <a className="justify-around">
+            <li
+              className={
+                selectedPositionIdx >= positionList.length - 1 ? "disabled" : ""
+              }
+            >
+              <a className="justify-around" onClick={() => setPositionIndex(selectedPositionIdx + 1)}>
                 <IconChevronsDown className="h-5 w-5" />
               </a>
             </li>

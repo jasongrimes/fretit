@@ -41,11 +41,11 @@ export default function PositionPlayer() {
   const voicing = chordCalculator.getChordVoicing(cagedPosition, chordNum);
   const chordList = chordCalculator.getChordList();
   const positionList = chordCalculator.getPositionList();
-  const currentPosition = positionList.find(
+  const currentPositionIdx = positionList.findIndex(
     (position) => position.caged === cagedPosition,
   );
   console.log("positionList", positionList);
-  console.log("currentPosition", currentPosition);
+  console.log("currentPosition", currentPositionIdx);
 
   // const [currentGrip, setCurrentGrip] = useState(grips[positionShape]);
 
@@ -166,7 +166,7 @@ export default function PositionPlayer() {
           selectedChordNum={chordNum}
           onSetChordNum={handleSetChordNum}
           positionList={positionList}
-          selectedPosition={currentPosition}
+          selectedPositionIdx={currentPositionIdx}
           onSetCagedPosition={handleSetCagedPosition}
         />
       </div>
