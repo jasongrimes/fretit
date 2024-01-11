@@ -1,16 +1,7 @@
 # Soon
 
-- [ ] Add remaining position voicings
-
 - [ ] Auto-scroll to selected position
 - [ ] Close button in upper right of label and position dropdowns
-
-- [ ] Refactor components into separate files
-  - PositionPlayerControls directory
-  - Pull out a bunch of em
-  - Fretboard directory
-  - Pull out string stuff (not all of them)
-  - index file to forward definitions
 
 # Next
 
@@ -18,6 +9,13 @@
   - Support different labeling schemes: scale degree, note name
 - [ ] Support changing keys
 - [ ] Support changing instrument/tuning
+
+- [ ] Refactor components into separate files
+  - PositionPlayerControls directory
+  - Pull out a bunch of em
+  - Fretboard directory
+  - Pull out string stuff (not all of them)
+  - index file to forward definitions
 
 # Later
 

@@ -108,39 +108,8 @@ export default function PositionPlayerControls({
               </a>
             </li>
 
-           
-
-            {/* Chords */}
-            {chordList.map((chord) => {
-              return (
-                <li className="w-full" key={chord.name}>
-                  <a
-                    className={`block flex w-full truncate text-clip px-0 text-center text-accent ${
-                      selectedChordNum === chord.roman ? "active" : ""
-                    }`}
-                    onClick={() => onSetChordNum(chord.roman)}
-                  >
-                    <span className="w-1/2 text-right text-base-content">
-                      {chord.roman}:
-                    </span>
-                    <span className=" w-1/2 text-left">{chord.name}</span>
-                  </a>
-                </li>
-              );
-            })}
-
-            {/* Position */}
-            <li className={selectedPositionIdx === 0 ? "disabled" : ""}>
-              <a
-                className="justify-around"
-                onClick={() => setPositionIndex(selectedPositionIdx - 1)}
-              >
-                <IconChevronsUp className="h-5 w-5" />
-              </a>
-            </li>
-
-             {/* Position selector */}
-             <li className="w-full">
+           {/* Position selector */}
+           <li className="w-full">
               <details className="dropdown dropdown-end">
                 <summary
                   className={
@@ -180,6 +149,37 @@ export default function PositionPlayerControls({
                 </ul>
               </details>
             </li>
+
+            {/* Chords */}
+            {chordList.map((chord) => {
+              return (
+                <li className="w-full" key={chord.name}>
+                  <a
+                    className={`block flex w-full truncate text-clip px-0 text-center text-accent ${
+                      selectedChordNum === chord.roman ? "active" : ""
+                    }`}
+                    onClick={() => onSetChordNum(chord.roman)}
+                  >
+                    <span className="w-1/2 text-right text-base-content">
+                      {chord.roman}:
+                    </span>
+                    <span className=" w-1/2 text-left">{chord.name}</span>
+                  </a>
+                </li>
+              );
+            })}
+
+            {/* Position */}
+            <li className={selectedPositionIdx === 0 ? "disabled" : ""}>
+              <a
+                className="justify-around"
+                onClick={() => setPositionIndex(selectedPositionIdx - 1)}
+              >
+                <IconChevronsUp className="h-5 w-5" />
+              </a>
+            </li>
+
+             
 
             <li
               className={
