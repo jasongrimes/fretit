@@ -102,6 +102,7 @@ export default function PositionPlayer() {
   }
 
   function setStringStop([stringNum, fretNum]: FretboardLocation) {
+    console.log("setStringStop", [stringNum, fretNum]);
     /*
     const voicing = currentGrip.voicing.slice();
     voicing[stringNum - 1] = fretNum;

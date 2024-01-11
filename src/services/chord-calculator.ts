@@ -1,9 +1,37 @@
 import { Key } from "tonal";
 
+/**
+ * Chord voicing.
+ * Zero-indexed array of strings with the fret number stopped on each.
+ * -1 means muted.
+ */
+export type Voicing = number[];
+
+/**
+ * A map of roman-numeral chord numbers to their Voicings.
+ */
+export type DiatonicChords = Record<string, Voicing>;
+
+export interface CagedPosition {
+  /**
+   * Integer number of the I chord position (i.e. the lowest fret number).
+   * Note that some chords in the position may descend a fret (or two?) below this.
+   */
+  positionNum: number;
+  chords: DiatonicChords;
+}
+
+export interface Position {
+  caged: string;
+  num: number;
+  roman: string;
+  label: string;
+}
+
 // Chord voicings in each CAGED position
 // in guitar standard tuning,
 // in C major key.
-const positionChords = {
+const cagedPositions: Record<string, CagedPosition> = {
   C: {
     positionNum: 0, // Lowest fret
     chords: {
@@ -82,17 +110,17 @@ export class ChordCalculator {
         roman,
         root: this.getChordRoot(roman),
         name: this.getChordName(roman),
-      }
+      };
     });
   }
 
   getChordVoicing(cagedPosition: string, chordNum: string) {
-    return positionChords[cagedPosition]?.chords[chordNum] as number[];
+    return cagedPositions[cagedPosition]?.chords[chordNum] as number[];
   }
 
-  getPositionList() {
+  getPositionList(): Position[] {
     // TODO: Transpose by key, so the position number is correct and the lowest position is listed first.
-    return Object.entries(positionChords).map(([caged, position]) => {
+    return Object.entries(cagedPositions).map(([caged, position]) => {
       const num = position.positionNum;
       const roman = romanPositions[num];
       const label = roman === "O" ? "Open" : roman;
@@ -100,7 +128,7 @@ export class ChordCalculator {
         caged,
         num,
         roman,
-        label, 
+        label,
       };
     });
   }

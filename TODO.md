@@ -1,11 +1,16 @@
 # Soon
 
-- [ ] Clean up chord calculator and components
-  - Add types
 - [ ] Add remaining position voicings
 
 - [ ] Auto-scroll to selected position
 - [ ] Close button in upper right of label and position dropdowns
+
+- [ ] Refactor components into separate files
+  - PositionPlayerControls directory
+  - Pull out a bunch of em
+  - Fretboard directory
+  - Pull out string stuff (not all of them)
+  - index file to forward definitions
 
 # Next
 
@@ -17,6 +22,7 @@
 # Later
 
 - [ ] About screen
+- [ ] Seventh chords
 
 # Maybe?
 

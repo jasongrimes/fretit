@@ -18,6 +18,7 @@ import {
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { FretboardLabeler, LabelingScheme } from "../services/fretboard";
+import { Position } from "../services/chord-calculator";
 
 interface Props {
   soundEnabled: boolean;
@@ -27,6 +28,9 @@ interface Props {
   chordList: { root: string; roman: string; name: string }[];
   selectedChordNum: string;
   onSetChordNum: (chordNum: string) => void;
+  positionList: Position[];
+  selectedPositionIdx: number;
+  onSetCagedPosition: (cagedPosition: string) => void;
 }
 export default function PositionPlayerControls({
   soundEnabled,

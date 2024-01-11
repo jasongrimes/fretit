@@ -1,10 +1,9 @@
 import { PointerEvent } from "react";
 import {
-  ChordGrip,
-  FretboardSettings,
   FretboardLabeler,
-  Instrument,
   FretboardLocation,
+  FretboardSettings,
+  Instrument,
 } from "../services/fretboard";
 import "./Fretboard.css";
 
@@ -124,10 +123,12 @@ function String({
     pointerPressed = false;
   }
 
+  /*
   function handleClickMute() {
     onStopFret(-1);
     pointerPressed = false;
   }
+  */
 
   // Assemble <FretNote> list
   const fretNotes = [];
