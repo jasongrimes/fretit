@@ -1,14 +1,9 @@
 # Soon
 
-- [ ] Streamline control bar
-  - Move scale and label controls into settings dialog
-  - Remove accordion
-  - Show sound, settings, maximize at bottom
-
-# Next
-
 - [ ] Overlays for scale
   - Support different labeling schemes: scale degree, note name
+
+# Next
 - [ ] Support changing keys
 - [ ] About screen
 
