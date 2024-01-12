@@ -1,6 +1,5 @@
 # Soon
 
-- [ ] Settings modal
 - [ ] Streamline control bar
   - Move scale and label controls into settings dialog
   - Remove accordion
