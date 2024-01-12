@@ -153,15 +153,15 @@ export default function PositionPlayerControls({
             return (
               <li className="w-full" key={chord.name}>
                 <a
-                  className={`block flex w-full truncate text-clip px-0 text-center text-accent ${
+                  className={`block flex w-full truncate text-clip px-0 text-center ${
                     selectedChordNum === chord.roman ? "active" : ""
                   }`}
                   onClick={() => onSetChordNum(chord.roman)}
                 >
                   <span className="w-1/2 text-right text-base-content">
-                    {chord.roman}:
+                    {chord.roman}
                   </span>
-                  <span className=" w-1/2 text-left">{chord.name}</span>
+                  <span className="w-1/2 text-left text-accent">{chord.name}</span>
                 </a>
               </li>
             );

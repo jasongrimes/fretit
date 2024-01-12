@@ -64,13 +64,6 @@ export class FretboardLabeler {
     this.preferSharps = preferSharps;
   }
 
-  getLocationMidi([stringNum, fretNum]: FretboardLocation) {
-    if (stringNum > this.tuning.length) {
-      return 0;
-    }
-    return this.tuning[stringNum - 1] + fretNum;
-  }
-
   getLocationLabel(location: FretboardLocation): string {
     const midi = this.getLocationMidi(location);
 
@@ -100,6 +93,13 @@ export class FretboardLabeler {
       default:
         return "";
     }
+  }
+
+  getLocationMidi([stringNum, fretNum]: FretboardLocation) {
+    if (stringNum > this.tuning.length) {
+      return 0;
+    }
+    return this.tuning[stringNum - 1] + fretNum;
   }
 
   getMidiPitch(midi: number) {

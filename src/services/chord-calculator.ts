@@ -41,7 +41,7 @@ const cagedPositions: Record<string, CagedPosition> = {
       IV: [1, 1, 2, 3, 3, 1],
       V: [3, 0, 0, 0, 2, 3],
       vi: [0, 1, 2, 2, 0, -1],
-      vii: [1, 0, -1, 0, 2, -1],
+      "vii°": [1, 0, -1, 0, 2, -1],
       V7: [1, 0, 0, 0, 2, 3],
     },
   },
@@ -54,7 +54,7 @@ const cagedPositions: Record<string, CagedPosition> = {
       IV: [5, 6, 5, 3, -1, -1],
       V: [3, 3, 4, 5, 5, 3],
       vi: [5, 5, 5, -1, -1, 5],
-      vii: [-1, 3, 4, 3, 2, -1],
+      "vii°": [-1, 3, 4, 3, 2, -1],
       V7: [-1, 3, 4, 3, -1, 3],
     },
   },
@@ -67,7 +67,7 @@ const cagedPositions: Record<string, CagedPosition> = {
       IV: [5, 6, 5, 7, 8, -1],
       V: [7, 8, 7, 5, -1, -1],
       vi: [5, 5, 5, 7, 7, 5],
-      vii: [7, 6, 7, -1, -1, 7],
+      "vii°": [7, 6, 7, -1, -1, 7],
       V7: [7, 6, 7, 5, -1, -1],
     },
   },
@@ -80,7 +80,7 @@ const cagedPositions: Record<string, CagedPosition> = {
       IV: [8, 10, 10, 10, 8, -1],
       V: [7, 8, 7, 9, 10, -1],
       vi: [8, 10, 9, 7, -1, -1],
-      vii: [-1, -1, 10, 9, 8, 10],
+      "vii°": [-1, -1, 10, 9, 8, 10],
       V7: [-1, 8, 10, 9, 10, -1],
     },
   },
@@ -93,7 +93,7 @@ const cagedPositions: Record<string, CagedPosition> = {
       IV: [13, 10, 10, 10, 12, 13],
       V: [10, 12, 12, 12, 10, -1],
       vi: [-1, 10, 9, 10, 12, -1],
-      vii: [10, 12, 10, 9, -1, -1],
+      "vii°": [10, 12, 10, 9, -1, -1],
       V7: [10, 12, 10, 12, 10, -1],
     },
   },
@@ -105,14 +105,14 @@ const romanPositions = ["O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "
 // Map chord roman numerals to zero-indexed arabic numerals.
 // prettier-ignore
 const chordNumIndex: Record<string, Record<string, number >> = {
-  major: { I: 0, ii: 1, iii: 2, IV: 3, V: 4, vi: 5, vii: 6, V7: 4 },
-  minor: { i: 0, ii: 1, bIII: 2, iv: 3, v: 4, bVI: 5, bVII: 6, V7: 4 }
+  major: { I: 0, ii: 1, iii: 2, IV: 3, V: 4, vi: 5, "vii°": 6, V7: 4 },
+  minor: { i: 0, "ii°": 1, bIII: 2, iv: 3, v: 4, bVI: 5, bVII: 6, V7: 4 }
 }
 
 // prettier-ignore
 const triadSuffixes: Record<string, Record<string, string>> = {
-  major: { I: "", ii: "m", iii: "m", IV: "", V: "", vi: "m", vii: "°", V7: "7" },
-  minor: { i: "m", ii: "°", bIII: "", iv: "m", v: "m", bVI: "", bVII: "", V7: "7" },
+  major: { I: "", ii: "m", iii: "m", IV: "", V: "", vi: "m", "vii°": "°", V7: "7" },
+  minor: { i: "m", "ii°": "°", bIII: "", iv: "m", v: "m", bVI: "", bVII: "", V7: "7" },
 }
 
 export class ChordCalculator {
