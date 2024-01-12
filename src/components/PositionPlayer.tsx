@@ -27,6 +27,8 @@ export default function PositionPlayer() {
   const [settings, setSettings] = useState<FretboardSettings>(DEFAULT_SETTINGS);
   const instrument = INSTRUMENTS[settings.instrument];
 
+  const [scaleLabeling, setScaleLabeling] = useState("none");
+
   const keyTonic = "C";
   const keyType = "major";
   const chordCalculator = new ChordCalculator({ keyTonic, keyType });
@@ -174,6 +176,8 @@ export default function PositionPlayer() {
           positionList={positionList}
           selectedPositionIdx={currentPositionIdx}
           onSetCagedPosition={handleSetCagedPosition}
+          scaleLabeling={scaleLabeling}
+          onSetScaleLabeling={setScaleLabeling}
         />
       </div>
       <FretboardSettingsForm />
