@@ -6,6 +6,9 @@
 # Next
 - [ ] Support changing keys
 - [ ] About screen
+- [ ] Clean up position selector
+  - Line things up
+  - Column headings for Fret and CAGED I chord
 
 # Later
 
