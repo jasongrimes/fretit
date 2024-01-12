@@ -242,20 +242,6 @@ export default function PositionPlayerControls({
                 </a>
               </li>
 
-              {/* Sound toggle */}
-              <li>
-                <a onClick={handleSoundClick}>
-                  {!soundEnabled ? (
-                    <IconVolumeOff className="h-5 w-5" />
-                  ) : (
-                    <IconVolume className="h-5 w-5" />
-                  )}
-                  {!maximized && <>Sound</>}
-                </a>
-              </li>
-
-           
-
               {/* Scale */}
               <li>
                 <a>
@@ -288,6 +274,25 @@ export default function PositionPlayerControls({
       >
         <div className="modal-box">
           <h3 className="text-lg font-bold">Settings</h3>
+
+          <div className="form-control max-w-fit">
+            <label className="label cursor-pointer gap-4">
+              <span className="label-text flex gap-2">
+                {soundEnabled ? (
+                  <IconVolume className="h-5 w-5" />
+                ) : (
+                  <IconVolumeOff className="h-5 w-5" />
+                )}
+                Enable sound
+              </span>
+              <input
+                type="checkbox"
+                className="toggle"
+                checked={soundEnabled}
+                onClick={handleSoundClick}
+              />
+            </label>
+          </div>
 
           {/* Select labeling scheme */}
           <label className="form-control w-full max-w-xs">
