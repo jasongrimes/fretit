@@ -14,7 +14,6 @@ export interface FretboardSettings {
   instrument: string;
   lowestFret: number;
   highestFret: number;
-  tonic: string;
   labeling: LabelingScheme;
   preferSharps: boolean;
 }
@@ -85,7 +84,7 @@ export class FretboardLabeler {
         }
 
         const chroma = midi % 12;
-        const refChroma = Note.chroma(refPitchClass);
+        const refChroma = Note.chroma(refPitchClass) ?? 0;
         const semitones = (chroma - refChroma);
         const interval = Interval.get(Interval.fromSemitones(semitones));
         let intervalName = `${

@@ -12,17 +12,21 @@ export type Voicing = number[];
  */
 export type DiatonicChords = Record<string, Voicing>;
 
-export interface Position {
-  /**
-   * Integer number of the I chord position (i.e. the lowest fret number).
-   * Note that some chords in the position may descend a fret (or two?) below this.
-   */
+/**
+ * All diatonic chords in one fretboard position in the key of C.
+ */
+export interface PositionInC {
   positionNum: number;
-  /**
-   * CAGED shape of the I chord.
-   */
   caged: string;
   chords: DiatonicChords;
+}
+/**
+ * One fretboard position in a given key,
+ * hydrated from the cMajorPositions template.
+ */
+export interface Position extends PositionInC {
+  roman: string;
+  label: string;
 }
 
 export interface PositionLabel {
@@ -34,8 +38,7 @@ export interface PositionLabel {
 
 // Chord voicings in each CAGED position in guitar standard tuning,
 // in C major key.
-// const cMajorPositions: Record<string, CagedPosition> = {
-const cMajorPositions: Position[] = [
+const cMajorPositions: PositionInC[] = [
   {
     caged: "C",
     positionNum: 0, // Lowest fret
@@ -171,10 +174,15 @@ export class ChordCalculator {
       .map((position) => {
         // Transpose the C Major positions to the current key.
         const keyChroma = Note.chroma(this.keyTonic) ?? 0;
-        const transposedPosition = position.positionNum + keyChroma;
+        const cPositionNum = position.positionNum ?? 0;
+        const transposedPosition = cPositionNum + keyChroma;
+        const newPositionNum = transposedPosition % 12
+        const roman = romanPositions[newPositionNum];
         const newPosition: Position = {
           ...position,
-          positionNum: transposedPosition % 12,
+          positionNum: newPositionNum,
+          roman: roman,
+          label: roman === "O" ? "Open" : roman,
           chords: {},
         };
         const positionOffset = transposedPosition - newPosition.positionNum;

@@ -10,7 +10,7 @@ import {
   IconVolumeOff,
 } from "@tabler/icons-react";
 import { ChangeEvent, useState } from "react";
-import { Position, PositionLabel } from "../services/chord-calculator";
+import { Position } from "../services/chord-calculator";
 import { FretboardLabeler, LabelingScheme } from "../services/fretboard";
 
 interface Props {
@@ -21,8 +21,8 @@ interface Props {
   chordList: { root: string; roman: string; name: string }[];
   selectedChordNum: string;
   onSetChordNum: (chordNum: string) => void;
-  positionLabels: PositionLabel[];
-  selectedPositionIdx: number;
+  positions: Position[];
+  positionIndex: number;
   onSetPositionIndex: (positionIndex: number) => void;
   scaleLabeling: string;
   onSetScaleLabeling: (scaleLabeling: string) => void;
@@ -35,8 +35,8 @@ export default function PositionPlayerControls({
   chordList,
   selectedChordNum,
   onSetChordNum,
-  positionLabels,
-  selectedPositionIdx,
+  positions,
+  positionIndex,
   onSetPositionIndex,
   scaleLabeling,
   onSetScaleLabeling,
@@ -48,9 +48,8 @@ export default function PositionPlayerControls({
   setKeyType,
 }: Props) {
   const [maximized, setMaximized] = useState(false);
-  const [showAccordion, setShowAccordion] = useState("chords");
 
-  const selectedPosition = positionLabels[selectedPositionIdx];
+  const selectedPosition = positions[positionIndex];
 
   function handleToggleMaximized() {
     setMaximized(!maximized);
@@ -61,11 +60,11 @@ export default function PositionPlayerControls({
   }
 
   function handleSetPositionIndex(positionIndex: number) {
-    if (positionIndex < 0 || positionIndex > positionLabels.length - 1) {
+    if (positionIndex < 0 || positionIndex > positions.length - 1) {
       return;
     }
     onSetPositionIndex(positionIndex);
-    scrollToPositionNum(positionLabels[positionIndex].num);
+    scrollToPositionNum(positions[positionIndex].positionNum);
   }
 
   function scrollToPositionNum(num: number) {
@@ -136,16 +135,12 @@ export default function PositionPlayerControls({
               </summary>
               <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-200 p-2 shadow">
                 <li className="menu-title">Position</li>
-                {positionLabels.map((position, positionIndex) => {
+                {positions.map((position, i) => {
                   return (
-                    <li key={position.caged}>
+                    <li key={i}>
                       <a
-                        onClick={() => handleSetPositionIndex(positionIndex)}
-                        className={
-                          position.caged === selectedPosition.caged
-                            ? "active"
-                            : ""
-                        }
+                        onClick={() => handleSetPositionIndex(i)}
+                        className={i === positionIndex ? "active" : ""}
                       >
                         <b>{position.label}</b>({position.caged}-shape I)
                       </a>
@@ -178,23 +173,21 @@ export default function PositionPlayerControls({
           })}
 
           {/* Position */}
-          <li className={selectedPositionIdx === 0 ? "disabled" : ""}>
+          <li className={positionIndex === 0 ? "disabled" : ""}>
             <a
               className="justify-around"
-              onClick={() => handleSetPositionIndex(selectedPositionIdx - 1)}
+              onClick={() => handleSetPositionIndex(positionIndex - 1)}
             >
               <IconChevronsUp className="h-5 w-5" />
             </a>
           </li>
 
           <li
-            className={
-              selectedPositionIdx >= positionLabels.length - 1 ? "disabled" : ""
-            }
+            className={positionIndex >= positions.length - 1 ? "disabled" : ""}
           >
             <a
               className="justify-around"
-              onClick={() => handleSetPositionIndex(selectedPositionIdx + 1)}
+              onClick={() => handleSetPositionIndex(positionIndex + 1)}
             >
               <IconChevronsDown className="h-5 w-5" />
             </a>
@@ -312,43 +305,40 @@ export default function PositionPlayerControls({
         <div className="modal-box">
           <h3 className="text-lg font-bold">Change Key</h3>
 
-          <div className="form-control flex-row gap-2 mt-6">
+          <div className="form-control mt-6 flex-row gap-2">
+            <select
+              className="select select-bordered"
+              onChange={(e) => setKeyLetter(e.target.value)}
+              defaultValue={keyLetter}
+            >
+              <option value="C">C</option>
+              <option value="D">D</option>
+              <option value="E">E</option>
+              <option value="F">F</option>
+              <option value="G">G</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+            </select>
 
-          <select
-            className="select select-bordered"
-            onChange={(e) => setKeyLetter(e.target.value)}
-            defaultValue={keyLetter}
-          >
-            <option value="C">C</option>
-            <option value="D">D</option>
-            <option value="E">E</option>
-            <option value="F">F</option>
-            <option value="G">G</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-          </select>
+            <select
+              className="select select-bordered"
+              onChange={(e) => setKeyAccidental(e.target.value)}
+              defaultValue={keyAccidental}
+            >
+              <option value=""></option>
+              <option value="#">#</option>
+              <option value="b">b</option>
+            </select>
 
-          <select
-            className="select select-bordered"
-            onChange={(e) => setKeyAccidental(e.target.value)}
-            defaultValue={keyAccidental}
-          >
-            <option value=""></option>
-            <option value="#">#</option>
-            <option value="b">b</option>
-          </select>
-
-          <select
-            className="select select-bordered"
-            onChange={(e) => setKeyType(e.target.value)}
-            defaultValue={keyType}
-          >
-            <option value="major">major</option>
-            <option value="minor">minor</option>
-          </select>
+            <select
+              className="select select-bordered"
+              onChange={(e) => setKeyType(e.target.value)}
+              defaultValue={keyType}
+            >
+              <option value="major">major</option>
+              <option value="minor">minor</option>
+            </select>
           </div>
-
-          
 
           <div className="modal-action">
             <form method="dialog">

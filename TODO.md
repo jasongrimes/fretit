@@ -1,6 +1,5 @@
 # Soon
 
-- [ ] Support changing keys
 - [ ] Fix bugs in labeling in other keys
 - [ ] Support alternate voicings in open position
 
@@ -10,8 +9,9 @@
 
 - [ ] When manually changing string stop, show original chord tone as transparent overlay
 
-- [ ] Move key selector into settings form
-  - Show selected key somewhere?
+- [ ] Consolidate settings
+  - Move key selector into settings form
+  - Show selected key somewhere? Header?
   - Move settings up top, under about.
 
 - [ ] About screen

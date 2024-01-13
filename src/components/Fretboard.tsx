@@ -2,7 +2,6 @@ import { PointerEvent, useRef } from "react";
 import {
   FretboardLabeler,
   FretboardLocation,
-  FretboardSettings,
   Instrument,
 } from "../services/fretboard";
 import "./Fretboard.css";
@@ -11,8 +10,8 @@ import "./Fretboard.css";
 // <Fretboard> component
 //
 interface FretboardProps {
-  settings: FretboardSettings;
   instrument: Instrument;
+  numFrets: number;
   labeler: FretboardLabeler;
   setStringStop: (location: FretboardLocation) => void;
   playLocation: (location: FretboardLocation) => void;
@@ -21,8 +20,8 @@ interface FretboardProps {
   overlays: Record<number, string>[];
 }
 export default function Fretboard({
-  settings,
   instrument,
+  numFrets,
   labeler,
   setStringStop,
   playLocation,
@@ -31,7 +30,6 @@ export default function Fretboard({
   overlays = [],
 }: FretboardProps) {
   const numStrings = instrument.tuning.length;
-  console.log("overlays", overlays);
 
   function handleStopString(stringNum: number, fretNum: number) {
     setStringStop([stringNum, fretNum]);
@@ -52,8 +50,8 @@ export default function Fretboard({
     return (
       <String
         key={stringNum}
-        settings={settings}
         instrument={instrument}
+        numFrets={numFrets}
         stringNum={stringNum}
         stoppedFret={stoppedFret}
         onStopFret={(fretNum: number) => {
@@ -82,8 +80,8 @@ export default function Fretboard({
 // <String> component
 //
 interface StringProps {
-  settings: FretboardSettings;
   instrument: Instrument;
+  numFrets: number;
   stringNum: number;
   stoppedFret: number;
   onStopFret: (fretNum: number) => void;
@@ -93,8 +91,8 @@ interface StringProps {
   overlays: Record<string, string>;
 }
 function String({
-  settings,
   instrument,
+  numFrets,
   stringNum,
   stoppedFret,
   onStopFret,
@@ -163,11 +161,7 @@ function String({
 
   // Assemble <FretNote> list
   const fretNotes = [];
-  for (
-    let fretNum = settings.lowestFret;
-    fretNum <= settings.highestFret;
-    fretNum++
-  ) {
+  for (let fretNum = 0; fretNum <= numFrets; fretNum++) {
     // Add <FretMarker> on first string
     let fretMarker;
     if (stringNum === 1 && instrument.fretMarkers?.includes(fretNum)) {
@@ -186,7 +180,12 @@ function String({
       const style = labeler.getLocationStyle([stringNum, fretNum]);
       fretNoteDot = <FretNoteDot label={label} style={style} />;
     } else if (overlays[fretNum]) {
-      fretNoteDot = <FretNoteOverlay label={overlays[fretNum].label} styleString={overlays[fretNum].style} />;
+      fretNoteDot = (
+        <FretNoteOverlay
+          label={overlays[fretNum].label}
+          styleString={overlays[fretNum].style}
+        />
+      );
     }
 
     // Add <FretNote>
