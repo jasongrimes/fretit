@@ -83,10 +83,12 @@ export class FretboardLabeler {
           return "";
         }
 
-        const chroma = midi % 12;
-        const refChroma = Note.chroma(refPitchClass) ?? 0;
-        const semitones = (chroma - refChroma);
+        const refMidi = Note.midi(refPitchClass + 1) ?? 0; // Ex. C1
+        const semitones = (midi - refMidi) % 12;
         const interval = Interval.get(Interval.fromSemitones(semitones));
+        if (midi === 61 || midi === 59) {
+          //console.log(`getMidiLabel(${midi}): chroma, refChroma, semitones, interval`, chroma, refChroma, semitones, interval);
+        }
         let intervalName = `${
           interval.alt === -1 ? "b" : interval.alt === 1 ? "#" : ""
         }${interval.simple === 8 ? 1 : interval.simple}`;

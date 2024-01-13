@@ -67,8 +67,12 @@ export default function PositionPlayer() {
   });
 
   const overlays = Array.from(instrument.tuning, (stringMidi) => {
-    const minFret = positions[positionIndex].positionNum - 1;
-    const maxFret = positions[positionIndex].positionNum + 3;
+    let minFret = positions[positionIndex].positionNum - 1;
+    let maxFret = positions[positionIndex].positionNum + 3;
+    if (minFret < 0) {
+      minFret++;
+      maxFret++;
+    }
     const stringOverlays: Record<number, { label: string }> = {};
     for (let fret = minFret; fret <= maxFret; fret++) {
       const midi = stringMidi + fret;
@@ -81,6 +85,8 @@ export default function PositionPlayer() {
     }
     return stringOverlays;
   });
+  console.log(key);
+  console.log(overlays);
 
   //
   // Support string animation

@@ -1,6 +1,5 @@
 # Soon
 
-- [ ] Fix bugs in labeling in other keys
 - [ ] Support alternate voicings in open position
 
 # Next
