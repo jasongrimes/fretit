@@ -18,6 +18,7 @@ interface FretboardProps {
   playLocation: (location: FretboardLocation) => void;
   stringNodes: Map<number, HTMLElement>;
   voicing: number[];
+  overlays: Record<number, string>[];
 }
 export default function Fretboard({
   settings,
@@ -27,8 +28,10 @@ export default function Fretboard({
   playLocation,
   stringNodes,
   voicing,
+  overlays = [],
 }: FretboardProps) {
   const numStrings = instrument.tuning.length;
+  console.log("overlays", overlays);
 
   function handleStopString(stringNum: number, fretNum: number) {
     setStringStop([stringNum, fretNum]);
@@ -59,6 +62,7 @@ export default function Fretboard({
         labeler={labeler}
         stringNodes={stringNodes}
         onPlayString={() => playLocation([stringNum, stoppedFret])}
+        overlays={overlays[stringIndex]}
       />
     );
   });
@@ -86,6 +90,7 @@ interface StringProps {
   labeler: FretboardLabeler;
   stringNodes: Map<number, HTMLElement>;
   onPlayString: () => void;
+  overlays: Record<string, string>;
 }
 function String({
   settings,
@@ -96,6 +101,7 @@ function String({
   labeler,
   stringNodes,
   onPlayString,
+  overlays = {},
 }: StringProps) {
   const isMuted = stoppedFret < 0;
 
@@ -136,7 +142,8 @@ function String({
   }
 
   function handleClickFret(fretNum: number) {
-    if (!handledPress.current) { // Ignore if we already handled a long-press
+    if (!handledPress.current) {
+      // Ignore if we already handled a long-press
       onStopFret(fretNum);
       pointerPressed = false;
       clearPressTimer();
@@ -178,6 +185,8 @@ function String({
       const label = labeler.getLocationLabel([stringNum, fretNum]);
       const style = labeler.getLocationStyle([stringNum, fretNum]);
       fretNoteDot = <FretNoteDot label={label} style={style} />;
+    } else if (overlays[fretNum]) {
+      fretNoteDot = <FretNoteOverlay label={overlays[fretNum].label} styleString={overlays[fretNum].style} />;
     }
 
     // Add <FretNote>
@@ -260,6 +269,36 @@ function FretNoteDot({
   return (
     <div
       className={`fret-note-dot opacity-1 absolute bottom-0 z-10 flex size-8 items-center justify-center rounded-full ${extraClasses}`}
+    >
+      {label}
+    </div>
+  );
+}
+
+//
+// <FretNoteDot>
+//
+function FretNoteOverlay({
+  label,
+  styleString = "",
+}: {
+  label?: string;
+  styleString: string;
+}) {
+  const styles = styleString.split(" ");
+  let extraClasses = "";
+  if (styles.includes("chord-tone")) {
+    extraClasses += " opacity-1 bg-accent text-accent-content";
+  }
+  if (styles.includes("chord-root")) {
+    extraClasses += " opacity-1 bg-primary text-primary-content";
+  }
+  if (styles.includes("opaque")) {
+    extraClasses += " opacity-50";
+  }
+  return (
+    <div
+      className={`fret-note-dot absolute bottom-0 z-10 flex size-8 items-center justify-center rounded-full text-black opacity-60 ${extraClasses}`}
     >
       {label}
     </div>

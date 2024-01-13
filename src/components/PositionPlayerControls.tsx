@@ -226,7 +226,7 @@ export default function PositionPlayerControls({
           <h3 className="text-lg font-bold">Settings</h3>
 
           {/* Toggle sound */}
-          <div className="form-control max-w-fit">
+          <div className="form-control max-w-fit mt-4">
             <label className="label cursor-pointer gap-4">
               <span className="label-text flex gap-2">
                 {soundEnabled ? (
@@ -246,7 +246,7 @@ export default function PositionPlayerControls({
           </div>
 
           {/* Select chord note labeling scheme */}
-          <label className="form-control mb-2 w-full max-w-xs">
+          <label className="form-control w-full max-w-xs mt-2">
             <div className="label">
               <span className="label-text">Chord note labels</span>
             </div>
@@ -264,7 +264,7 @@ export default function PositionPlayerControls({
           </label>
 
           {/* Select scale note labels */}
-          <label className="form-control w-full max-w-xs">
+          <label className="form-control w-full max-w-xs mt-4">
             <div className="label">
               <span className="label-text">Scale note labels</span>
             </div>
@@ -273,8 +273,9 @@ export default function PositionPlayerControls({
               onChange={handleSelectScaleLabeling}
               defaultValue={scaleLabeling}
             >
-              <option value="degree">Scale degrees (1..7)</option>
+              <option value="scaleInterval">Scale degrees (1..7)</option>
               <option value="pitchClass">Note names</option>
+              <option value="pitch">Note names + octave</option>
               <option value="none">None</option>
             </select>
           </label>

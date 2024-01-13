@@ -1,10 +1,11 @@
 # Soon
 
-- [ ] Overlays for scale
-  - Support different labeling schemes: scale degree, note name
+- [ ] Support changing keys
 
 # Next
-- [ ] Support changing keys
+
+- [ ] When manually changing string stop, show original chord tone as transparent overlay
+
 - [ ] About screen
 - [ ] Clean up position selector
   - Line things up
@@ -12,9 +13,12 @@
 
 # Later
 
-- [ ] Deployment
-- [ ] Analytics
-- [ ] Refactor
+- [ ] Refactor 
+  - [ ] Refactor business logic
+    - **Diatonic calculations (by key)**: For a given key, determine diatonic chords, scales, note names, midi numbers and degrees. Pretty much just wrap tonaljs.
+    - **Instrument calculations (fretboard locations by instrument)**: For a given instrument and tuning, determine midi numbers of each fretboard location, and vice-versa.
+    - **Fretboard calculations (grips and positions by key and instrument)**: Grips and positions for a given key and instrument. Subjective, hard-coded.
+    - **Label calculations (by key and strategy)**: How to label each note shown on the fretboard, based on key (or sharp preference, if no key) and strategy (note name, chord interval, scale degree, etc.). Difference contexts (chord tone, stopped string, scale overlay, ...) will use different strategies and styles (ex. temporarily un-stopped chord tone will be transparent, etc.)
   - [ ] Refactor service classes => functional programming
   - [ ] Refactor components into separate files?
     - PositionPlayerControls directory
@@ -22,12 +26,18 @@
     - Fretboard directory
     - Pull out string stuff (not all of them)
     - index file to forward definitions
+
+- [ ] Deployment
+- [ ] Analytics
+
+
 - [ ] Friendly URLs/routing
 
 # Maybe?
 
+- [ ] Add setting to control scroll/strum behavior. Swipe/drag to: (*) strum ( ) scroll
 - [ ] Seventh chords
-- [ ] Close button in upper right of label and position dropdowns
-- [ ] Hotkeys to select chord (key 1-8 chords I-V7)
+- [ ] Close button in upper right of position dropdowns
+- [ ] String styling (different widths, brass/wound bass strings)
 - [ ] Automated tour
-- [ ] Support ukulele
+- [ ] Ukulele

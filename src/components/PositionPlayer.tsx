@@ -11,6 +11,7 @@ import {
 import Fretboard from "./Fretboard";
 import FretboardSettingsForm from "./FretboardSettingsForm";
 import PositionPlayerControls from "./PositionPlayerControls";
+import { Key, Note } from "tonal";
 
 const animationEnabled = true;
 
@@ -26,12 +27,20 @@ const DEFAULT_SETTINGS: FretboardSettings = {
 export default function PositionPlayer() {
   const [settings, setSettings] = useState<FretboardSettings>(DEFAULT_SETTINGS);
   const instrument = INSTRUMENTS[settings.instrument];
+  const [scaleLabeling, setScaleLabeling] = useState("scaleInterval");
+  const [keyTonic, setKeyTonic] = useState("C");
+  const [keyType, setKeyType] = useState<"major"|"minor">("major");
 
-  const [scaleLabeling, setScaleLabeling] = useState("none");
-
-  const keyTonic = "C";
-  const keyType = "major";
   const chordCalculator = new ChordCalculator({ keyTonic, keyType });
+
+  const scaleNotes = keyType === "minor" ? Key.minorKey(keyTonic).natural.scale : Key.majorKey(keyTonic).scale;
+  const keySignature = keyType === "minor" ? Key.minorKey(keyTonic).keySignature : Key.majorKey(keyTonic).keySignature;
+  const key = {
+    tonic: keyTonic,
+    type: keyType,
+    scaleChromas: scaleNotes.map((note) => Note.chroma(note)),
+    preferSharps: !keySignature || keySignature.startsWith("#"),
+  }
 
   const [cagedPosition, setCagedPosition] = useState("C"); // TODO: Default to lowest caged position for this key
   const [chordNum, setChordNum] = useState("I");
@@ -56,11 +65,66 @@ export default function PositionPlayer() {
   const labeler = new FretboardLabeler({
     tuning: instrument.tuning,
     labelingScheme: settings.labeling,
-    tonic: settings.tonic,
+    tonic: keyTonic,
     root: chordCalculator.getChordRoot(chordNum),
     preferSharps: settings.preferSharps,
   });
 
+  if (scaleLabeling !== "none") {
+    /*
+    const scale = Key.majorKey("D").scale;
+    console.log("scale", scale);
+    const scaleChroma = scale.map((note) => Note.chroma(note));
+    console.log(scaleChroma);
+
+    const matrix = labeler.createMatrixWith(({midi, chroma}) => { 
+      if (scaleChroma.includes(chroma)) {
+        return { label: labeler.getMidiLabel(chroma, "pitchClass") };
+      }
+    });
+
+    console.log("matrix", matrix);
+    */
+    /*
+    const numStrings = instrument.tuning.length;
+    const numFrets = settings.highestFret - settings.lowestFret;
+    const overlayMatrix: (null | { label: string; style?: string })[][] = Array.from({ length: numStrings }, () => Array<null>(numFrets).fill(null));
+    scale.forEach((pitchClass) => {
+      const midi = Note.midi(pitchClass);
+      console.log(`getMidiLocations(${midi})`, labeler.getMidiLocations(midi));
+      labeler.getMidiLocations(midi).forEach(([stringNum, fretNum]) => {
+        console.log(midi, stringNum, fretNum);
+        overlayMatrix[stringNum - 1][fretNum] = {
+          label:  pitchClass
+        }
+      });
+    });
+    console.log("overlayMatrix", overlayMatrix);
+*/
+  }
+/*
+  const overlays: Record<number, string[]>[] = [
+    { 0: ["3", "chord-tone"], 1: ["4"], 3: ["5"] },
+    { 0: ["7"], 1: ["1", "chord-root opaque"], 3: ["2"] },
+    { 0: ["5"], 2: ["6"] },
+    { 0: ["2"], 2: ["3"], 3: ["4"] },
+    { 0: ["6"], 2: ["7"], 3: ["1"] },
+    { 0: ["3"], 1: ["4"], 3: ["5"] },
+  ];*/
+
+  const overlays = Array.from(instrument.tuning, (stringMidi) => {
+    const minFret = positionList[currentPositionIdx].num - 1;
+    const maxFret = positionList[currentPositionIdx].num + 3;
+    const stringOverlays = {};
+    for (let fret = minFret; fret <= maxFret; fret++) {
+      const midi = stringMidi + fret;
+      const chroma = midi % 12;
+      if (key.scaleChromas.includes(chroma)) {
+        stringOverlays[fret] = { label: labeler.getMidiLabel(midi, scaleLabeling) };
+      }
+    }
+    return stringOverlays;
+  });
   //
   // Support string animation
   //
@@ -162,6 +226,7 @@ export default function PositionPlayer() {
           setStringStop={setStringStop}
           playLocation={playLocation}
           stringNodes={getStringNodes()}
+          overlays={overlays}
         />
       </div>
       <div className="flex-grow-0 pl-2 pr-1">
