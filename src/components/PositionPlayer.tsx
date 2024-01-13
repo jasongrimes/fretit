@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { Key, Note } from "tonal";
 import { INSTRUMENTS } from "../data/instruments";
 import useSound from "../hooks/use-sound.hook";
 import { ChordCalculator } from "../services/chord-calculator";
@@ -9,16 +10,14 @@ import {
   LabelingScheme,
 } from "../services/fretboard";
 import Fretboard from "./Fretboard";
-import FretboardSettingsForm from "./FretboardSettingsForm";
 import PositionPlayerControls from "./PositionPlayerControls";
-import { Key, Note } from "tonal";
 
 const animationEnabled = true;
 
 const DEFAULT_SETTINGS: FretboardSettings = {
   instrument: "Guitar",
   lowestFret: 0,
-  highestFret: 13,
+  highestFret: 15,
   tonic: "C",
   labeling: "scaleInterval",
   preferSharps: false,
@@ -27,36 +26,47 @@ const DEFAULT_SETTINGS: FretboardSettings = {
 export default function PositionPlayer() {
   const [settings, setSettings] = useState<FretboardSettings>(DEFAULT_SETTINGS);
   const instrument = INSTRUMENTS[settings.instrument];
-  const [scaleLabeling, setScaleLabeling] = useState("scaleInterval");
-  const [keyTonic, setKeyTonic] = useState("C");
-  const [keyType, setKeyType] = useState<"major"|"minor">("major");
+  const [scaleLabeling, setScaleLabeling] = useState<LabelingScheme>("scaleInterval");
+  const [keyType, setKeyType] = useState<"major" | "minor">("major");
+  const [keyLetter, setKeyLetter] = useState("C");
+  const [keyAccidental, setKeyAccidental] = useState("");
+  const keyTonic = keyLetter + keyAccidental;
 
   const chordCalculator = new ChordCalculator({ keyTonic, keyType });
+  const chordList = chordCalculator.getChordList();
+  const positionLabels = chordCalculator.getPositionLabels();
 
-  const scaleNotes = keyType === "minor" ? Key.minorKey(keyTonic).natural.scale : Key.majorKey(keyTonic).scale;
-  const keySignature = keyType === "minor" ? Key.minorKey(keyTonic).keySignature : Key.majorKey(keyTonic).keySignature;
+  const [positionIndex, setPositionIndex] = useState(0); 
+  const [chordNum, setChordNum] = useState("I");
+  const [voicing, setVoicing] = useState(
+    chordCalculator.getChordVoicing(positionIndex, chordNum)
+  );
+
+  const scaleNotes =
+    keyType === "minor"
+      ? Key.minorKey(keyTonic).natural.scale
+      : Key.majorKey(keyTonic).scale;
+  const keySignature =
+    keyType === "minor"
+      ? Key.minorKey(keyTonic).keySignature
+      : Key.majorKey(keyTonic).keySignature;
   const key = {
     tonic: keyTonic,
     type: keyType,
+    keySignature: keySignature,
+    scaleNotes: scaleNotes,
     scaleChromas: scaleNotes.map((note) => Note.chroma(note)),
     preferSharps: !keySignature || keySignature.startsWith("#"),
-  }
+  };
+  console.log("key", key);
 
-  const [cagedPosition, setCagedPosition] = useState("C"); // TODO: Default to lowest caged position for this key
-  const [chordNum, setChordNum] = useState("I");
-  const [voicing, setVoicing] = useState(
-    chordCalculator.getChordVoicing(cagedPosition, chordNum),
-  );
+  
 
   //const positions = C_MAJOR_POSITIONS;
   //const positionNum = positions[cagedPosition].position;
   // const chordVoicings = positions[cagedPosition].chords;
   //const voicing = chordVoicings[chordNum];
-  const chordList = chordCalculator.getChordList();
-  const positionList = chordCalculator.getPositionList();
-  const currentPositionIdx = positionList.findIndex(
-    (position) => position.caged === cagedPosition,
-  );
+
 
   // const [currentGrip, setCurrentGrip] = useState(grips[positionShape]);
 
@@ -67,7 +77,7 @@ export default function PositionPlayer() {
     labelingScheme: settings.labeling,
     tonic: keyTonic,
     root: chordCalculator.getChordRoot(chordNum),
-    preferSharps: settings.preferSharps,
+    preferSharps: key.preferSharps,
   });
 
   if (scaleLabeling !== "none") {
@@ -102,7 +112,7 @@ export default function PositionPlayer() {
     console.log("overlayMatrix", overlayMatrix);
 */
   }
-/*
+  /*
   const overlays: Record<number, string[]>[] = [
     { 0: ["3", "chord-tone"], 1: ["4"], 3: ["5"] },
     { 0: ["7"], 1: ["1", "chord-root opaque"], 3: ["2"] },
@@ -113,18 +123,21 @@ export default function PositionPlayer() {
   ];*/
 
   const overlays = Array.from(instrument.tuning, (stringMidi) => {
-    const minFret = positionList[currentPositionIdx].num - 1;
-    const maxFret = positionList[currentPositionIdx].num + 3;
-    const stringOverlays = {};
+    const minFret = positionLabels[positionIndex].num - 1;
+    const maxFret = positionLabels[positionIndex].num + 3;
+    const stringOverlays: Record<number, { label: string }> = {};
     for (let fret = minFret; fret <= maxFret; fret++) {
       const midi = stringMidi + fret;
       const chroma = midi % 12;
       if (key.scaleChromas.includes(chroma)) {
-        stringOverlays[fret] = { label: labeler.getMidiLabel(midi, scaleLabeling) };
+        stringOverlays[fret] = {
+          label: labeler.getMidiLabel(midi, scaleLabeling),
+        };
       }
     }
     return stringOverlays;
   });
+  console.log("labeler.tonic", labeler.tonic);
   //
   // Support string animation
   //
@@ -159,16 +172,14 @@ export default function PositionPlayer() {
   // Callbacks
   //
 
-  function handleSetCagedPosition(cagedPosition: string) {
-    const newVoicing = chordCalculator.getChordVoicing(cagedPosition, chordNum);
-    setCagedPosition(cagedPosition);
-    setVoicing(newVoicing);
-    strum(newVoicing);
+  function handleSetPositionIndex(positionIndex: number) {
+    setPositionIndex(positionIndex);
+    handleSetChordNum(chordNum, positionIndex);
   }
 
-  function handleSetChordNum(chordNum: string) {
-    const newVoicing = chordCalculator.getChordVoicing(cagedPosition, chordNum);
+  function handleSetChordNum(chordNum: string, positionIdx: number = positionIndex) {
     setChordNum(chordNum);
+    const newVoicing = chordCalculator.getChordVoicing(positionIdx, chordNum);
     setVoicing(newVoicing);
     strum(newVoicing);
   }
@@ -238,14 +249,19 @@ export default function PositionPlayer() {
           chordList={chordList}
           selectedChordNum={chordNum}
           onSetChordNum={handleSetChordNum}
-          positionList={positionList}
-          selectedPositionIdx={currentPositionIdx}
-          onSetCagedPosition={handleSetCagedPosition}
+          positionLabels={positionLabels}
+          selectedPositionIdx={positionIndex}
+          onSetPositionIndex={handleSetPositionIndex}
           scaleLabeling={scaleLabeling}
           onSetScaleLabeling={setScaleLabeling}
+          keyLetter={keyLetter}
+          setKeyLetter={setKeyLetter}
+          keyAccidental={keyAccidental}
+          setKeyAccidental={setKeyAccidental}
+          keyType={keyType}
+          setKeyType={setKeyType}
         />
       </div>
-      <FretboardSettingsForm />
     </div>
   );
 }

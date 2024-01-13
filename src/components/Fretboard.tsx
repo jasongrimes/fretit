@@ -293,12 +293,12 @@ function FretNoteOverlay({
   if (styles.includes("chord-root")) {
     extraClasses += " opacity-1 bg-primary text-primary-content";
   }
-  if (styles.includes("opaque")) {
+  if (styles.includes("transparent")) {
     extraClasses += " opacity-50";
   }
   return (
     <div
-      className={`fret-note-dot absolute bottom-0 z-10 flex size-8 items-center justify-center rounded-full text-black opacity-60 ${extraClasses}`}
+      className={`fret-note-dot absolute bottom-0 z-10 flex size-8 items-center justify-center rounded-full text-black opacity-70 ${extraClasses}`}
     >
       {label}
     </div>

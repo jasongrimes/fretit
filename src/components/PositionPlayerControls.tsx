@@ -10,7 +10,7 @@ import {
   IconVolumeOff,
 } from "@tabler/icons-react";
 import { ChangeEvent, useState } from "react";
-import { Position } from "../services/chord-calculator";
+import { Position, PositionLabel } from "../services/chord-calculator";
 import { FretboardLabeler, LabelingScheme } from "../services/fretboard";
 
 interface Props {
@@ -21,9 +21,9 @@ interface Props {
   chordList: { root: string; roman: string; name: string }[];
   selectedChordNum: string;
   onSetChordNum: (chordNum: string) => void;
-  positionList: Position[];
+  positionLabels: PositionLabel[];
   selectedPositionIdx: number;
-  onSetCagedPosition: (cagedPosition: string) => void;
+  onSetPositionIndex: (positionIndex: number) => void;
   scaleLabeling: string;
   onSetScaleLabeling: (scaleLabeling: string) => void;
 }
@@ -35,38 +35,37 @@ export default function PositionPlayerControls({
   chordList,
   selectedChordNum,
   onSetChordNum,
-  positionList,
+  positionLabels,
   selectedPositionIdx,
-  onSetCagedPosition,
+  onSetPositionIndex,
   scaleLabeling,
   onSetScaleLabeling,
+  keyLetter,
+  setKeyLetter,
+  keyAccidental,
+  setKeyAccidental,
+  keyType,
+  setKeyType,
 }: Props) {
   const [maximized, setMaximized] = useState(false);
   const [showAccordion, setShowAccordion] = useState("chords");
 
-  const selectedPosition = positionList[selectedPositionIdx];
+  const selectedPosition = positionLabels[selectedPositionIdx];
 
   function handleToggleMaximized() {
     setMaximized(!maximized);
-  }
-  function handleToggleAccordion() {
-    setShowAccordion(showAccordion === "chords" ? "controls" : "chords");
   }
 
   function handleSoundClick() {
     onSetSoundEnabled(!soundEnabled);
   }
 
-  function handleSetPosition(position: Position) {
-    onSetCagedPosition(position.caged);
-    scrollToPositionNum(position.num);
-  }
-
-  function setPositionIndex(i: number) {
-    if (i < 0 || i > positionList.length - 1) {
+  function handleSetPositionIndex(positionIndex: number) {
+    if (positionIndex < 0 || positionIndex > positionLabels.length - 1) {
       return;
     }
-    handleSetPosition(positionList[i]);
+    onSetPositionIndex(positionIndex);
+    scrollToPositionNum(positionLabels[positionIndex].num);
   }
 
   function scrollToPositionNum(num: number) {
@@ -100,9 +99,18 @@ export default function PositionPlayerControls({
 
           {/* Key */}
           <li>
-            <a>
+            <a
+              onClick={() =>
+                document.getElementById("keychange-modal")?.showModal()
+              }
+            >
               <IconKey className="h-5 w-5" />
-              {!maximized && <>C major</>}
+              {!maximized && (
+                <>
+                  {keyLetter}
+                  {keyAccidental} {keyType}
+                </>
+              )}
             </a>
           </li>
 
@@ -128,11 +136,11 @@ export default function PositionPlayerControls({
               </summary>
               <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-200 p-2 shadow">
                 <li className="menu-title">Position</li>
-                {positionList.map((position) => {
+                {positionLabels.map((position, positionIndex) => {
                   return (
                     <li key={position.caged}>
                       <a
-                        onClick={() => handleSetPosition(position)}
+                        onClick={() => handleSetPositionIndex(positionIndex)}
                         className={
                           position.caged === selectedPosition.caged
                             ? "active"
@@ -161,7 +169,9 @@ export default function PositionPlayerControls({
                   <span className="w-1/2 text-right text-base-content">
                     {chord.roman}
                   </span>
-                  <span className="w-1/2 text-left text-accent">{chord.name}</span>
+                  <span className="w-1/2 text-left text-accent">
+                    {chord.name}
+                  </span>
                 </a>
               </li>
             );
@@ -171,7 +181,7 @@ export default function PositionPlayerControls({
           <li className={selectedPositionIdx === 0 ? "disabled" : ""}>
             <a
               className="justify-around"
-              onClick={() => setPositionIndex(selectedPositionIdx - 1)}
+              onClick={() => handleSetPositionIndex(selectedPositionIdx - 1)}
             >
               <IconChevronsUp className="h-5 w-5" />
             </a>
@@ -179,12 +189,12 @@ export default function PositionPlayerControls({
 
           <li
             className={
-              selectedPositionIdx >= positionList.length - 1 ? "disabled" : ""
+              selectedPositionIdx >= positionLabels.length - 1 ? "disabled" : ""
             }
           >
             <a
               className="justify-around"
-              onClick={() => setPositionIndex(selectedPositionIdx + 1)}
+              onClick={() => handleSetPositionIndex(selectedPositionIdx + 1)}
             >
               <IconChevronsDown className="h-5 w-5" />
             </a>
@@ -218,6 +228,7 @@ export default function PositionPlayerControls({
         </ul>
       </div>
 
+      {/* Settings modal */}
       <dialog
         id="settings-modal"
         className="modal modal-bottom sm:modal-middle"
@@ -226,7 +237,7 @@ export default function PositionPlayerControls({
           <h3 className="text-lg font-bold">Settings</h3>
 
           {/* Toggle sound */}
-          <div className="form-control max-w-fit mt-4">
+          <div className="form-control mt-4 max-w-fit">
             <label className="label cursor-pointer gap-4">
               <span className="label-text flex gap-2">
                 {soundEnabled ? (
@@ -246,7 +257,7 @@ export default function PositionPlayerControls({
           </div>
 
           {/* Select chord note labeling scheme */}
-          <label className="form-control w-full max-w-xs mt-2">
+          <label className="form-control mt-2 w-full max-w-xs">
             <div className="label">
               <span className="label-text">Chord note labels</span>
             </div>
@@ -264,7 +275,7 @@ export default function PositionPlayerControls({
           </label>
 
           {/* Select scale note labels */}
-          <label className="form-control w-full max-w-xs mt-4">
+          <label className="form-control mt-4 w-full max-w-xs">
             <div className="label">
               <span className="label-text">Scale note labels</span>
             </div>
@@ -279,6 +290,65 @@ export default function PositionPlayerControls({
               <option value="none">None</option>
             </select>
           </label>
+
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+        {/* there a second form with 'modal-backdrop' class and it covers the screen so we can close the modal when clicked outside */}
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+
+      {/* Key change modal */}
+      <dialog
+        id="keychange-modal"
+        className="modal modal-bottom sm:modal-middle"
+      >
+        <div className="modal-box">
+          <h3 className="text-lg font-bold">Change Key</h3>
+
+          <div className="form-control flex-row gap-2 mt-6">
+
+          <select
+            className="select select-bordered"
+            onChange={(e) => setKeyLetter(e.target.value)}
+            defaultValue={keyLetter}
+          >
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="G">G</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+          </select>
+
+          <select
+            className="select select-bordered"
+            onChange={(e) => setKeyAccidental(e.target.value)}
+            defaultValue={keyAccidental}
+          >
+            <option value=""></option>
+            <option value="#">#</option>
+            <option value="b">b</option>
+          </select>
+
+          <select
+            className="select select-bordered"
+            onChange={(e) => setKeyType(e.target.value)}
+            defaultValue={keyType}
+          >
+            <option value="major">major</option>
+            <option value="minor">minor</option>
+          </select>
+          </div>
+
+          
 
           <div className="modal-action">
             <form method="dialog">

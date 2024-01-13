@@ -1,10 +1,18 @@
 # Soon
 
 - [ ] Support changing keys
+- [ ] Fix bugs in labeling in other keys
+- [ ] Support alternate voicings in open position
 
 # Next
 
+- [ ] Minor key voicings
+
 - [ ] When manually changing string stop, show original chord tone as transparent overlay
+
+- [ ] Move key selector into settings form
+  - Show selected key somewhere?
+  - Move settings up top, under about.
 
 - [ ] About screen
 - [ ] Clean up position selector
@@ -13,7 +21,8 @@
 
 # Later
 
-- [ ] Refactor 
+- [ ] Refactor
+
   - [ ] Refactor business logic
     - **Diatonic calculations (by key)**: For a given key, determine diatonic chords, scales, note names, midi numbers and degrees. Pretty much just wrap tonaljs.
     - **Instrument calculations (fretboard locations by instrument)**: For a given instrument and tuning, determine midi numbers of each fretboard location, and vice-versa.
@@ -30,12 +39,12 @@
 - [ ] Deployment
 - [ ] Analytics
 
-
 - [ ] Friendly URLs/routing
 
 # Maybe?
 
-- [ ] Add setting to control scroll/strum behavior. Swipe/drag to: (*) strum ( ) scroll
+- [ ] One-click way to switch to relative minor in keychange settings.
+- [ ] Add setting to control scroll/strum behavior. Swipe/drag to: (\*) strum ( ) scroll
 - [ ] Seventh chords
 - [ ] Close button in upper right of position dropdowns
 - [ ] String styling (different widths, brass/wound bass strings)

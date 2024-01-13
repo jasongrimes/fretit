@@ -1,4 +1,4 @@
-import { Key } from "tonal";
+import { Key, Note } from "tonal";
 
 /**
  * Chord voicing.
@@ -12,27 +12,32 @@ export type Voicing = number[];
  */
 export type DiatonicChords = Record<string, Voicing>;
 
-export interface CagedPosition {
+export interface Position {
   /**
    * Integer number of the I chord position (i.e. the lowest fret number).
    * Note that some chords in the position may descend a fret (or two?) below this.
    */
   positionNum: number;
+  /**
+   * CAGED shape of the I chord.
+   */
+  caged: string;
   chords: DiatonicChords;
 }
 
-export interface Position {
+export interface PositionLabel {
   caged: string;
   num: number;
   roman: string;
   label: string;
 }
 
-// Chord voicings in each CAGED position
-// in guitar standard tuning,
+// Chord voicings in each CAGED position in guitar standard tuning,
 // in C major key.
-const cagedPositions: Record<string, CagedPosition> = {
-  C: {
+// const cMajorPositions: Record<string, CagedPosition> = {
+const cMajorPositions: Position[] = [
+  {
+    caged: "C",
     positionNum: 0, // Lowest fret
     chords: {
       I: [0, 1, 0, 2, 3, -1],
@@ -45,7 +50,8 @@ const cagedPositions: Record<string, CagedPosition> = {
       V7: [1, 0, 0, 0, 2, 3],
     },
   },
-  A: {
+  {
+    caged: "A",
     positionNum: 3,
     chords: {
       I: [3, 5, 5, 5, 3, -1],
@@ -58,7 +64,8 @@ const cagedPositions: Record<string, CagedPosition> = {
       V7: [-1, 3, 4, 3, -1, 3],
     },
   },
-  G: {
+  {
+    caged: "G",
     positionNum: 5,
     chords: {
       I: [8, 5, 5, 5, 7, 8],
@@ -71,7 +78,8 @@ const cagedPositions: Record<string, CagedPosition> = {
       V7: [7, 6, 7, 5, -1, -1],
     },
   },
-  E: {
+  {
+    caged: "E",
     positionNum: 8,
     chords: {
       I: [8, 8, 9, 10, 10, 8],
@@ -84,7 +92,8 @@ const cagedPositions: Record<string, CagedPosition> = {
       V7: [-1, 8, 10, 9, 10, -1],
     },
   },
-  D: {
+  {
+    caged: "D",
     positionNum: 10,
     chords: {
       I: [12, 13, 12, 10, -1, -1],
@@ -97,7 +106,7 @@ const cagedPositions: Record<string, CagedPosition> = {
       V7: [10, 12, 10, 12, 10, -1],
     },
   },
-};
+];
 
 // prettier-ignore
 const romanPositions = ["O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
@@ -153,17 +162,48 @@ export class ChordCalculator {
     });
   }
 
-  getChordVoicing(cagedPosition: string, chordNum: string) {
-    return cagedPositions[cagedPosition]?.chords[chordNum].slice();
+  getPosition(positionIndex: number): Position {
+    return this.getPositions()[positionIndex];
   }
 
-  getPositionList(): Position[] {
-    // TODO: Transpose by key, so the position number is correct and the lowest position is listed first.
-    return Object.entries(cagedPositions).map(([caged, position]) => {
+  getPositions(): Position[] {
+    return cMajorPositions
+      .map((position) => {
+        // Transpose the C Major positions to the current key.
+        const keyChroma = Note.chroma(this.keyTonic) ?? 0;
+        const transposedPosition = position.positionNum + keyChroma;
+        const newPosition: Position = {
+          ...position,
+          positionNum: transposedPosition % 12,
+          chords: {},
+        };
+        const positionOffset = transposedPosition - newPosition.positionNum;
+        Object.keys(position.chords).forEach((roman) => {
+          newPosition.chords[roman] = position.chords[roman].map((fretNum) => {
+            if (fretNum === -1) {
+              return fretNum;
+            }
+            return fretNum + keyChroma - positionOffset;
+          });
+        });
+
+        return newPosition;
+      })
+      .sort((a, b) => {
+        return a.positionNum - b.positionNum;
+      });
+  }
+
+  getChordVoicing(positionIndex: number, roman: string) {
+    return this.getPosition(positionIndex)?.chords[roman].slice();
+  }
+
+  getPositionLabels(): PositionLabel[] {
+    return this.getPositions().map((position) => {
+      const caged = position.caged;
       const num = position.positionNum;
       const roman = romanPositions[num];
       const label = roman === "O" ? "Open" : roman;
-
       return { caged, num, roman, label };
     });
   }
