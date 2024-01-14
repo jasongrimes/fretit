@@ -19,8 +19,8 @@ export default function PositionPlayer() {
 
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [chordLabeling, setChordLabeling] = useState<LabelingScheme>("scaleInterval");
-  const [scaleLabeling, setScaleLabeling] = useState<LabelingScheme>("scaleInterval");
-  const [keyType, setKeyType] = useState<"major" | "minor">("major");
+  const [scaleLabeling, setScaleLabeling] = useState("scaleInterval");
+  const [keyType, setKeyType] = useState("major");
   const [keyLetter, setKeyLetter] = useState("C");
   const [keyAccidental, setKeyAccidental] = useState("");
   const [positionIndex, setPositionIndex] = useState(0);
@@ -85,8 +85,8 @@ export default function PositionPlayer() {
     }
     return stringOverlays;
   });
-  console.log(key);
-  console.log(overlays);
+  // console.log(key);
+  // console.log(overlays);
 
   //
   // Support string animation
@@ -154,6 +154,14 @@ export default function PositionPlayer() {
     setChordLabeling(scheme);
   }
 
+  function handleSetKey(keyLetter: string, keyAccidental: string, keyType: string) {
+    setKeyLetter(keyLetter);
+    setKeyAccidental(keyAccidental);
+    setKeyType(keyType);
+    chordCalculator.setKey(keyLetter + keyAccidental, keyType);
+    handleSetChordNum("I");
+  }
+
   return (
     <div className="fretboard-player mx-auto flex max-w-lg  overflow-x-hidden">
       <div className="flex-grow">
@@ -183,11 +191,9 @@ export default function PositionPlayer() {
           scaleLabeling={scaleLabeling}
           onSetScaleLabeling={setScaleLabeling}
           keyLetter={keyLetter}
-          setKeyLetter={setKeyLetter}
           keyAccidental={keyAccidental}
-          setKeyAccidental={setKeyAccidental}
           keyType={keyType}
-          setKeyType={setKeyType}
+          onSetKey={handleSetKey}
         />
       </div>
     </div>

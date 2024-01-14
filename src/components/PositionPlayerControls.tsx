@@ -26,6 +26,10 @@ interface Props {
   onSetPositionIndex: (positionIndex: number) => void;
   scaleLabeling: string;
   onSetScaleLabeling: (scaleLabeling: string) => void;
+  keyLetter: string;
+  keyAccidental: string;
+  keyType: string;
+  onSetKey: (keyLetter: string, keyAccidental: string, keyType: string) => void;
 }
 export default function PositionPlayerControls({
   soundEnabled,
@@ -41,11 +45,9 @@ export default function PositionPlayerControls({
   scaleLabeling,
   onSetScaleLabeling,
   keyLetter,
-  setKeyLetter,
   keyAccidental,
-  setKeyAccidental,
   keyType,
-  setKeyType,
+  onSetKey
 }: Props) {
   const [maximized, setMaximized] = useState(false);
 
@@ -308,7 +310,7 @@ export default function PositionPlayerControls({
           <div className="form-control mt-6 flex-row gap-2">
             <select
               className="select select-bordered"
-              onChange={(e) => setKeyLetter(e.target.value)}
+              onChange={(e) => onSetKey(e.target.value, keyAccidental, keyType)}
               defaultValue={keyLetter}
             >
               <option value="C">C</option>
@@ -322,7 +324,7 @@ export default function PositionPlayerControls({
 
             <select
               className="select select-bordered"
-              onChange={(e) => setKeyAccidental(e.target.value)}
+              onChange={(e) => onSetKey(keyLetter, e.target.value, keyType)}
               defaultValue={keyAccidental}
             >
               <option value=""></option>
@@ -332,7 +334,7 @@ export default function PositionPlayerControls({
 
             <select
               className="select select-bordered"
-              onChange={(e) => setKeyType(e.target.value)}
+              onChange={(e) => onSetKey(keyLetter, keyAccidental, e.target.value)}
               defaultValue={keyType}
             >
               <option value="major">major</option>

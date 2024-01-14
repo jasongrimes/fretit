@@ -128,17 +128,21 @@ const triadSuffixes: Record<string, Record<string, string>> = {
 }
 
 export class ChordCalculator {
-  readonly keyTonic: string;
-  readonly keyType: string;
-  readonly scale: string[];
+  keyTonic!: string;
+  keyType!: string;
+  scale!: string[];
 
   constructor({
     keyTonic,
     keyType,
   }: {
     keyTonic: string;
-    keyType: "major" | "minor";
-  }) {
+    keyType: string; // "major" | "minor";
+    }) {
+    this.setKey(keyTonic, keyType);
+  }
+
+  setKey(keyTonic: string, keyType: string) {
     this.keyTonic = keyTonic;
     this.keyType = keyType;
     this.scale =
@@ -176,7 +180,7 @@ export class ChordCalculator {
         const keyChroma = Note.chroma(this.keyTonic) ?? 0;
         const cPositionNum = position.positionNum ?? 0;
         const transposedPosition = cPositionNum + keyChroma;
-        const newPositionNum = transposedPosition % 12
+        const newPositionNum = transposedPosition % 12;
         const roman = romanPositions[newPositionNum];
         const newPosition: Position = {
           ...position,
