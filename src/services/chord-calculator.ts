@@ -1,8 +1,7 @@
 import { Key, Note } from "tonal";
 
 /**
- * Chord voicing.
- * Zero-indexed array of strings with the fret number stopped on each.
+ * Chord voicing. A zero-indexed array of strings with the fret number stopped on each.
  * -1 means muted.
  */
 export type Voicing = number[];
@@ -21,8 +20,7 @@ export interface PositionTemplate {
   chords: DiatonicChords;
 }
 /**
- * One fretboard position in a given key,
- * hydrated from the cMajorPositions template.
+ * One fretboard position in a given key, hydrated from a PositionTemplate.
  */
 export interface Position extends PositionTemplate {
   roman: string;
@@ -167,12 +165,12 @@ export class ChordCalculator {
         : Key.minorKey(keyTonic).natural.scale.slice();
   }
 
-  getChordRoot(chordNum: string) {
-    return this.scale[chordNumIndex[this.keyType][chordNum]];
+  getChordRoot(romanNum: string) {
+    return this.scale[chordNumIndex[this.keyType][romanNum]];
   }
 
-  getChordName(chordNum: string) {
-    return this.getChordRoot(chordNum) + triadSuffixes[this.keyType][chordNum];
+  getChordName(romanNum: string) {
+    return this.getChordRoot(romanNum) + triadSuffixes[this.keyType][romanNum];
   }
 
   getChordList() {
@@ -197,6 +195,7 @@ export class ChordCalculator {
         const cPositionNum = position.positionNum ?? 0;
         const transposedPosition = cPositionNum + keyChroma;
         const newPositionNum = transposedPosition % 12;
+        const positionOffset = transposedPosition - newPositionNum;
         const roman = romanPositions[newPositionNum];
         const newPosition: Position = {
           ...position,
@@ -205,7 +204,6 @@ export class ChordCalculator {
           label: roman === "O" ? "Open" : roman,
           chords: {},
         };
-        const positionOffset = transposedPosition - newPosition.positionNum;
         Object.keys(position.chords).forEach((roman) => {
           // In open position, check if there's an alternate voicing for this chord (by key and chord num)
           if (
@@ -233,7 +231,7 @@ export class ChordCalculator {
       });
   }
 
-  getChordVoicing(positionIndex: number, roman: string) {
-    return this.getPosition(positionIndex)?.chords[roman].slice();
+  getChordVoicing(positionIndex: number, romanNum: string) {
+    return this.getPosition(positionIndex)?.chords[romanNum].slice();
   }
 }
