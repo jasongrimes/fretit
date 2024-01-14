@@ -122,7 +122,18 @@ const cMinorPositions: PositionTemplate[] = [
   {
     caged: "A",
     positionNum: 3,
-    chords: {},
+    chords: {
+      i: [3, 4, 5, 5, 3, -1],
+      "ii°": [-1, 3, -1, 3, 5, 4],
+      bIII: [3, 4, 3, 5, 6, -1],
+      iv: [4, 6, 5, 3, -1, -1],
+      v: [3, 3, 3, 5, 5, 3],
+      bVI: [4, 4, 5, 6, 6, 4],
+      bVII: [6, 3, 3, 3, 5, 6],
+      "vii°": [-1, 3, 4, 3, 5, -1],
+      V: [3, 3, 4, 5, 5, 3],
+      V7: [3, 3, 4, 3, 5, 3],
+    },
   },
   {
     caged: "G",
@@ -277,7 +288,7 @@ export class ChordCalculator {
   }
 
   getChordVoicing(positionIndex: number, romanNum: string) {
-    console.log(`getChordVoicing(${positionIndex}, ${romanNum})`);
+    // console.log(`getChordVoicing(${positionIndex}, ${romanNum})`);
     return this.getPosition(positionIndex).chords[romanNum].slice();
   }
 }

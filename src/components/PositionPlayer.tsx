@@ -138,6 +138,7 @@ export default function PositionPlayer() {
     const newVoicing = voicing.slice();
     newVoicing[stringNum - 1] = fretNum;
     setVoicing(newVoicing);
+    console.log(newVoicing);
     // TODO: Set an overlay to track the old chord voicing?
   }
 
