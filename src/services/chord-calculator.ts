@@ -201,6 +201,7 @@ const openPositionVoicings: Record<string, DiatonicChords> = {
     V: [2, 4, 4, 4, 2, -1], // B
     vi: [0, 2, 1, 2, -1, -1], // C#m
     V7: [2, 0, 2, 1, 2, -1], // B7
+    "vii°": [-1, -1, 2, 1, 0, 2], // D#dim
   },
   D: {
     vi: [2, 3, 4, 4, 2, -1], // Bm

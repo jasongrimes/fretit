@@ -15,7 +15,7 @@
 
 - BUG: Issues with chord root style detection
   - Fb major I chord doesn't have root style on chord root.
-  - G minor open position viidim chord
+  - G minor, D minor open position viidim chord
 
 - BUG: Scale numbering in minor G position should be adjusted down one fret
 
