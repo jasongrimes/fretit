@@ -7,7 +7,7 @@ export default function Footer() {
           <a href="https://grimesit.com" className="link">
             Grimes IT
           </a> 
-          . <span className="whitespace-nowrap">Copyright © 2024</span>
+          . <span className="whitespace-nowrap">© 2024</span>
         </p>
       </aside>
     </footer>
