@@ -10,7 +10,7 @@
 
 # Later
 
-- BUG: Scale numbering in minor G position should be adjusted down one fret
+- BUG: Scale numbering in (A,D,E,G) minor C position, (C,A,D,E) minor G position, should be adjusted down one fret
 
 
 - [ ] Refactor
