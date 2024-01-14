@@ -1,10 +1,10 @@
 # Soon
 
-- [ ] Support alternate voicings in open position
-  - D: Bm; 
-  - E: G#m, B, C#m, B7; 
-  - G: Bm; 
-  - A: Bm, C#m, G#dim, E7; 
+- [ ] Consolidate settings
+  - Move key selector into settings form
+  - Show selected key somewhere? Header?
+  - Move settings up top, under about.
+
 
 # Next
 
@@ -12,10 +12,7 @@
 
 - [ ] When manually changing string stop, show original chord tone as transparent overlay
 
-- [ ] Consolidate settings
-  - Move key selector into settings form
-  - Show selected key somewhere? Header?
-  - Move settings up top, under about.
+
 
 - [ ] About screen
 - [ ] Clean up position selector
@@ -23,6 +20,8 @@
   - Column headings for Fret and CAGED I chord
 
 # Later
+
+- BUG: Fb major I chord doesn't have root style on chord root.
 
 - [ ] Refactor
 

@@ -15,7 +15,7 @@ export type DiatonicChords = Record<string, Voicing>;
 /**
  * All diatonic chords in one fretboard position in the key of C.
  */
-export interface PositionInC {
+export interface PositionTemplate {
   positionNum: number;
   caged: string;
   chords: DiatonicChords;
@@ -24,21 +24,14 @@ export interface PositionInC {
  * One fretboard position in a given key,
  * hydrated from the cMajorPositions template.
  */
-export interface Position extends PositionInC {
-  roman: string;
-  label: string;
-}
-
-export interface PositionLabel {
-  caged: string;
-  num: number;
+export interface Position extends PositionTemplate {
   roman: string;
   label: string;
 }
 
 // Chord voicings in each CAGED position in guitar standard tuning,
 // in C major key.
-const cMajorPositions: PositionInC[] = [
+const cMajorPositions: PositionTemplate[] = [
   {
     caged: "C",
     positionNum: 0, // Lowest fret
@@ -111,6 +104,29 @@ const cMajorPositions: PositionInC[] = [
   },
 ];
 
+// A few alternate voicings for open positions, by key tonic and chord number.
+const openPositionVoicings: Record<string, DiatonicChords> = {
+  A: {
+    ii: [2, 3, 4, 4, 2, -1], // Bm
+    iii: [0, 2, 1, 2, -1, -1], // C#m
+    "vii°": [-1, 0, 1, 0, 2, -1], // G#dim
+    V7: [0, 0, 1, 0, 2, 0], // E7
+  },
+  G: {
+    iii: [2, 3, 4, 4, 2, -1], // Bm
+  },
+  E: {
+    iii: [-1, 0, 1, 1, 2, 4], // G#m
+    V: [2, 4, 4, 4, 2, -1], // B
+    vi: [0, 2, 1, 2, -1, -1], // C#m
+    V7: [2, 0, 2, 1, 2, -1], // B7
+  },
+  D: {
+    vi: [2, 3, 4, 4, 2, -1], // Bm
+    "vii°": [0, 2, 0, 2, -1, -1], // C#dim
+  },
+};
+
 // prettier-ignore
 const romanPositions = ["O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
 
@@ -138,7 +154,7 @@ export class ChordCalculator {
   }: {
     keyTonic: string;
     keyType: string; // "major" | "minor";
-    }) {
+  }) {
     this.setKey(keyTonic, keyType);
   }
 
@@ -191,12 +207,23 @@ export class ChordCalculator {
         };
         const positionOffset = transposedPosition - newPosition.positionNum;
         Object.keys(position.chords).forEach((roman) => {
-          newPosition.chords[roman] = position.chords[roman].map((fretNum) => {
-            if (fretNum === -1) {
-              return fretNum;
-            }
-            return fretNum + keyChroma - positionOffset;
-          });
+          // In open position, check if there's an alternate voicing for this chord (by key and chord num)
+          if (
+            newPositionNum === 0 &&
+            openPositionVoicings[this.keyTonic]?.[roman]
+          ) {
+            newPosition.chords[roman] =
+              openPositionVoicings[this.keyTonic][roman];
+          } else {
+            newPosition.chords[roman] = position.chords[roman].map(
+              (fretNum) => {
+                if (fretNum === -1) {
+                  return fretNum;
+                }
+                return fretNum + keyChroma - positionOffset;
+              },
+            );
+          }
         });
 
         return newPosition;
@@ -208,15 +235,5 @@ export class ChordCalculator {
 
   getChordVoicing(positionIndex: number, roman: string) {
     return this.getPosition(positionIndex)?.chords[roman].slice();
-  }
-
-  getPositionLabels(): PositionLabel[] {
-    return this.getPositions().map((position) => {
-      const caged = position.caged;
-      const num = position.positionNum;
-      const roman = romanPositions[num];
-      const label = roman === "O" ? "Open" : roman;
-      return { caged, num, roman, label };
-    });
   }
 }
