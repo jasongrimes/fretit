@@ -2,24 +2,13 @@
 
 - [ ] About screen
 
-
 # Next
-
 
 - [ ] Label minor CAGED positions as minor (ex. Cm shape instead of C shape)?
 - [ ] When manually changing string stop, show original chord tone as transparent overlay
 
 
 # Later
-
-- BUG: Issues with chord root style detection
-  - Fb major I chord doesn't have root style on chord root.
-  - G minor, D minor open position viidim chord
-    - The root note is the wrong accidental type. In key of Dm, the 7 is Db, but the chord is being shown as C#. Should be Db?
-    - Actually, harmonic minor keys sometimes have both sharps and flats. Should actually change the scale note to be written as C# instead of Db?
-    - There's no great way to resolve this issue that won't be confusing in some circumstances.
-    - Maybe just keep the note namings as-is, and just fix the recognition of enharmonic root notes.
-    - Make enharmonic root notes show the correct style, regardless.
 
 - BUG: Scale numbering in minor G position should be adjusted down one fret
 

@@ -250,12 +250,10 @@ export class ChordCalculator {
             ...Key.minorKey(keyTonic).natural.scale,
             // Tack on the 7 from the harmonic minor
             Key.minorKey(keyTonic).harmonic.scale[6],
-        ];
-    console.log(this.scale, Key.minorKey(keyTonic).harmonic.scale);
+          ];
   }
 
   getChordRoot(romanNum: string) {
-    console.log(`getChordRoot(${romanNum})`, this.scale[chordNumIndex[this.keyType][romanNum]]);
     return this.scale[chordNumIndex[this.keyType][romanNum]];
   }
 
