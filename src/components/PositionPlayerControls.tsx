@@ -112,9 +112,11 @@ export default function PositionPlayerControls({
           {/* Key */}
           <li className="menu-title text-center">
             {maximized ? (
-              <>{keyLetter}{keyAccidental} {keyType === "minor" ? "m" : ""}</>
-            )
-            : (
+              <>
+                {keyLetter}
+                {keyAccidental} {keyType === "minor" ? "m" : ""}
+              </>
+            ) : (
               <>
                 {keyLetter}
                 {keyAccidental} {keyType}
@@ -124,6 +126,7 @@ export default function PositionPlayerControls({
 
           {/* Position selector */}
           <li className="w-full">
+            
             <details className="dropdown dropdown-end">
               <summary
                 className={
@@ -143,7 +146,11 @@ export default function PositionPlayerControls({
                 )}
               </summary>
               <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-200 p-2 shadow">
-                <li className="menu-title">Position</li>
+                <li className="menu-title"><h2 className="text-lg">Position</h2></li>
+                <li className="menu-title flex flex-row">
+                  <div className="w-14 text-right pr-4 underline">Fret</div>
+                  <div className="underline">CAGED I-chord</div>
+                </li>
                 {positions.map((position, i) => {
                   return (
                     <li key={i}>
@@ -151,7 +158,10 @@ export default function PositionPlayerControls({
                         onClick={() => handleSetPositionIndex(i)}
                         className={i === positionIndex ? "active" : ""}
                       >
-                        <b>{position.label}</b>({position.caged}-shape I)
+                        <div className="w-14 text-right pr-4">
+                          <b>{position.label}</b>
+                        </div>
+                        <div><b>{position.caged}</b>-shape I</div>
                       </a>
                     </li>
                   );
