@@ -11,6 +11,9 @@
 # Later
 
 - BUG: Scale numbering in (A,D,E,G) minor C position, (C,A,D,E) minor G position, should be adjusted down one fret
+  - Maybe: Change the position numbers in each position to be the lowest fret for all chords in the position.
+    Then have the scale span five frets up from there.
+    That will make the position numbers more accurate too.
 
 
 - [ ] Refactor
