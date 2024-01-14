@@ -3,6 +3,7 @@ import {
   IconArrowsMinimize,
   IconChevronsDown,
   IconChevronsUp,
+  IconHeart,
   IconInfoCircle,
   IconSettings,
   IconVolume,
@@ -91,7 +92,11 @@ export default function PositionPlayerControls({
       <div className={` ${maximized ? "w-16" : "w-32"} `}>
         <ul className="menu fixed z-10 rounded-box bg-base-300 text-base-content">
           <li>
-            <a>
+            <a
+              onClick={() =>
+                document.getElementById("about-modal")?.showModal()
+              }
+            >
               <IconInfoCircle className="h-5 w-5" />
               {!maximized && <>About</>}
             </a>
@@ -110,7 +115,7 @@ export default function PositionPlayerControls({
           </li>
 
           {/* Key */}
-          <li className="menu-title text-center px-0">
+          <li className="menu-title px-0 text-center">
             {maximized ? (
               <>
                 {keyLetter}
@@ -126,7 +131,6 @@ export default function PositionPlayerControls({
 
           {/* Position selector */}
           <li className="w-full">
-            
             <details className="dropdown dropdown-end">
               <summary
                 className={
@@ -146,10 +150,14 @@ export default function PositionPlayerControls({
                 )}
               </summary>
               <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-200 p-2 shadow">
-                <li className="menu-title"><h2 className="text-lg">Position</h2></li>
+                <li className="menu-title">
+                  <h2 className="text-lg">Position</h2>
+                </li>
                 <li className="menu-title flex flex-row">
-                  <div className="w-14 text-right pr-4 underline">Fret</div>
-                  <div className="underline">CAGED {keyType === "minor" ? "i" : "I"}-chord</div>
+                  <div className="w-14 pr-4 text-right underline">Fret</div>
+                  <div className="underline">
+                    CAGED {keyType === "minor" ? "i" : "I"}-chord
+                  </div>
                 </li>
                 {positions.map((position, i) => {
                   return (
@@ -158,10 +166,13 @@ export default function PositionPlayerControls({
                         onClick={() => handleSetPositionIndex(i)}
                         className={i === positionIndex ? "active" : ""}
                       >
-                        <div className="w-14 text-right pr-4">
+                        <div className="w-14 pr-4 text-right">
                           <b>{position.label}</b>
                         </div>
-                        <div><b>{position.caged}</b>-shape {keyType === "minor" ? "i" : "I"}</div>
+                        <div>
+                          <b>{position.caged}</b>-shape{" "}
+                          {keyType === "minor" ? "i" : "I"}
+                        </div>
                       </a>
                     </li>
                   );
@@ -349,15 +360,71 @@ export default function PositionPlayerControls({
         </form>
       </dialog>
 
-      {/* Key change modal */}
-      <dialog
-        id="keychange-modal"
-        className="modal modal-bottom sm:modal-middle"
-      >
+      {/* About modal */}
+      <dialog id="about-modal" className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
-          <h3 className="text-lg font-bold">Change Key</h3>
+          <h2 className="text-2xl font-bold">About</h2>
+
+          <p className="py-4">
+            This is a tool for learning all the guitar chords in a given key within the same
+             position on the fretboard. This makes chord changes easier,
+            improves voice leading, and helps develop an intuitive understanding
+            of harmony.
+          </p>
+
+          <p className="py-2">
+            Tap or click to play a note. Swipe to strum. Press and hold to mute.
+            Change keys, adjust labeling, and toggle sound in &quot;settings&quot;.
+          </p>
+
+          <p className="py-2">
+            Learn practical ways to play these{" "}
+            <a
+              className="link link-primary"
+              href="https://fretboardfoundation.com/caged.html"
+              target="_blank"
+              rel="noreferrer"
+            >
+              CAGED chord grips
+            </a>
+            , or the basics of{" "}
+            <a
+              className="link link-primary"
+              href="https://fretboardfoundation.com/major-harmony.html"
+              target="_blank"
+              rel="noreferrer"
+            >
+              major key
+            </a>{" "}
+            and{" "}
+            <a
+              className="link link-primary"
+              href="https://fretboardfoundation.com/minor-harmony.html"
+              target="_blank"
+              rel="noreferrer"
+            >
+              minor key
+            </a>{" "}
+            harmony, in the free book <i>Fretboard Foundation</i>.
+          </p>
+
+          <p>
+            Send questions or comments to <a className="link link-primary" href="mailto:hello@fretit.com">hello@fretit.com</a>.
+          </p>
 
           <div className="modal-action">
+            <div className="grow pt-4 text-sm text-gray-500">
+              Made with <IconHeart className="inline h-5 w-5 text-red-500" /> by{" "}
+              <a
+                className="link"
+                href="https://grimesit.com"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Grimes IT
+              </a>
+              .
+            </div>
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
               <button className="btn">Close</button>
