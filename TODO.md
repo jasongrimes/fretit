@@ -1,6 +1,7 @@
 # Soon
 
-- [ ] About screen
+- [ ] Deployment
+- [ ] Analytics
 
 # Next
 
@@ -31,8 +32,6 @@
     - Pull out string stuff (not all of them)
     - index file to forward definitions
 
-- [ ] Deployment
-- [ ] Analytics
 
 - [ ] Friendly URLs/routing
 

@@ -366,20 +366,19 @@ export default function PositionPlayerControls({
           <h2 className="text-2xl font-bold">About</h2>
 
           <p className="py-4">
-            This is a tool for learning all the chords in a given key
-            within the same position on a guitar fretboard. This makes chord changes
-            easier, improves voice leading, and helps develop an intuitive
-            understanding of harmony.
+            This is a tool for exploring chord positions on guitar. All the
+            chords in a given key can be found right next to each other, without
+            moving the hand out of position on the fretboard. There are five
+            such chord groupings up and down the neck.
           </p>
 
           <p className="py-2">
-            Tap or click to play a note. Swipe to strum. Press and hold to mute.
-            Change keys, adjust labeling, and toggle sound in
-            &quot;settings&quot;.
+            Tap a string to play a note. Swipe to strum. Press and hold to mute.
+            Open &quot;settings&quot; to change keys, labels, or toggle sound.
           </p>
 
           <p className="py-2">
-            Learn practical ways to play these{" "}
+            Practical ways to play these{" "}
             <a
               className="link link-primary"
               href="https://fretboardfoundation.com/caged.html"
@@ -387,8 +386,8 @@ export default function PositionPlayerControls({
               rel="noreferrer"
             >
               CAGED chord grips
-            </a>
-            , or the basics of{" "}
+            </a>{" "}
+            and the basics of{" "}
             <a
               className="link link-primary"
               href="https://fretboardfoundation.com/major-harmony.html"
@@ -406,11 +405,11 @@ export default function PositionPlayerControls({
             >
               minor key
             </a>{" "}
-            harmony, in the free book <i>Fretboard Foundation</i>.
+            harmony are described in the free book <i>Fretboard Foundation</i>.
           </p>
 
           <p>
-            Questions? Comments? Send them to {" "}
+            Questions? Comments? Send an email to{" "}
             <a className="link link-primary" href="mailto:hello@fretit.com">
               hello@fretit.io
             </a>
