@@ -266,6 +266,11 @@ export default function PositionPlayerControls({
               />
             </label>
           </div>
+          <div className="label pt-0">
+            <span className="label-text-alt">
+              Tip: make sure your device is not in &quot;silent&quot; mode.
+            </span>
+          </div>
 
           {/* Select key */}
           <label className="form-control mt-2 w-full max-w-xs">
@@ -366,15 +371,15 @@ export default function PositionPlayerControls({
           <h2 className="text-2xl font-bold">About</h2>
 
           <p className="py-4">
-            This is a tool for exploring chord positions on guitar. All the
-            chords in a given key can be found right next to each other, without
-            moving the hand out of position on the fretboard. There are five
-            such chord groupings up and down the neck.
+            This is a tool for exploring chord positions on guitar.{" "}
+            All the chords in a key can be found right next to each other,
+            without moving the hand out of position. There are five such chord
+            groupings up and down the neck.
           </p>
 
           <p className="py-2">
             Tap a string to play a note. Swipe to strum. Press and hold to mute.
-            Open &quot;settings&quot; to change keys, labels, or toggle sound.
+            Open &quot;settings&quot; to change key, labels, or toggle sound.
           </p>
 
           <p className="py-2">
@@ -413,7 +418,7 @@ export default function PositionPlayerControls({
             <a className="link link-primary" href="mailto:hello@fretit.com">
               hello@fretit.io
             </a>
-            .
+            . 
           </p>
 
           <div className="modal-action">
