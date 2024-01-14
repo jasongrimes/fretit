@@ -1,9 +1,5 @@
 # Soon
 
-- [ ] Consolidate settings
-  - Move key selector into settings form
-  - Show selected key somewhere? Header?
-  - Move settings up top, under about.
 
 
 # Next

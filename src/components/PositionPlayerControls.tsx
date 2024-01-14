@@ -4,7 +4,6 @@ import {
   IconChevronsDown,
   IconChevronsUp,
   IconInfoCircle,
-  IconKey,
   IconSettings,
   IconVolume,
   IconVolumeOff,
@@ -47,7 +46,7 @@ export default function PositionPlayerControls({
   keyLetter,
   keyAccidental,
   keyType,
-  onSetKey
+  onSetKey,
 }: Props) {
   const [maximized, setMaximized] = useState(false);
 
@@ -98,21 +97,29 @@ export default function PositionPlayerControls({
             </a>
           </li>
 
-          {/* Key */}
+          {/* Settings */}
           <li>
             <a
               onClick={() =>
-                document.getElementById("keychange-modal")?.showModal()
+                document.getElementById("settings-modal")?.showModal()
               }
             >
-              <IconKey className="h-5 w-5" />
-              {!maximized && (
-                <>
-                  {keyLetter}
-                  {keyAccidental} {keyType}
-                </>
-              )}
+              <IconSettings className="h-5 w-5" />
+              {!maximized && <>Settings</>}
             </a>
+          </li>
+
+          {/* Key */}
+          <li className="menu-title text-center">
+            {maximized ? (
+              <>{keyLetter}{keyAccidental} {keyType === "minor" ? "m" : ""}</>
+            )
+            : (
+              <>
+                {keyLetter}
+                {keyAccidental} {keyType}
+              </>
+            )}
           </li>
 
           {/* Position selector */}
@@ -195,18 +202,6 @@ export default function PositionPlayerControls({
             </a>
           </li>
 
-          {/* Settings */}
-          <li>
-            <a
-              onClick={() =>
-                document.getElementById("settings-modal")?.showModal()
-              }
-            >
-              <IconSettings className="h-5 w-5" />
-              {!maximized && <>Settings</>}
-            </a>
-          </li>
-
           {/* Maximize */}
           <li>
             <a onClick={handleToggleMaximized}>
@@ -251,8 +246,53 @@ export default function PositionPlayerControls({
             </label>
           </div>
 
-          {/* Select chord note labeling scheme */}
+          {/* Select key */}
           <label className="form-control mt-2 w-full max-w-xs">
+            <div className="label">
+              <span className="label-text">Key</span>
+            </div>
+            <div className="form-control flex-row gap-2">
+              <select
+                className="select select-bordered"
+                onChange={(e) =>
+                  onSetKey(e.target.value, keyAccidental, keyType)
+                }
+                defaultValue={keyLetter}
+              >
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="G">G</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+              </select>
+
+              <select
+                className="select select-bordered"
+                onChange={(e) => onSetKey(keyLetter, e.target.value, keyType)}
+                defaultValue={keyAccidental}
+              >
+                <option value=""></option>
+                <option value="#">#</option>
+                <option value="b">b</option>
+              </select>
+
+              <select
+                className="select select-bordered grow"
+                onChange={(e) =>
+                  onSetKey(keyLetter, keyAccidental, e.target.value)
+                }
+                defaultValue={keyType}
+              >
+                <option value="major">major</option>
+                <option value="minor">minor</option>
+              </select>
+            </div>
+          </label>
+
+          {/* Select chord note labeling scheme */}
+          <label className="form-control mt-4 w-full max-w-xs">
             <div className="label">
               <span className="label-text">Chord note labels</span>
             </div>
@@ -306,41 +346,6 @@ export default function PositionPlayerControls({
       >
         <div className="modal-box">
           <h3 className="text-lg font-bold">Change Key</h3>
-
-          <div className="form-control mt-6 flex-row gap-2">
-            <select
-              className="select select-bordered"
-              onChange={(e) => onSetKey(e.target.value, keyAccidental, keyType)}
-              defaultValue={keyLetter}
-            >
-              <option value="C">C</option>
-              <option value="D">D</option>
-              <option value="E">E</option>
-              <option value="F">F</option>
-              <option value="G">G</option>
-              <option value="A">A</option>
-              <option value="B">B</option>
-            </select>
-
-            <select
-              className="select select-bordered"
-              onChange={(e) => onSetKey(keyLetter, e.target.value, keyType)}
-              defaultValue={keyAccidental}
-            >
-              <option value=""></option>
-              <option value="#">#</option>
-              <option value="b">b</option>
-            </select>
-
-            <select
-              className="select select-bordered"
-              onChange={(e) => onSetKey(keyLetter, keyAccidental, e.target.value)}
-              defaultValue={keyType}
-            >
-              <option value="major">major</option>
-              <option value="minor">minor</option>
-            </select>
-          </div>
 
           <div className="modal-action">
             <form method="dialog">
