@@ -1,19 +1,14 @@
 # Soon
 
+- [ ] Minor key voicings
 
 
 # Next
 
-- [ ] Minor key voicings
+- [ ] About screen
 
 - [ ] When manually changing string stop, show original chord tone as transparent overlay
 
-
-
-- [ ] About screen
-- [ ] Clean up position selector
-  - Line things up
-  - Column headings for Fret and CAGED I chord
 
 # Later
 
@@ -41,8 +36,10 @@
 
 # Maybe?
 
+- [ ] Make "maximize" hide the header too?
+- [ ] Generate images for each key/position/chord, use in SEO-friendly structured data for google images, social sharing, etc.
 - [ ] One-click way to switch to relative minor in keychange settings.
-- [ ] Add setting to control scroll/strum behavior. Swipe/drag to: (\*) strum ( ) scroll
+- [ ] Add setting to control scroll/strum behavior. Swipe/drag to: (*) strum ( ) scroll
 - [ ] Seventh chords
 - [ ] Close button in upper right of position dropdowns
 - [ ] String styling (different widths, brass/wound bass strings)
