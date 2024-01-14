@@ -7,6 +7,7 @@
 
 - [ ] About screen
 
+- [ ] Label minor CAGED positions as minor (ex. Cm shape instead of C shape)?
 - [ ] When manually changing string stop, show original chord tone as transparent overlay
 
 
@@ -17,6 +18,7 @@
   - G minor open position viidim chord
 
 - BUG: Scale numbering in minor G position should be adjusted down one fret
+
 
 - [ ] Refactor
 
