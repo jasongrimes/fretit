@@ -1,6 +1,10 @@
 # Soon
 
 - [ ] Support alternate voicings in open position
+  - D: Bm; 
+  - E: G#m, B, C#m, B7; 
+  - G: Bm; 
+  - A: Bm, C#m, G#dim, E7; 
 
 # Next
 
