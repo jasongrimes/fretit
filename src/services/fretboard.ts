@@ -86,9 +86,6 @@ export class FretboardLabeler {
         const refMidi = Note.midi(refPitchClass + 1) ?? 0; // Ex. C1
         const semitones = (midi - refMidi) % 12;
         const interval = Interval.get(Interval.fromSemitones(semitones));
-        if (midi === 61 || midi === 59) {
-          //console.log(`getMidiLabel(${midi}): chroma, refChroma, semitones, interval`, chroma, refChroma, semitones, interval);
-        }
         let intervalName = `${
           interval.alt === -1 ? "b" : interval.alt === 1 ? "#" : ""
         }${interval.simple === 8 ? 1 : interval.simple}`;
@@ -115,7 +112,7 @@ export class FretboardLabeler {
   }
 
   getLocationStyle(location: FretboardLocation) {
-    if (this.root === this.getLocationPitchClass(location)) {
+    if (this.root && Note.chroma(this.root) === Note.chroma(this.getLocationPitchClass(location))) {
       return "root";
     }
     return;
@@ -127,55 +124,4 @@ export class FretboardLabeler {
     }
     return this.tuning[stringNum - 1] + fretNum;
   }
-
-  /*
-  createMatrix(numFrets: number):undefined[][] {
-    return Array.from(this.tuning, () => Array<undefined>(numFrets));
-  }
-
-  createMatrixWith<Type>(fn: (note: {midi: number, chroma: number}) => Type, numFrets = 13): (Type)[][] {
-    const matrix: (Type | undefined)[][] = this.createMatrix(numFrets);
-    
-    this.tuning.forEach((stringMidi, stringIndex) => {
-      for (let fret = 0; fret <= numFrets; fret++) {
-        const midi = stringMidi + fret;
-        const chroma = midi % 12;
-        matrix[stringIndex][fret] = fn({ midi, chroma });
-      }
-    });
-
-    return matrix as Type[][];
-  }
-  */
-/*
-  getMidiLocations(midiNum: number, minFret = 0, maxFret = 13) {
-    const locations: FretboardLocation[] = [];
-
-    this.tuning.forEach((stringMidi, stringIndex) => {
-      for (let fret = minFret; fret <= maxFret; fret++) {
-        const midi = stringMidi + fret;
-        if (midi === midiNum) {
-          locations.push([stringIndex + 1, fret]);
-        }
-      }
-    });
-
-    return locations;
-  }
-
-  getPitchClassLocations(pitchClass: string, minFret = 0, maxFret = 13) {
-    const locations: FretboardLocation[] = [];
-
-    this.tuning.forEach((stringMidi, stringIndex) => {
-      for (let fret = minFret; fret <= maxFret; fret++) {
-        const midi = stringMidi + fret;
-        if (midi === midiNum) {
-          locations.push([stringIndex + 1, fret]);
-        }
-      }
-    });
-
-    return locations;
-  }
-  */
 }
