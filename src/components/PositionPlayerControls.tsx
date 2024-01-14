@@ -366,15 +366,16 @@ export default function PositionPlayerControls({
           <h2 className="text-2xl font-bold">About</h2>
 
           <p className="py-4">
-            This is a tool for learning all the guitar chords in a given key within the same
-             position on the fretboard. This makes chord changes easier,
-            improves voice leading, and helps develop an intuitive understanding
-            of harmony.
+            This is a tool for learning all the chords in a given key
+            within the same position on a guitar fretboard. This makes chord changes
+            easier, improves voice leading, and helps develop an intuitive
+            understanding of harmony.
           </p>
 
           <p className="py-2">
             Tap or click to play a note. Swipe to strum. Press and hold to mute.
-            Change keys, adjust labeling, and toggle sound in &quot;settings&quot;.
+            Change keys, adjust labeling, and toggle sound in
+            &quot;settings&quot;.
           </p>
 
           <p className="py-2">
@@ -409,7 +410,11 @@ export default function PositionPlayerControls({
           </p>
 
           <p>
-            Send questions or comments to <a className="link link-primary" href="mailto:hello@fretit.com">hello@fretit.com</a>.
+            Questions? Comments? Send them to {" "}
+            <a className="link link-primary" href="mailto:hello@fretit.com">
+              hello@fretit.io
+            </a>
+            .
           </p>
 
           <div className="modal-action">

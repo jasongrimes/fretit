@@ -19,7 +19,7 @@ export default function PositionPlayer() {
 
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [chordLabeling, setChordLabeling] = useState<LabelingScheme>("scaleInterval");
-  const [scaleLabeling, setScaleLabeling] = useState("scaleInterval");
+  const [scaleLabeling, setScaleLabeling] = useState("none");
   const [keyType, setKeyType] = useState("major");
   const [keyLetter, setKeyLetter] = useState("C");
   const [keyAccidental, setKeyAccidental] = useState("");
@@ -176,7 +176,7 @@ export default function PositionPlayer() {
           overlays={overlays}
         />
       </div>
-      <div className="flex-grow-0 pl-2 pr-1">
+      <div className="flex-grow-0 pl-2 pr-2">
         <PositionPlayerControls
           soundEnabled={soundEnabled}
           onSetSoundEnabled={handleSetSoundEnabled}
