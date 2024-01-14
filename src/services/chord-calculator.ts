@@ -27,8 +27,7 @@ export interface Position extends PositionTemplate {
   label: string;
 }
 
-// Chord voicings in each CAGED position in guitar standard tuning,
-// in C major key.
+// Chord voicings in each CAGED position in C major key.
 const cMajorPositions: PositionTemplate[] = [
   {
     caged: "C",
@@ -102,6 +101,46 @@ const cMajorPositions: PositionTemplate[] = [
   },
 ];
 
+// C minor position templates.
+const cMinorPositions: PositionTemplate[] = [
+  {
+    caged: "C",
+    positionNum: 0, // Lowest fret
+    chords: {
+      i: [-1, 1, 0, 1, 3, -1],
+      "ii°": [1, 3, 1, 0, -1, -1],
+      bIII: [3, 4, 3, 1, -1, -1],
+      iv: [1, 1, 1, 3, 3, 1],
+      v: [3, 3, 3, -1, -1, 3],
+      bVI: [4, 1, 1, 1, 3, 4],
+      bVII: [1, 3, 3, 3, 1, -1],
+      "vii°": [1, 0, -1, 0, 2, -1],
+      V: [3, 0, 0, 0, 2, 3],
+      V7: [1, 0, 0, 0, 2, 3],
+    },
+  },
+  {
+    caged: "A",
+    positionNum: 3,
+    chords: {},
+  },
+  {
+    caged: "G",
+    positionNum: 5,
+    chords: {},
+  },
+  {
+    caged: "E",
+    positionNum: 8,
+    chords: {},
+  },
+  {
+    caged: "D",
+    positionNum: 10,
+    chords: {},
+  },
+];
+
 // A few alternate voicings for open positions, by key tonic and chord number.
 const openPositionVoicings: Record<string, DiatonicChords> = {
   A: {
@@ -132,13 +171,13 @@ const romanPositions = ["O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "
 // prettier-ignore
 const chordNumIndex: Record<string, Record<string, number >> = {
   major: { I: 0, ii: 1, iii: 2, IV: 3, V: 4, vi: 5, "vii°": 6, V7: 4 },
-  minor: { i: 0, "ii°": 1, bIII: 2, iv: 3, v: 4, bVI: 5, bVII: 6, V7: 4 }
+  minor: { i: 0, "ii°": 1, bIII: 2, iv: 3, v: 4, bVI: 5, bVII: 6, "vii°": 7, V: 4, V7: 4 }
 }
 
 // prettier-ignore
 const triadSuffixes: Record<string, Record<string, string>> = {
   major: { I: "", ii: "m", iii: "m", IV: "", V: "", vi: "m", "vii°": "°", V7: "7" },
-  minor: { i: "m", "ii°": "°", bIII: "", iv: "m", v: "m", bVI: "", bVII: "", V7: "7" },
+  minor: { i: "m", "ii°": "°", bIII: "", iv: "m", v: "m", bVI: "", bVII: "", "vii°": "°", V: "", V7: "7" },
 }
 
 export class ChordCalculator {
@@ -162,7 +201,11 @@ export class ChordCalculator {
     this.scale =
       keyType === "major"
         ? Key.majorKey(keyTonic).scale.slice()
-        : Key.minorKey(keyTonic).natural.scale.slice();
+        : [
+            ...Key.minorKey(keyTonic).natural.scale,
+            // Tack on the 7 from the harmonic minor
+            Key.minorKey(keyTonic).harmonic.scale[6],
+          ];
   }
 
   getChordRoot(romanNum: string) {
@@ -188,7 +231,9 @@ export class ChordCalculator {
   }
 
   getPositions(): Position[] {
-    return cMajorPositions
+    const positions =
+      this.keyType === "minor" ? cMinorPositions : cMajorPositions;
+    return positions
       .map((position) => {
         // Transpose the C Major positions to the current key.
         const keyChroma = Note.chroma(this.keyTonic) ?? 0;
@@ -232,6 +277,7 @@ export class ChordCalculator {
   }
 
   getChordVoicing(positionIndex: number, romanNum: string) {
-    return this.getPosition(positionIndex)?.chords[romanNum].slice();
+    console.log(`getChordVoicing(${positionIndex}, ${romanNum})`);
+    return this.getPosition(positionIndex).chords[romanNum].slice();
   }
 }

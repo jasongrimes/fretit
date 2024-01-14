@@ -158,7 +158,7 @@ export default function PositionPlayer() {
     setKeyAccidental(keyAccidental);
     setKeyType(keyType);
     chordCalculator.setKey(keyLetter + keyAccidental, keyType);
-    handleSetChordNum("I");
+    handleSetChordNum(keyType === "minor" ? "i" : "I");
   }
 
   return (

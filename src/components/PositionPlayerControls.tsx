@@ -110,7 +110,7 @@ export default function PositionPlayerControls({
           </li>
 
           {/* Key */}
-          <li className="menu-title text-center">
+          <li className="menu-title text-center px-0">
             {maximized ? (
               <>
                 {keyLetter}
@@ -149,7 +149,7 @@ export default function PositionPlayerControls({
                 <li className="menu-title"><h2 className="text-lg">Position</h2></li>
                 <li className="menu-title flex flex-row">
                   <div className="w-14 text-right pr-4 underline">Fret</div>
-                  <div className="underline">CAGED I-chord</div>
+                  <div className="underline">CAGED {keyType === "minor" ? "i" : "I"}-chord</div>
                 </li>
                 {positions.map((position, i) => {
                   return (
@@ -161,7 +161,7 @@ export default function PositionPlayerControls({
                         <div className="w-14 text-right pr-4">
                           <b>{position.label}</b>
                         </div>
-                        <div><b>{position.caged}</b>-shape I</div>
+                        <div><b>{position.caged}</b>-shape {keyType === "minor" ? "i" : "I"}</div>
                       </a>
                     </li>
                   );
