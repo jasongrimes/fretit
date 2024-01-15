@@ -371,22 +371,24 @@ export default function PositionPlayerControls({
           <h2 className="text-2xl font-bold">About</h2>
 
           <p className="py-4">
-            This is a tool for exploring chord positions on guitar.{" "}
-            All the chords in a key can be found right next to each other,
-            without moving the hand out of position. There are five such chord
-            groupings up and down the neck.
+            This is a tool for exploring chord positions on guitar. It shows how all the chords
+            in a key can be found right next to each other, in five different groups
+            up and down the neck.
+          </p>
+
+          <p className="my-2 bg-base-300 p-2">
+            {/* <div className="divider text-sm mt-0 mb-1">Usage:</div> */}
+            <div className="mb-1 text-sm font-bold text-gray-500 ">
+              The fretboard is playable
+            </div>{" "}
+            Tap to fret a note. Swipe to strum. Long-press to mute.
           </p>
 
           <p className="py-2">
-            Tap a string to play a note. Swipe to strum. Press and hold to mute.
-            Open &quot;settings&quot; to change key, labels, or toggle sound.
-          </p>
-
-          <p className="py-2">
-            Practical ways to play these{" "}
+            Learn practical ways to play these{" "}
             <a
               // Hack alert:
-              // I hate to add this focus:outline-none here, 
+              // I hate to add this focus:outline-none here,
               // but the HTML <dialog> behavior makes it autofocus on showModal() and the outline looks terrible,
               // and React has a bug that prevents setting autofocus somewhere else.
               // See https://github.com/facebook/react/issues/23301
@@ -415,15 +417,16 @@ export default function PositionPlayerControls({
             >
               minor key
             </a>{" "}
-            harmony are described in the free book <i>Fretboard Foundation</i>.
+            harmony in the free book <i>Fretboard Foundation</i>.
           </p>
 
-          <p>
-            Questions or comments? I'd love to hear from you. Send an email to{" "}
+          <p className="py-2">
+            Questions or comments? I&apos;d love to hear from you. Send an email
+            to{" "}
             <a className="link link-primary" href="mailto:hello@fretit.com">
               hello@fretit.io
             </a>
-            . 
+            .
           </p>
 
           <div className="modal-action">
