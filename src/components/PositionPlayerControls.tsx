@@ -385,7 +385,12 @@ export default function PositionPlayerControls({
           <p className="py-2">
             Practical ways to play these{" "}
             <a
-              className="link link-primary"
+              // Hack alert:
+              // I hate to add this focus:outline-none here, 
+              // but the HTML <dialog> behavior makes it autofocus on showModal() and the outline looks terrible,
+              // and React has a bug that prevents setting autofocus somewhere else.
+              // See https://github.com/facebook/react/issues/23301
+              className="link link-primary focus:outline-none"
               href="https://fretboardfoundation.com/caged.html"
               target="_blank"
               rel="noreferrer"
@@ -434,7 +439,7 @@ export default function PositionPlayerControls({
               </a>
               .
             </div>
-            <form method="dialog">
+            <form method="dialog" autoFocus>
               {/* if there is a button in form, it will close the modal */}
               <button className="btn">Close</button>
             </form>
