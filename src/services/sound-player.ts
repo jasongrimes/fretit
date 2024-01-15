@@ -8,8 +8,6 @@ export default class SoundPlayer {
 
   constructor(tuning: number[], instrument = "acoustic_guitar_steel") {
     this.audioContext = new AudioContext();
-    // The Soundfont type definition from smplr is incorrect, causing typescript linting errors. Silence them for now.
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     this.player = new Soundfont(this.audioContext, { instrument });
     this.stringMuters = tuning.map(() => undefined);
     this.tuning = tuning;
@@ -28,7 +26,6 @@ export default class SoundPlayer {
     const midi: number = this.tuning[stringNum - 1] + fretNum;
 
     void this.audioContext.resume().then(() => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       this.stringMuters[stringNum - 1] = this.player.start({
         note: midi,
         velocity: 127,
@@ -48,8 +45,6 @@ export default class SoundPlayer {
   }
 
   cleanup() {
-    //void this.audioContext.close();
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     this.player.stop();
     this.stringMuters = this.tuning.map(() => undefined);
   }
