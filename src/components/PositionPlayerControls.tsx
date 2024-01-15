@@ -419,7 +419,7 @@ export default function PositionPlayerControls({
           </p>
 
           <p>
-            Questions? Comments? Send an email to{" "}
+            Questions or comments? I'd love to hear from you. Send an email to{" "}
             <a className="link link-primary" href="mailto:hello@fretit.com">
               hello@fretit.io
             </a>
