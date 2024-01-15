@@ -25,7 +25,7 @@ interface Props {
   positionIndex: number;
   onSetPositionIndex: (positionIndex: number) => void;
   scaleLabeling: string;
-  onSetScaleLabeling: (scaleLabeling: string) => void;
+  onSetScaleLabeling: (scaleLabeling: LabelingScheme) => void;
   keyLetter: string;
   keyAccidental: string;
   keyType: string;

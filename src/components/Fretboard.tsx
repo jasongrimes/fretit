@@ -5,6 +5,8 @@ import {
   Instrument,
 } from "../services/fretboard";
 import "./Fretboard.css";
+import { StringOverlays } from "../types";
+
 
 //
 // <Fretboard> component
@@ -17,7 +19,7 @@ interface FretboardProps {
   playLocation: (location: FretboardLocation) => void;
   stringNodes: Map<number, HTMLElement>;
   voicing: number[];
-  overlays: Record<number, string>[];
+  overlays: StringOverlays[];
 }
 export default function Fretboard({
   instrument,
@@ -88,7 +90,7 @@ interface StringProps {
   labeler: FretboardLabeler;
   stringNodes: Map<number, HTMLElement>;
   onPlayString: () => void;
-  overlays: Record<string, string>;
+  overlays: StringOverlays;
 }
 function String({
   instrument,
@@ -282,7 +284,7 @@ function FretNoteOverlay({
   styleString = "",
 }: {
   label?: string;
-  styleString: string;
+  styleString?: string;
 }) {
   const styles = styleString.split(" ");
   let extraClasses = "";

@@ -10,6 +10,7 @@ import {
 } from "../services/fretboard";
 import Fretboard from "./Fretboard";
 import PositionPlayerControls from "./PositionPlayerControls";
+import { StringOverlays } from "../types";
 
 
 export default function PositionPlayer() {
@@ -19,7 +20,7 @@ export default function PositionPlayer() {
 
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [chordLabeling, setChordLabeling] = useState<LabelingScheme>("scaleInterval");
-  const [scaleLabeling, setScaleLabeling] = useState("none");
+  const [scaleLabeling, setScaleLabeling] = useState<LabelingScheme>("none");
   const [keyType, setKeyType] = useState("major");
   const [keyLetter, setKeyLetter] = useState("C");
   const [keyAccidental, setKeyAccidental] = useState("");
@@ -73,7 +74,7 @@ export default function PositionPlayer() {
       minFret++;
       maxFret++;
     }
-    const stringOverlays: Record<number, { label: string }> = {};
+    const stringOverlays: StringOverlays = {};
     for (let fret = minFret; fret <= maxFret; fret++) {
       const midi = stringMidi + fret;
       const chroma = midi % 12;
