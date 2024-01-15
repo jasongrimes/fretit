@@ -9,7 +9,7 @@ import {
   IconVolume,
   IconVolumeOff,
 } from "@tabler/icons-react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { Position } from "../services/chord-calculator";
 import { FretboardLabeler, LabelingScheme } from "../services/fretboard";
 
@@ -50,6 +50,8 @@ export default function PositionPlayerControls({
   onSetKey,
 }: Props) {
   const [maximized, setMaximized] = useState(false);
+  const aboutDialogRef = useRef<HTMLDialogElement | null>(null);
+  const settingsDialogRef = useRef<HTMLDialogElement | null>(null);
 
   const selectedPosition = positions[positionIndex];
 
@@ -80,11 +82,19 @@ export default function PositionPlayerControls({
   }
 
   function handleSelectLabelingScheme(e: ChangeEvent<HTMLSelectElement>) {
-    onSetLabelingScheme(e.target.value);
+    onSetLabelingScheme(e.target.value as LabelingScheme);
   }
 
   function handleSelectScaleLabeling(e: ChangeEvent<HTMLSelectElement>) {
-    onSetScaleLabeling(e.target.value);
+    onSetScaleLabeling(e.target.value as LabelingScheme);
+  }
+
+  function handleShowAbout() {
+    aboutDialogRef.current?.showModal();
+  
+  }
+  function handleShowSettings() {
+    settingsDialogRef.current?.showModal();
   }
 
   return (
@@ -92,11 +102,7 @@ export default function PositionPlayerControls({
       <div className={` ${maximized ? "w-16" : "w-32"} `}>
         <ul className="menu fixed z-10 rounded-box bg-base-300 text-base-content">
           <li>
-            <a
-              onClick={() =>
-                document.getElementById("about-modal")?.showModal()
-              }
-            >
+            <a onClick={handleShowAbout}>
               <IconInfoCircle className="h-5 w-5" />
               {!maximized && <>About</>}
             </a>
@@ -105,9 +111,7 @@ export default function PositionPlayerControls({
           {/* Settings */}
           <li>
             <a
-              onClick={() =>
-                document.getElementById("settings-modal")?.showModal()
-              }
+              onClick={handleShowSettings}
             >
               <IconSettings className="h-5 w-5" />
               {!maximized && <>Settings</>}
@@ -241,6 +245,7 @@ export default function PositionPlayerControls({
 
       {/* Settings modal */}
       <dialog
+        ref={settingsDialogRef}
         id="settings-modal"
         className="modal modal-bottom sm:modal-middle"
       >
@@ -366,21 +371,25 @@ export default function PositionPlayerControls({
       </dialog>
 
       {/* About modal */}
-      <dialog id="about-modal" className="modal modal-bottom sm:modal-middle">
+      <dialog
+        ref={aboutDialogRef}
+        id="about-modal"
+        className="modal modal-bottom sm:modal-middle"
+      >
         <div className="modal-box">
           <h2 className="text-2xl font-bold">About</h2>
 
           <p className="py-4">
-            This is a tool for exploring chord positions on guitar. It shows how all the chords
-            in a key can be found right next to each other, in five different groups
-            up and down the neck.
+            This is a tool for exploring chord positions on guitar. It shows how
+            all the chords in a key can be found right next to each other, in
+            five different groups up and down the neck.
           </p>
 
           <p className="my-2 bg-base-300 p-2">
             {/* <div className="divider text-sm mt-0 mb-1">Usage:</div> */}
-            <div className="mb-1 text-sm font-bold text-gray-500 ">
+            <span className="mb-1 block text-sm font-bold text-gray-500">
               The fretboard is playable
-            </div>{" "}
+            </span>
             Tap to fret a note. Swipe to strum. Long-press to mute.
           </p>
 
