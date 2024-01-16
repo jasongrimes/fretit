@@ -1,8 +1,6 @@
 # Soon
 
-- [ ] Set up sentry
 
-# Next
 
 - [ ] Refactor
   - [ ] Follow "bulletproof react" code organization recs
@@ -18,6 +16,11 @@
     - Fretboard directory
     - Pull out string stuff (not all of them)
     - index file to forward definitions
+
+
+# Next
+
+- [ ] Fix race condition during fast chord changes
 
 # Later
 
