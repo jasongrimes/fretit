@@ -1,24 +1,11 @@
 # Soon
 
-- [ ] Deployment
-- [ ] Analytics
+- [ ] Set up sentry
 
 # Next
 
-- [ ] Label minor CAGED positions as minor (ex. Cm shape instead of C shape)?
-- [ ] When manually changing string stop, show original chord tone as transparent overlay
-
-
-# Later
-
-- BUG: Scale numbering in (A,D,E,G) minor C position, (C,A,D,E) minor G position, should be adjusted down one fret
-  - Maybe: Change the position numbers in each position to be the lowest fret for all chords in the position.
-    Then have the scale span five frets up from there.
-    That will make the position numbers more accurate too.
-
-
 - [ ] Refactor
-
+  - [ ] Follow "bulletproof react" code organization recs
   - [ ] Refactor business logic
     - **Diatonic calculations (by key)**: For a given key, determine diatonic chords, scales, note names, midi numbers and degrees. Pretty much just wrap tonaljs.
     - **Instrument calculations (fretboard locations by instrument)**: For a given instrument and tuning, determine midi numbers of each fretboard location, and vice-versa.
@@ -32,12 +19,25 @@
     - Pull out string stuff (not all of them)
     - index file to forward definitions
 
+# Later
 
-- [ ] Friendly URLs/routing
+- [ ] Make "maximize" hide the header too
+
+- BUG: Scale numbering in (A,D,E,G) minor C position, (C,A,D,E) minor G position, should be adjusted down one fret
+  - Maybe: Change the position numbers in each position to be the lowest fret for all chords in the position.
+    Then have the scale span five frets up from there.
+    That will make the position numbers more accurate too.
+
+- [ ] When manually changing string stop, show original chord tone as transparent overlay
+
+- [ ] SEO-friendly URLs/routing
+  - /about (shows about dialog)
+  - /{key}/{position}/{chord} ex. /c-major-key/II-position/I-chord-c-major
+  - /position-player baseurl, redirect there from / for now.
 
 # Maybe?
 
-- [ ] Make "maximize" hide the header too?
+- [ ] Label minor CAGED positions as minor (ex. Cm shape instead of C shape)?
 - [ ] Generate images for each key/position/chord, use in SEO-friendly structured data for google images, social sharing, etc.
 - [ ] One-click way to switch to relative minor in keychange settings.
 - [ ] Add setting to control scroll/strum behavior. Swipe/drag to: (*) strum ( ) scroll
