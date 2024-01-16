@@ -1,4 +1,4 @@
-import { ChordGrip } from "../services/fretboard";
+import { ChordGrip } from "../util/fretboard";
 
 // C-shape I chord (open position)
 export const GRIPS_OPEN: ChordGrip[] = [

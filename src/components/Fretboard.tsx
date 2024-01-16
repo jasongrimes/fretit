@@ -1,12 +1,11 @@
 import { PointerEvent, useRef } from "react";
+import { StringOverlays } from "../types";
 import {
   FretboardLabeler,
   FretboardLocation,
   Instrument,
-} from "../services/fretboard";
+} from "../util/fretboard";
 import "./Fretboard.css";
-import { StringOverlays } from "../types";
-
 
 //
 // <Fretboard> component

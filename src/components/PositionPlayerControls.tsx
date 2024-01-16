@@ -10,8 +10,8 @@ import {
   IconVolumeOff,
 } from "@tabler/icons-react";
 import { ChangeEvent, useRef, useState } from "react";
-import { Position } from "../services/chord-calculator";
-import { FretboardLabeler, LabelingScheme } from "../services/fretboard";
+import { Position } from "../util/chord-calculator";
+import { FretboardLabeler, LabelingScheme } from "../util/fretboard";
 
 interface Props {
   soundEnabled: boolean;
@@ -388,7 +388,7 @@ export default function PositionPlayerControls({
               The fretboard is playable
             </span>
             Tap to pluck. Swipe to strum. Long-press to mute.{" "}
-            <span className="text-sm text-gray-500 whitespace-nowrap">
+            <span className="whitespace-nowrap text-sm text-gray-500">
               (Turn off &quot;silent&quot; mode on mobile.)
             </span>
           </p>

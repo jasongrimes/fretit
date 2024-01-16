@@ -2,16 +2,15 @@ import { useRef, useState } from "react";
 import { Key, Note } from "tonal";
 import { INSTRUMENTS } from "../data/instruments";
 import useSound from "../hooks/use-sound.hook";
-import { ChordCalculator } from "../services/chord-calculator";
+import { StringOverlays } from "../types";
+import { ChordCalculator } from "../util/chord-calculator";
 import {
   FretboardLabeler,
   FretboardLocation,
   LabelingScheme,
-} from "../services/fretboard";
+} from "../util/fretboard";
 import Fretboard from "./Fretboard";
 import PositionPlayerControls from "./PositionPlayerControls";
-import { StringOverlays } from "../types";
-
 
 export default function PositionPlayer() {
   const instrument = INSTRUMENTS.Guitar;
@@ -19,7 +18,8 @@ export default function PositionPlayer() {
   const animationEnabled = true;
 
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [chordLabeling, setChordLabeling] = useState<LabelingScheme>("scaleInterval");
+  const [chordLabeling, setChordLabeling] =
+    useState<LabelingScheme>("scaleInterval");
   const [scaleLabeling, setScaleLabeling] = useState<LabelingScheme>("none");
   const [keyType, setKeyType] = useState("major");
   const [keyLetter, setKeyLetter] = useState("C");
@@ -35,7 +35,7 @@ export default function PositionPlayer() {
   // Current fretboard voicing defaults to the selected chord,
   // but it can be manually changed without changing the chord.
   const [voicing, setVoicing] = useState(
-    chordCalculator.getChordVoicing(positionIndex, chordNum)
+    chordCalculator.getChordVoicing(positionIndex, chordNum),
   );
 
   //
@@ -128,7 +128,10 @@ export default function PositionPlayer() {
     handleSetChordNum(chordNum, positionIndex);
   }
 
-  function handleSetChordNum(chordNum: string, positionIdx: number = positionIndex) {
+  function handleSetChordNum(
+    chordNum: string,
+    positionIdx: number = positionIndex,
+  ) {
     setChordNum(chordNum);
     const newVoicing = chordCalculator.getChordVoicing(positionIdx, chordNum);
     setVoicing(newVoicing);
@@ -155,7 +158,11 @@ export default function PositionPlayer() {
     setChordLabeling(scheme);
   }
 
-  function handleSetKey(keyLetter: string, keyAccidental: string, keyType: string) {
+  function handleSetKey(
+    keyLetter: string,
+    keyAccidental: string,
+    keyType: string,
+  ) {
     setKeyLetter(keyLetter);
     setKeyAccidental(keyAccidental);
     setKeyType(keyType);
