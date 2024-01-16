@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import SoundPlayer from "../util/sound-player";
+import SoundPlayer from "../utils/sound-player";
 
 interface UseSoundProps {
   tuning: number[];
@@ -11,7 +11,7 @@ export default function useSound({
   tuning,
   instrument = undefined,
   muted = false,
-  onPlayString
+  onPlayString,
 }: UseSoundProps) {
   const playerRef = useRef<SoundPlayer | null>(null);
 
@@ -31,7 +31,12 @@ export default function useSound({
     if (muted) {
       return;
     }
-    playerRef.current?.play(stringNum, fretNum, delay, onPlayString ? () => onPlayString(stringNum) : undefined );
+    playerRef.current?.play(
+      stringNum,
+      fretNum,
+      delay,
+      onPlayString ? () => onPlayString(stringNum) : undefined,
+    );
   };
 
   const strum = (voicing: number[], delayOffset = 0) => {

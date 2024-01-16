@@ -10,8 +10,8 @@ import {
   IconVolumeOff,
 } from "@tabler/icons-react";
 import { ChangeEvent, useRef, useState } from "react";
-import { Position } from "../util/chord-calculator";
-import { FretboardLabeler, LabelingScheme } from "../util/fretboard";
+import { Position } from "../utils/chord-calculator";
+import { FretboardLabeler, LabelingScheme } from "../utils/fretboard";
 
 interface Props {
   soundEnabled: boolean;

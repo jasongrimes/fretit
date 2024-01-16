@@ -1,14 +1,14 @@
 import { useRef, useState } from "react";
 import { Key, Note } from "tonal";
-import { INSTRUMENTS } from "../data/instruments";
 import useSound from "../hooks/use-sound.hook";
 import { StringOverlays } from "../types";
-import { ChordCalculator } from "../util/chord-calculator";
+import { ChordCalculator } from "../utils/chord-calculator";
 import {
   FretboardLabeler,
   FretboardLocation,
   LabelingScheme,
-} from "../util/fretboard";
+} from "../utils/fretboard";
+import { INSTRUMENTS } from "../utils/instruments";
 import Fretboard from "./Fretboard";
 import PositionPlayerControls from "./PositionPlayerControls";
 

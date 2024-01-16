@@ -1,4 +1,4 @@
-import { Instrument } from "../util/fretboard";
+import { Instrument } from "./fretboard";
 
 export const INSTRUMENTS: Record<string, Instrument> = {
   Guitar: {

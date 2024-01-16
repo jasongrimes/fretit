@@ -4,7 +4,7 @@ import {
   FretboardLabeler,
   FretboardLocation,
   Instrument,
-} from "../util/fretboard";
+} from "../utils/fretboard";
 import "./Fretboard.css";
 
 //
