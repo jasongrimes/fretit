@@ -91,7 +91,6 @@ export default function PositionPlayerControls({
 
   function handleShowAbout() {
     aboutDialogRef.current?.showModal();
-  
   }
   function handleShowSettings() {
     settingsDialogRef.current?.showModal();
@@ -110,9 +109,7 @@ export default function PositionPlayerControls({
 
           {/* Settings */}
           <li>
-            <a
-              onClick={handleShowSettings}
-            >
+            <a onClick={handleShowSettings}>
               <IconSettings className="h-5 w-5" />
               {!maximized && <>Settings</>}
             </a>
@@ -380,17 +377,18 @@ export default function PositionPlayerControls({
           <h2 className="text-2xl font-bold">About</h2>
 
           <p className="py-4">
-            This is a tool for exploring chord positions on guitar. It shows how
-            all the chords in a key can be found right next to each other, in
-            five different groups up and down the neck.
+            A tool for exploring chord positions on guitar. It shows how all
+            chords in a key can be found right next to each other, in five
+            different groups up and down the neck.
           </p>
 
           <p className="my-2 bg-base-300 p-2">
             {/* <div className="divider text-sm mt-0 mb-1">Usage:</div> */}
-            <span className="mb-1 block text-sm font-bold text-gray-500">
+            <span className="mb-1 block font-bold text-primary">
               The fretboard is playable
             </span>
-            Tap to fret a note. Swipe to strum. Long-press to mute.
+            Tap to pluck. Swipe to strum. Long-press to mute.
+            {" "}<span className="text-sm text-gray-500">(Turn off "&quot;silent&quot; mode on mobile.)</span>
           </p>
 
           <p className="py-2">
@@ -401,7 +399,7 @@ export default function PositionPlayerControls({
               // but the HTML <dialog> behavior makes it autofocus on showModal() and the outline looks terrible,
               // and React has a bug that prevents setting autofocus somewhere else.
               // See https://github.com/facebook/react/issues/23301
-              className="link link-primary focus:outline-none"
+              className="link link-accent focus:outline-none"
               href="https://fretboardfoundation.com/caged.html"
               target="_blank"
               rel="noreferrer"
@@ -410,7 +408,7 @@ export default function PositionPlayerControls({
             </a>{" "}
             and the basics of{" "}
             <a
-              className="link link-primary"
+              className="link link-accent"
               href="https://fretboardfoundation.com/major-harmony.html"
               target="_blank"
               rel="noreferrer"
@@ -419,7 +417,7 @@ export default function PositionPlayerControls({
             </a>{" "}
             and{" "}
             <a
-              className="link link-primary"
+              className="link link-accent"
               href="https://fretboardfoundation.com/minor-harmony.html"
               target="_blank"
               rel="noreferrer"
@@ -432,7 +430,7 @@ export default function PositionPlayerControls({
           <p className="py-2">
             Questions or comments? I&apos;d love to hear from you. Send an email
             to{" "}
-            <a className="link link-primary" href="mailto:hello@fretit.com">
+            <a className="link link-accent" href="mailto:hello@fretit.com">
               hello@fretit.io
             </a>
             .
