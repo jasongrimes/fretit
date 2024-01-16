@@ -388,7 +388,7 @@ export default function PositionPlayerControls({
               The fretboard is playable
             </span>
             Tap to pluck. Swipe to strum. Long-press to mute.
-            {" "}<span className="text-sm text-gray-500">(Turn off "&quot;silent&quot; mode on mobile.)</span>
+            {" "}<span className="text-sm text-gray-500">(Turn off &quot;silent&quot; mode on mobile.)</span>
           </p>
 
           <p className="py-2">
