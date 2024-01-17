@@ -187,7 +187,7 @@ export default function PositionPlayerControls({
             return (
               <li className="w-full" key={chord.name}>
                 <a
-                  className={`block flex w-full truncate text-clip px-0 text-center ${
+                  className={`flex w-full truncate text-clip px-0 text-center ${
                     selectedChordNum === chord.roman ? "active" : ""
                   }`}
                   onClick={() => onSetChordNum(chord.roman)}
