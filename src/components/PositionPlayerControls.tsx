@@ -68,6 +68,8 @@ export default function PositionPlayerControls({
       return;
     }
     onSetPositionIndex(positionIndex);
+
+    // TODO: Move this scrolling into a useEffect. It fails when changing positions too quickly.
     scrollToPositionNum(positions[positionIndex].positionNum);
   }
 
