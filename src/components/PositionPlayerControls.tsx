@@ -184,6 +184,7 @@ export default function PositionPlayerControls({
 
           {/* Chords */}
           {chordList.map((chord) => {
+            console.log(chord)
             return (
               <li className="w-full" key={chord.name}>
                 <a
