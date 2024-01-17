@@ -377,15 +377,15 @@ export default function PositionPlayerControls({
           <h2 className="text-2xl font-bold">About</h2>
 
           <p className="py-4">
-            A tool for exploring chord positions on guitar. It shows how all
-            chords in a key can be found right next to each other, in five
+            A tool for exploring chord positions on guitar, demonstrating how
+            all chords in a key can be found right next to each other in five
             different groups up and down the neck.
           </p>
 
           <p className="my-2 bg-base-300 p-2">
             {/* <div className="divider text-sm mt-0 mb-1">Usage:</div> */}
             <span className="mb-1 block font-bold text-primary">
-              The fretboard is playable
+              Play the fretboard
             </span>
             Tap to pluck. Swipe to strum. Long-press to mute.{" "}
             <span className="whitespace-nowrap text-sm text-gray-500">
@@ -393,8 +393,11 @@ export default function PositionPlayerControls({
             </span>
           </p>
 
-          <p className="py-2">
-            Learn practical ways to play these{" "}
+          <p className="my-2 bg-base-300 p-2">
+            <span className="mb-1 block font-bold text-secondary">
+              Learn more
+            </span>
+            Learn {" "}
             <a
               // Hack alert:
               // I hate to add this focus:outline-none here,
@@ -406,9 +409,9 @@ export default function PositionPlayerControls({
               target="_blank"
               rel="noreferrer"
             >
-              CAGED chord grips
+              practical CAGED chord grips
             </a>{" "}
-            and the basics of{" "}
+            and basic {" "}
             <a
               className="link link-accent"
               href="https://fretboardfoundation.com/major-harmony.html"
@@ -426,7 +429,9 @@ export default function PositionPlayerControls({
             >
               minor key
             </a>{" "}
-            harmony in the free book <i>Fretboard Foundation</i>.
+            harmony
+            
+             in the free book <i>Fretboard Foundation</i>.
           </p>
 
           <p className="py-2">
