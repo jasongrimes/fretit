@@ -132,7 +132,7 @@ export default function PositionPlayer() {
     chordNum: string,
     positionIdx: number = positionIndex,
   ) {
-    console.log(`handleSetChordNum(${chordNum}, ${positionIdx})`);
+    // console.log(`handleSetChordNum(${chordNum}, ${positionIdx})`);
     setChordNum(chordNum);
     const newVoicing = chordCalculator.getChordVoicing(positionIdx, chordNum);
     setVoicing(newVoicing);
