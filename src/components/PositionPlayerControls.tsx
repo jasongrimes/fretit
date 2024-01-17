@@ -9,7 +9,7 @@ import {
   IconVolume,
   IconVolumeOff,
 } from "@tabler/icons-react";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { Position } from "../utils/chord-calculator";
 import { FretboardLabeler, LabelingScheme } from "../utils/fretboard";
 
@@ -52,12 +52,6 @@ export default function PositionPlayerControls({
   const [maximized, setMaximized] = useState(false);
   const aboutDialogRef = useRef<HTMLDialogElement | null>(null);
   const settingsDialogRef = useRef<HTMLDialogElement | null>(null);
-
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(false);
-  }, [chordList]);
 
   const selectedPosition = positions[positionIndex];
 
@@ -196,9 +190,7 @@ export default function PositionPlayerControls({
                   className={`flex w-full truncate text-clip px-0 text-center ${
                     selectedChordNum === chord.roman ? "active" : ""
                   }`}
-                  onClick={() =>
-                    loading ? undefined : onSetChordNum(chord.roman)
-                  }
+                  onClick={() => onSetChordNum(chord.roman)}
                 >
                   <span className="w-1/2 text-right text-base-content">
                     {chord.roman}
