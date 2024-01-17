@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import SoundPlayer from "../utils/sound-player";
+import SoundPlayer from "@/utils/sound-player";
 
 interface UseSoundProps {
   tuning: number[];
