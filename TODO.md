@@ -21,7 +21,7 @@
 
 # Next
 
-- [ ] Fix race condition during fast chord changes
+- [ ] More test coverage
 
 # Later
 
