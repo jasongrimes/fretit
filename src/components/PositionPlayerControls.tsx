@@ -184,13 +184,17 @@ export default function PositionPlayerControls({
 
           {/* Chords */}
           {chordList.map((chord) => {
-            console.log(chord)
+            const handleClick = () => {
+              console.log(`onSetChordNum(${chord.roman})`);
+              onSetChordNum(chord.roman);
+            };
+
             return (
               <li className="w-full" key={chord.name}>
                 <a
                   className={`flex w-full truncate text-clip px-0 text-center ${selectedChordNum === chord.roman ? "active" : ""
                     }`}
-                  onClick={() => { console.log(`onSetChordNum(${chord.roman})`); onSetChordNum(chord.roman) }}
+                  onClick={handleClick}
                 >
                   <span className="w-1/2 text-right text-base-content">
                     {chord.roman}
@@ -202,7 +206,6 @@ export default function PositionPlayerControls({
               </li>
             );
           })}
-
           {/* Position */}
           <li className={positionIndex === 0 ? "disabled" : ""}>
             <a
