@@ -9,7 +9,7 @@ import {
   IconVolume,
   IconVolumeOff,
 } from "@tabler/icons-react";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { Position } from "../utils/chord-calculator";
 import { FretboardLabeler, LabelingScheme } from "../utils/fretboard";
 
@@ -81,6 +81,10 @@ export default function PositionPlayerControls({
     }
   }
 
+  const handleSetChordNum = useCallback((roman: string) => {
+    onSetChordNum(roman);
+  }, [onSetChordNum]);
+
   function handleSelectLabelingScheme(e: ChangeEvent<HTMLSelectElement>) {
     onSetLabelingScheme(e.target.value as LabelingScheme);
   }
@@ -95,6 +99,8 @@ export default function PositionPlayerControls({
   function handleShowSettings() {
     settingsDialogRef.current?.showModal();
   }
+
+  
 
   return (
     <>
@@ -185,12 +191,12 @@ export default function PositionPlayerControls({
           {/* Chords */}
           {chordList.map((chord) => {
             return (
-              <li className="w-full" key={chord.name}>
+              <li className="w-full" key={chord.roman}>
                 <a
                   className={`flex w-full truncate text-clip px-0 text-center ${
                     selectedChordNum === chord.roman ? "active" : ""
                   }`}
-                  onClick={() => onSetChordNum(chord.roman)}
+                  onClick={() => handleSetChordNum(chord.roman)}
                 >
                   <span className="w-1/2 text-right text-base-content">
                     {chord.roman}
