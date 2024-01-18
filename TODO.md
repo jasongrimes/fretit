@@ -1,7 +1,6 @@
 # Soon
 
 - [ ] Refactor
-  - [ ] Refactor service classes => functional programming
   - [ ] Pull components into separate files?
     - PositionPlayerControls directory
     - Pull out a bunch of em
@@ -47,6 +46,11 @@
     - Add scale degrees to the fretboard
     - Play through a simple "fly me to the moon" chord melody, or something similar
 - [ ] Ukulele
+
+- [ ] Refactor service classes to use more functional programming
+  - factory function instead of constructor
+  - Don't allow changing key on an existing chord calculator
+  - Pass in key as argument to each function, and support currying to partially apply the key to the calculator?
 
  - [ ] Reorganize business logic?
     - **Diatonic calculations (by key)**: For a given key, determine diatonic chords, scales, note names, midi numbers and degrees. Pretty much just wrap tonaljs.

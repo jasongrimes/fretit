@@ -63,6 +63,7 @@ export default function PositionPlayer() {
     preferSharps: key.preferSharps,
   });
 
+  // FIXME: Why go through all this if stringLabeling is none?
   const overlays = Array.from(instrument.tuning, (stringMidi) => {
     let minFret = positions[positionIndex].positionNum - 1;
     let maxFret = positions[positionIndex].positionNum + 3;
