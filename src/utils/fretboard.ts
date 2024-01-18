@@ -1,22 +1,9 @@
+import { FretboardLocation } from "@/types";
 import { Interval, Note } from "tonal";
 
 //
 // Types
 //
-export interface Instrument {
-  name: string;
-  tuning: number[];
-  fretMarkers: number[];
-  doubleFretMarkers: number[];
-}
-
-export interface FretboardSettings {
-  instrument: string;
-  lowestFret: number;
-  highestFret: number;
-  labeling: LabelingScheme;
-  preferSharps: boolean;
-}
 
 export type LabelingScheme =
   | "none"
@@ -24,14 +11,6 @@ export type LabelingScheme =
   | "pitchClass"
   | "chordInterval"
   | "scaleInterval";
-
-export interface ChordGrip {
-  name: string;
-  root?: string;
-  voicing: number[];
-}
-
-export type FretboardLocation = [stringNum: number, fretNum: number];
 
 /**
  * Fretboard labeler
@@ -112,13 +91,17 @@ export class FretboardLabeler {
   }
 
   getLocationStyle(location: FretboardLocation) {
-    if (this.root && Note.chroma(this.root) === Note.chroma(this.getLocationPitchClass(location))) {
+    if (
+      this.root &&
+      Note.chroma(this.root) ===
+        Note.chroma(this.getLocationPitchClass(location))
+    ) {
       return "root";
     }
     return;
   }
 
-  getLocationMidi([stringNum, fretNum]: FretboardLocation) {
+  getLocationMidi([stringNum, fretNum]: FretboardLocation): number {
     if (stringNum > this.tuning.length) {
       return 0;
     }

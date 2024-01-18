@@ -1,4 +1,4 @@
-import { Instrument } from "./fretboard";
+import { Instrument } from "@/types";
 
 export const INSTRUMENTS: Record<string, Instrument> = {
   Guitar: {

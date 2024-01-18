@@ -1,10 +1,6 @@
+import { FretboardLocation, Instrument, StringOverlays } from "@/types";
+import { FretboardLabeler } from "@/utils/fretboard";
 import { PointerEvent, useRef } from "react";
-import { StringOverlays } from "@/types";
-import {
-  FretboardLabeler,
-  FretboardLocation,
-  Instrument,
-} from "@/utils/fretboard";
 import "./Fretboard.css";
 
 //
