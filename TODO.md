@@ -1,20 +1,13 @@
 # Soon
 
 - [ ] Refactor
-  - [ ] Add unit tests chord calculator and labeler
-  - [ ] Streamline state handling
-  - [ ] Refactor business logic
-    - **Diatonic calculations (by key)**: For a given key, determine diatonic chords, scales, note names, midi numbers and degrees. Pretty much just wrap tonaljs.
-    - **Instrument calculations (fretboard locations by instrument)**: For a given instrument and tuning, determine midi numbers of each fretboard location, and vice-versa.
-    - **Fretboard calculations (grips and positions by key and instrument)**: Grips and positions for a given key and instrument. Subjective, hard-coded.
-    - **Label calculations (by key and strategy)**: How to label each note shown on the fretboard, based on key (or sharp preference, if no key) and strategy (note name, chord interval, scale degree, etc.). Difference contexts (chord tone, stopped string, scale overlay, ...) will use different strategies and styles (ex. temporarily un-stopped chord tone will be transparent, etc.)
-  - [ ] Refactor service classes => functional programming
-  - [ ] Refactor components into separate files?
+  - [ ] Pull components into separate files?
     - PositionPlayerControls directory
     - Pull out a bunch of em
     - Fretboard directory
     - Pull out string stuff (not all of them)
     - index file to forward definitions
+  - [ ] Refactor service classes => functional programming
 
 # Next
 
@@ -54,3 +47,9 @@
     - Add scale degrees to the fretboard
     - Play through a simple "fly me to the moon" chord melody, or something similar
 - [ ] Ukulele
+
+ - [ ] Reorganize business logic?
+    - **Diatonic calculations (by key)**: For a given key, determine diatonic chords, scales, note names, midi numbers and degrees. Pretty much just wrap tonaljs.
+    - **Instrument calculations (fretboard locations by instrument)**: For a given instrument and tuning, determine midi numbers of each fretboard location, and vice-versa.
+    - **Fretboard calculations (grips and positions by key and instrument)**: Grips and positions for a given key and instrument. Subjective, hard-coded.
+    - **Label calculations (by key and strategy)**: How to label each note shown on the fretboard, based on key (or sharp preference, if no key) and strategy (note name, chord interval, scale degree, etc.). Difference contexts (chord tone, stopped string, scale overlay, ...) will use different strategies and styles (ex. temporarily un-stopped chord tone will be transparent, etc.)

@@ -7,4 +7,5 @@ export interface Instrument {
   fretMarkers: number[];
   doubleFretMarkers: number[];
 }
+
 export type FretboardLocation = [stringNum: number, fretNum: number];
