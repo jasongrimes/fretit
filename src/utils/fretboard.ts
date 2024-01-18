@@ -5,7 +5,7 @@ import { Interval, Note } from "tonal";
 // Types
 //
 
-export type LabelingScheme =
+export type LabelingStrategy =
   | "none"
   | "pitch"
   | "pitchClass"
@@ -17,26 +17,26 @@ export type LabelingScheme =
  */
 export class FretboardLabeler {
   tuning: number[];
-  scheme: LabelingScheme;
+  scheme: LabelingStrategy;
   root?: string;
   tonic: string;
   preferSharps: boolean;
 
   constructor({
     tuning,
-    labelingScheme,
+    LabelingStrategy,
     tonic,
     root,
     preferSharps,
   }: {
     tuning: number[];
-    labelingScheme: LabelingScheme;
+    LabelingStrategy: LabelingStrategy;
     tonic: string;
     root?: string;
     preferSharps: boolean;
   }) {
     this.tuning = tuning;
-    this.scheme = labelingScheme;
+    this.scheme = LabelingStrategy;
     this.root = root;
     this.tonic = tonic;
     this.preferSharps = preferSharps;
@@ -48,7 +48,7 @@ export class FretboardLabeler {
     return this.getMidiLabel(midi, this.scheme);
   }
 
-  getMidiLabel(midi: number, scheme: LabelingScheme) {
+  getMidiLabel(midi: number, scheme: LabelingStrategy) {
     switch (scheme) {
       case "pitch":
         return this.getMidiPitch(midi);

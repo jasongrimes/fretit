@@ -3,7 +3,7 @@ import PositionPlayerControls from "@/components/PositionPlayerControls";
 import useSound from "@/hooks/use-sound.hook";
 import { FretboardLocation, StringOverlays } from "@/types";
 import { ChordCalculator } from "@/utils/chord-calculator";
-import { FretboardLabeler, LabelingScheme } from "@/utils/fretboard";
+import { FretboardLabeler, LabelingStrategy } from "@/utils/fretboard";
 import { INSTRUMENTS } from "@/utils/instruments";
 import { useRef, useState } from "react";
 import { Key, Note } from "tonal";
@@ -15,8 +15,8 @@ export default function PositionPlayer() {
 
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [chordLabeling, setChordLabeling] =
-    useState<LabelingScheme>("scaleInterval");
-  const [scaleLabeling, setScaleLabeling] = useState<LabelingScheme>("none");
+    useState<LabelingStrategy>("scaleInterval");
+  const [scaleLabeling, setScaleLabeling] = useState<LabelingStrategy>("none");
   const [keyType, setKeyType] = useState("major");
   const [keyLetter, setKeyLetter] = useState("C");
   const [keyAccidental, setKeyAccidental] = useState("");
@@ -57,7 +57,7 @@ export default function PositionPlayer() {
 
   const labeler = new FretboardLabeler({
     tuning: instrument.tuning,
-    labelingScheme: chordLabeling,
+    LabelingStrategy: chordLabeling,
     tonic: keyTonic,
     root: chordCalculator.getChordRoot(chordNum),
     preferSharps: key.preferSharps,
@@ -151,7 +151,7 @@ export default function PositionPlayer() {
     setSoundEnabled(enabled);
   }
 
-  function handleSetLabelingScheme(scheme: LabelingScheme) {
+  function handleSetLabelingStrategy(scheme: LabelingStrategy) {
     setChordLabeling(scheme);
   }
 
@@ -186,7 +186,7 @@ export default function PositionPlayer() {
           soundEnabled={soundEnabled}
           onSetSoundEnabled={handleSetSoundEnabled}
           labeler={labeler}
-          onSetLabelingScheme={handleSetLabelingScheme}
+          onSetLabelingStrategy={handleSetLabelingStrategy}
           chordList={chordList}
           selectedChordNum={chordNum}
           onSetChordNum={handleSetChordNum}

@@ -1,8 +1,6 @@
 # Soon
 
 - [ ] Refactor
-  - [ ] Pull shared types into central file
-  - [ ] Rename LabelingScheme to LabelingStrategy
   - [ ] Add unit tests chord calculator and labeler
   - [ ] Streamline state handling
   - [ ] Refactor business logic

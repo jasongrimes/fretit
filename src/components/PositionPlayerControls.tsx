@@ -1,5 +1,5 @@
 import { Position } from "@/utils/chord-calculator";
-import { FretboardLabeler, LabelingScheme } from "@/utils/fretboard";
+import { FretboardLabeler, LabelingStrategy } from "@/utils/fretboard";
 import {
   IconArrowsMaximize,
   IconArrowsMinimize,
@@ -17,7 +17,7 @@ interface Props {
   soundEnabled: boolean;
   onSetSoundEnabled: (enabled: boolean) => void;
   labeler: FretboardLabeler;
-  onSetLabelingScheme: (scheme: LabelingScheme) => void;
+  onSetLabelingStrategy: (scheme: LabelingStrategy) => void;
   chordList: { root: string; roman: string; name: string }[];
   selectedChordNum: string;
   onSetChordNum: (chordNum: string) => void;
@@ -25,7 +25,7 @@ interface Props {
   positionIndex: number;
   onSetPositionIndex: (positionIndex: number) => void;
   scaleLabeling: string;
-  onSetScaleLabeling: (scaleLabeling: LabelingScheme) => void;
+  onSetScaleLabeling: (scaleLabeling: LabelingStrategy) => void;
   keyLetter: string;
   keyAccidental: string;
   keyType: string;
@@ -35,7 +35,7 @@ export default function PositionPlayerControls({
   soundEnabled,
   onSetSoundEnabled,
   labeler,
-  onSetLabelingScheme,
+  onSetLabelingStrategy,
   chordList,
   selectedChordNum,
   onSetChordNum,
@@ -90,12 +90,12 @@ export default function PositionPlayerControls({
     [onSetChordNum],
   );
 
-  function handleSelectLabelingScheme(e: ChangeEvent<HTMLSelectElement>) {
-    onSetLabelingScheme(e.target.value as LabelingScheme);
+  function handleSelectLabelingStrategy(e: ChangeEvent<HTMLSelectElement>) {
+    onSetLabelingStrategy(e.target.value as LabelingStrategy);
   }
 
   function handleSelectScaleLabeling(e: ChangeEvent<HTMLSelectElement>) {
-    onSetScaleLabeling(e.target.value as LabelingScheme);
+    onSetScaleLabeling(e.target.value as LabelingStrategy);
   }
 
   function handleShowAbout() {
@@ -335,7 +335,7 @@ export default function PositionPlayerControls({
             </div>
             <select
               className="select select-bordered"
-              onChange={handleSelectLabelingScheme}
+              onChange={handleSelectLabelingStrategy}
               defaultValue={labeler.scheme}
             >
               <option value="scaleInterval">Scale degrees (1..7)</option>
