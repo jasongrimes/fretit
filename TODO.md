@@ -1,24 +1,21 @@
 # Soon
 
 - [ ] Refactor
+  - [ ] Refactor service classes => functional programming
   - [ ] Pull components into separate files?
     - PositionPlayerControls directory
     - Pull out a bunch of em
     - Fretboard directory
     - Pull out string stuff (not all of them)
     - index file to forward definitions
-  - [ ] Refactor service classes => functional programming
 
 # Next
 
-- [ ] More test coverage
-
-# Later
+- [ ] Tweak Bdim open voicing https://github.com/jasongrimes/fretit/issues/1
 
 - [ ] Make "maximize" hide the header too
 
 - BUG: Scale numbering in (A,D,E,G) minor C position, (C,A,D,E) minor G position, should be adjusted down one fret
-
   - Maybe: Change the position numbers in each position to be the lowest fret for all chords in the position.
     Then have the scale span five frets up from there.
     That will make the position numbers more accurate too.
@@ -29,6 +26,9 @@
   - /about (shows about dialog)
   - /{key}/{position}/{chord} ex. /c-major-key/II-position/I-chord-c-major
   - /position-player baseurl, redirect there from / for now.
+
+  # Later
+
 
 # Maybe?
 
