@@ -1,5 +1,5 @@
 import { Position } from "@/utils/chord-calculator";
-import { FretboardLabeler, LabelingStrategy } from "@/utils/fretboard";
+import { FretboardLabeler, LabelingStrategy } from "@/utils/fretboard-labeler";
 import {
   IconArrowsMaximize,
   IconArrowsMinimize,

@@ -1,5 +1,5 @@
 import { FretboardLocation, Instrument, StringOverlays } from "@/types";
-import { FretboardLabeler } from "@/utils/fretboard";
+import { FretboardLabeler } from "@/utils/fretboard-labeler";
 import { PointerEvent, useRef } from "react";
 import "./Fretboard.css";
 
