@@ -1,7 +1,6 @@
 # Soon
 
 - [ ] Refactor
-  - [ ] Use absolute imports
   - [ ] Pull shared types into central file
   - [ ] Rename LabelingScheme to LabelingStrategy
   - [ ] Add unit tests chord calculator and labeler

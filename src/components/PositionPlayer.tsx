@@ -1,16 +1,16 @@
+import Fretboard from "@/components/Fretboard";
+import PositionPlayerControls from "@/components/PositionPlayerControls";
+import {
+  FretboardLabeler,
+  FretboardLocation,
+  LabelingScheme,
+} from "@/utils/fretboard";
 import { useRef, useState } from "react";
 import { Key, Note } from "tonal";
 import useSound from "../hooks/use-sound.hook";
 import { StringOverlays } from "../types";
 import { ChordCalculator } from "../utils/chord-calculator";
-import {
-  FretboardLabeler,
-  FretboardLocation,
-  LabelingScheme,
-} from "../utils/fretboard";
 import { INSTRUMENTS } from "../utils/instruments";
-import Fretboard from "./Fretboard";
-import PositionPlayerControls from "./PositionPlayerControls";
 
 export default function PositionPlayer() {
   const instrument = INSTRUMENTS.Guitar;

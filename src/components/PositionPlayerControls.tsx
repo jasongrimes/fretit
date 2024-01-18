@@ -1,3 +1,5 @@
+import { Position } from "@/utils/chord-calculator";
+import { FretboardLabeler, LabelingScheme } from "@/utils/fretboard";
 import {
   IconArrowsMaximize,
   IconArrowsMinimize,
@@ -10,8 +12,6 @@ import {
   IconVolumeOff,
 } from "@tabler/icons-react";
 import { ChangeEvent, useCallback, useRef, useState } from "react";
-import { Position } from "../utils/chord-calculator";
-import { FretboardLabeler, LabelingScheme } from "../utils/fretboard";
 
 interface Props {
   soundEnabled: boolean;
@@ -83,9 +83,12 @@ export default function PositionPlayerControls({
     }
   }
 
-  const handleSetChordNum = useCallback((roman: string) => {
-    onSetChordNum(roman);
-  }, [onSetChordNum]);
+  const handleSetChordNum = useCallback(
+    (roman: string) => {
+      onSetChordNum(roman);
+    },
+    [onSetChordNum],
+  );
 
   function handleSelectLabelingScheme(e: ChangeEvent<HTMLSelectElement>) {
     onSetLabelingScheme(e.target.value as LabelingScheme);
@@ -101,8 +104,6 @@ export default function PositionPlayerControls({
   function handleShowSettings() {
     settingsDialogRef.current?.showModal();
   }
-
-  
 
   return (
     <>
