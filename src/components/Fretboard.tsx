@@ -1,5 +1,5 @@
 import { PointerEvent, useRef } from "react";
-import { StringOverlays } from "../types";
+import { StringOverlays } from "@/types";
 import {
   FretboardLabeler,
   FretboardLocation,
