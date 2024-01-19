@@ -46,7 +46,7 @@ const cMajorPositions: PositionTemplate[] = [
   },
   {
     caged: "A",
-    positionNum: 3,
+    positionNum: 2,
     chords: {
       I: [3, 5, 5, 5, 3, -1],
       ii: [-1, 3, 2, 3, 5, -1],
@@ -60,7 +60,7 @@ const cMajorPositions: PositionTemplate[] = [
   },
   {
     caged: "G",
-    positionNum: 5,
+    positionNum: 4,
     chords: {
       I: [8, 5, 5, 5, 7, 8],
       ii: [5, 6, 7, 7, 5, -1],
@@ -74,7 +74,7 @@ const cMajorPositions: PositionTemplate[] = [
   },
   {
     caged: "E",
-    positionNum: 8,
+    positionNum: 7,
     chords: {
       I: [8, 8, 9, 10, 10, 8],
       ii: [10, 10, 10, -1, -1, 10],
@@ -88,7 +88,7 @@ const cMajorPositions: PositionTemplate[] = [
   },
   {
     caged: "D",
-    positionNum: 10,
+    positionNum: 9,
     chords: {
       I: [12, 13, 12, 10, -1, -1],
       ii: [10, 10, 10, 12, 12, 10],
@@ -154,7 +154,7 @@ const cMinorPositions: PositionTemplate[] = [
   },
   {
     caged: "E",
-    positionNum: 8,
+    positionNum: 7,
     chords: {
       i: [8, 8, 8, 10, 10, 8],
       "ii°": [10, 9, 10, -1, -1, 10],
@@ -170,7 +170,7 @@ const cMinorPositions: PositionTemplate[] = [
   },
   {
     caged: "D",
-    positionNum: 10,
+    positionNum: 9,
     chords: {
       i: [11, 13, 12, 10, -1, -1],
       "ii°": [10, -1, 10, 12, 11, 10],
@@ -337,7 +337,7 @@ export function createKey(keyTonic: string, keyType: string): Key {
     keyType === "minor"
       ? TonalKey.minorKey(keyTonic).keySignature
       : TonalKey.majorKey(keyTonic).keySignature;
-  
+
   return {
     tonic: keyTonic,
     type: keyType,
