@@ -1,7 +1,5 @@
 # Soon
 
-- [ ] Write integration tests for overlay labeling. Make sure each of the overlay strategies works as expected, in multiple positions.
-
 - [ ] Pull components into separate files?
   - PositionPlayerControls directory
   - Pull out a bunch of em
