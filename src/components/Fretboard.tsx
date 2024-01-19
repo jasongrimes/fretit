@@ -148,34 +148,6 @@ function String({
       style = "chord";
     }
 
-    /*
-    let label = undefined;
-    let style = undefined;
-    if (stoppedFret === fretNum) {
-      label = labeler.getLocationLabel([stringNum, fretNum]);
-      style = labeler.getLocationStyle([stringNum, fretNum]) ?? "chord";
-      console.log(label, style);
-    } else if (overlays[fretNum]) {
-      ({ label, style } = overlays[fretNum]);
-    }
-*/
-    /*
-
-    // Add <FretNoteDot>
-    let fretNoteDot;
-    if (stoppedFret === fretNum) {
-      const label = labeler.getLocationLabel([stringNum, fretNum]);
-      const style = labeler.getLocationStyle([stringNum, fretNum]);
-      fretNoteDot = <FretNoteDot label={label} style={style} />;
-    } else if (overlays[fretNum]) {
-      fretNoteDot = (
-        <FretNoteOverlay
-          label={overlays[fretNum].label}
-          styleString={overlays[fretNum].style}
-        />
-      );
-    }
-    */
 
     // Add <FretNote>
     fretNotes.push(
@@ -246,31 +218,6 @@ function FretNote({ children, onClick }: FretNoteProps) {
     </div>
   );
 }
-
-/*
-//
-// <FretNoteDot>
-//
-function FretNoteDot({
-  label = "",
-  style,
-}: {
-  label?: string;
-  style?: string;
-}) {
-  const extraClasses =
-    style === "root"
-      ? "bg-primary text-primary-content"
-      : "bg-accent text-accent-content";
-  return (
-    <div
-      className={`fret-note-dot opacity-1 absolute bottom-0 z-10 flex size-8 items-center justify-center rounded-full ${extraClasses}`}
-    >
-      {label}
-    </div>
-  );
-}
-*/
 
 //
 // <FretNoteOverlay>
