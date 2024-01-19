@@ -33,70 +33,6 @@ export default function PositionPlayer() {
     chordCalculator.getChordVoicing(positionIndex, chordNum),
   );
 
-  //
-  // TODO: Rework this hacky stuff for setting up labeling and overlays.
-  //
-  /*
-  const scaleNotes =
-    keyType === "minor"
-      ? TonalKey.minorKey(keyTonic).natural.scale
-      : TonalKey.majorKey(keyTonic).scale;
-  const keySignature =
-    keyType === "minor"
-      ? TonalKey.minorKey(keyTonic).keySignature
-      : TonalKey.majorKey(keyTonic).keySignature;
-  const key:Key = {
-    tonic: keyTonic,
-    type: keyType,
-    keySignature: keySignature,
-    scaleNotes: scaleNotes,
-    scaleChromas: scaleNotes.map((note) => Note.chroma(note) ?? 0),
-    preferSharps: !keySignature || keySignature.startsWith("#"),
-  };
-  // console.log("key", key);
-  */
-
-  /*
-  const labeler = new FretboardLabeler({
-    tuning: instrument.tuning,
-    key: createKey(keyTonic, keyType),
-    chordRoot: chordCalculator.getChordRoot(chordNum),
-    chordStrategy: chordLabeling,
-    scaleStrategy: scaleLabeling,
-  });
-*/
-  /*
-  const overlays = Array.from(instrument.tuning, (stringMidi) => {
-    // TODO: Improve the position data so it's truly the lowest fret in the position, then change this to simply position thru position+5
-    let minFret = positions[positionIndex].positionNum - 1;
-    let maxFret = positions[positionIndex].positionNum + 3;
-    if (minFret < 0) {
-      minFret++;
-      maxFret++;
-    }
-    const stringOverlays: StringOverlays = {};
-    for (let fret = minFret; fret <= maxFret; fret++) {
-      const midi = stringMidi + fret;
-      const chroma = midi % 12;
-      if (key.scaleChromas.includes(chroma)) {
-        stringOverlays[fret] = {
-          label: labeler.getMidiLabel(midi, scaleLabeling),
-          style: "scale",
-        };
-      }
-    }
-    return stringOverlays;
-  });
-  // console.log(key);
-  // console.log(overlays);
-*/
-  /*
-  const overlays = labeler.getOverlays(
-    voicing,
-    positions[positionIndex].positionNum,
-  );
-  */
-
   const overlays = createOverlays({
     tuning: instrument.tuning,
     voicing: voicing,
@@ -106,8 +42,8 @@ export default function PositionPlayer() {
     scaleStrategy: scaleLabeling,
     position: positions[positionIndex].positionNum,
   });
-
   //console.log(overlays);
+  
   //
   // Support string animation
   //
