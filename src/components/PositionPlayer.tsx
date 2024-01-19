@@ -2,9 +2,10 @@ import Fretboard from "@/components/Fretboard";
 import PositionPlayerControls from "@/components/PositionPlayerControls";
 import useSound from "@/hooks/use-sound.hook";
 import { FretboardLocation, LabelingStrategy } from "@/types";
-import { ChordCalculator, createKey } from "@/utils/chord-calculator";
+import { ChordCalculator } from "@/utils/chord-calculator";
 import createOverlays from "@/utils/fretboard-labeler";
 import { INSTRUMENTS } from "@/utils/instruments";
+import createKey from "@/utils/key";
 import { useRef, useState } from "react";
 
 export default function PositionPlayer() {
@@ -43,7 +44,7 @@ export default function PositionPlayer() {
     position: positions[positionIndex].positionNum,
   });
   //console.log(overlays);
-  
+
   //
   // Support string animation
   //

@@ -1,6 +1,20 @@
-import { Key, LabelingStrategy, StringOverlays } from "@/types";
+import { Key, Voicing } from "@/types";
 import { Interval, Note } from "tonal";
-import { Voicing } from "./chord-calculator";
+
+export type LabelingStrategy =
+  | "none"
+  | "pitch"
+  | "pitchClass"
+  | "chordInterval"
+  | "scaleInterval";
+
+/**
+ * Maps fret numbers to their overlay label and style.
+ */
+export type StringOverlays = Record<
+  number,
+  { label: string; type?: string; style?: string; isTransparent?: boolean }
+>;
 
 export default function ({
   tuning,

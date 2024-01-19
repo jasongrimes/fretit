@@ -1,8 +1,6 @@
-// Maps fret numbers to their overlay label and style.
-export type StringOverlays = Record<
-  number,
-  { label: string; type?: string; style?: string; isTransparent?: boolean }
->;
+export type { StringOverlays, LabelingStrategy } from "@/utils/fretboard-labeler";
+export type { Key } from "@/utils/key";
+export type { Voicing } from "@/utils/chord-calculator";
 
 export interface Instrument {
   name: string;
@@ -12,19 +10,3 @@ export interface Instrument {
 }
 
 export type FretboardLocation = [stringNum: number, fretNum: number];
-
-export interface Key {
-  tonic: string;
-  type: string;
-  keySignature: string;
-  scaleNotes: readonly string[];
-  scaleChromas: number[];
-  preferSharps: boolean;
-}
-
-export type LabelingStrategy =
-  | "none"
-  | "pitch"
-  | "pitchClass"
-  | "chordInterval"
-  | "scaleInterval";
