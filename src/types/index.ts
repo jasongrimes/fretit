@@ -21,3 +21,10 @@ export interface Key {
   scaleChromas: number[];
   preferSharps: boolean;
 }
+
+export type LabelingStrategy =
+  | "none"
+  | "pitch"
+  | "pitchClass"
+  | "chordInterval"
+  | "scaleInterval";

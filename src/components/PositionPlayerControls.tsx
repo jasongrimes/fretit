@@ -1,5 +1,5 @@
 import { Position } from "@/utils/chord-calculator";
-import { LabelingStrategy } from "@/utils/fretboard-labeler";
+import { LabelingStrategy } from "@/types";
 import {
   IconArrowsMaximize,
   IconArrowsMinimize,
@@ -386,8 +386,8 @@ export default function PositionPlayerControls({
           <h2 className="text-2xl font-bold">About</h2>
 
           <p className="py-4">
-            A tool for exploring chord positions on guitar, demonstrating how
-            all chords in a key can be found right next to each other in five
+            A tool for exploring chord positions on guitar, showing how all
+            chords in a key can be found right next to each other, in five
             different groups up and down the neck.
           </p>
 
@@ -442,8 +442,7 @@ export default function PositionPlayerControls({
           </p>
 
           <p className="py-2">
-            Questions or comments? I&apos;d love to hear from you. Send an email
-            to{" "}
+            Questions or comments? I&apos;d love to hear from you. Email{" "}
             <a className="link link-accent" href="mailto:hello@fretit.com">
               hello@fretit.io
             </a>

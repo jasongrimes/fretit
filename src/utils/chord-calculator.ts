@@ -330,9 +330,13 @@ export class ChordCalculator {
 
 export function createKey(keyTonic: string, keyType: string): Key {
   const scaleNotes =
-    keyType === "minor"
-      ? TonalKey.minorKey(keyTonic).natural.scale
-      : TonalKey.majorKey(keyTonic).scale;
+    keyType === "major"
+      ? TonalKey.majorKey(keyTonic).scale.slice()
+      : [
+          ...TonalKey.minorKey(keyTonic).natural.scale,
+          // Tack on the 7 from the harmonic minor
+          TonalKey.minorKey(keyTonic).harmonic.scale[6],
+        ];
   const keySignature =
     keyType === "minor"
       ? TonalKey.minorKey(keyTonic).keySignature

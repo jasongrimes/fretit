@@ -1,9 +1,9 @@
 import Fretboard from "@/components/Fretboard";
 import PositionPlayerControls from "@/components/PositionPlayerControls";
 import useSound from "@/hooks/use-sound.hook";
-import { FretboardLocation } from "@/types";
+import { FretboardLocation, LabelingStrategy } from "@/types";
 import { ChordCalculator, createKey } from "@/utils/chord-calculator";
-import { FretboardLabeler, LabelingStrategy } from "@/utils/fretboard-labeler";
+import createOverlays from "@/utils/fretboard-labeler";
 import { INSTRUMENTS } from "@/utils/instruments";
 import { useRef, useState } from "react";
 
@@ -13,8 +13,8 @@ export default function PositionPlayer() {
   const animationEnabled = true;
 
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [chordLabeling, setChordLabeling] =
-    useState<LabelingStrategy>("scaleInterval");
+  // prettier-ignore
+  const [chordLabeling, setChordLabeling] = useState<LabelingStrategy>("scaleInterval");
   const [scaleLabeling, setScaleLabeling] = useState<LabelingStrategy>("none");
   const [keyType, setKeyType] = useState("major");
   const [keyLetter, setKeyLetter] = useState("C");
@@ -22,8 +22,8 @@ export default function PositionPlayer() {
   const [positionIndex, setPositionIndex] = useState(0);
   const [chordNum, setChordNum] = useState("I");
 
-  const keyTonic = keyLetter + keyAccidental;
-  const chordCalculator = new ChordCalculator({ keyTonic, keyType });
+  const key = createKey(keyLetter + keyAccidental, keyType);
+  const chordCalculator = new ChordCalculator({ keyTonic: key.tonic, keyType });
   const chordList = chordCalculator.getChordList();
   const positions = chordCalculator.getPositions();
 
@@ -56,6 +56,7 @@ export default function PositionPlayer() {
   // console.log("key", key);
   */
 
+  /*
   const labeler = new FretboardLabeler({
     tuning: instrument.tuning,
     key: createKey(keyTonic, keyType),
@@ -63,7 +64,7 @@ export default function PositionPlayer() {
     chordStrategy: chordLabeling,
     scaleStrategy: scaleLabeling,
   });
-
+*/
   /*
   const overlays = Array.from(instrument.tuning, (stringMidi) => {
     // TODO: Improve the position data so it's truly the lowest fret in the position, then change this to simply position thru position+5
@@ -89,10 +90,23 @@ export default function PositionPlayer() {
   // console.log(key);
   // console.log(overlays);
 */
+  /*
   const overlays = labeler.getOverlays(
     voicing,
     positions[positionIndex].positionNum,
   );
+  */
+
+  const overlays = createOverlays({
+    tuning: instrument.tuning,
+    voicing: voicing,
+    key: key,
+    chordRoot: chordCalculator.getChordRoot(chordNum),
+    chordStrategy: chordLabeling,
+    scaleStrategy: scaleLabeling,
+    position: positions[positionIndex].positionNum,
+  });
+
   //console.log(overlays);
   //
   // Support string animation

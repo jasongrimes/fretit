@@ -28,21 +28,23 @@
 
   # Later
 
+  - [ ] Save settings in localstorage
+    - Include a "restore defaults" option in settings dialog
+
 
 # Maybe?
 
-- [ ] Label minor CAGED positions as minor (ex. Cm shape instead of C shape)?
+- [-] Label minor CAGED positions as minor (ex. Cm shape instead of C shape)?
 - [ ] Generate images for each key/position/chord, use in SEO-friendly structured data for google images, social sharing, etc.
 - [ ] One-click way to switch to relative minor in keychange settings.
 - [ ] Add setting to control scroll/strum behavior. Swipe/drag to: (\*) strum ( ) scroll
 - [ ] Seventh chords
 - [ ] Close button in upper right of position dropdowns? Or better yet, click outside to close.
 - [ ] String styling (different widths, brass/wound bass strings)
-- [ ] Automated demo
-  - Add "Show a demo" to the "fretboard is playable" section in the about screen.
-  - Show how to explore all chords in C major
-  - Show how to switch to minor, and explore a couple positions there
-  - Show how to practice chord melody
+- [ ] Automated product tour
+  - Add "Product tour" to the "fretboard is playable" section in the about screen.
+  - Add "play all" to position selector. Two options: scale, ascending fourths
+  - Show how to practice chord melody?
     - Add scale degrees to the fretboard
     - Play through a simple "fly me to the moon" chord melody, or something similar
 - [ ] Ukulele
