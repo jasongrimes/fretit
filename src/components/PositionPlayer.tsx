@@ -3,7 +3,7 @@ import PositionPlayerControls from "@/components/PositionPlayerControls";
 import useSound from "@/hooks/use-sound.hook";
 import { FretboardLocation, LabelingStrategy } from "@/types";
 import { ChordCalculator } from "@/utils/chord-calculator";
-import createOverlays from "@/utils/fretboard-labeler";
+import createOverlays from "@/utils/fretboard-overlays";
 import { INSTRUMENTS } from "@/utils/instruments";
 import createKey from "@/utils/key";
 import { useRef, useState } from "react";

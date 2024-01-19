@@ -1,6 +1,9 @@
-export type { StringOverlays, LabelingStrategy } from "@/utils/fretboard-labeler";
-export type { Key } from "@/utils/key";
 export type { Voicing } from "@/utils/chord-calculator";
+export type {
+  LabelingStrategy,
+  StringOverlays,
+} from "@/utils/fretboard-overlays";
+export type { Key } from "@/utils/key";
 
 export interface Instrument {
   name: string;

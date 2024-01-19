@@ -16,7 +16,7 @@ export type StringOverlays = Record<
   { label: string; type?: string; style?: string; isTransparent?: boolean }
 >;
 
-export default function ({
+export default function createOverlays ({
   tuning,
   voicing,
   key,
