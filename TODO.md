@@ -24,10 +24,11 @@
   - /{key}/{position}/{chord} ex. /c-major-key/II-position/I-chord-c-major
   - /position-player baseurl, redirect there from / for now.
 
-  # Later
+# Later
 
-  - [ ] Save settings in localstorage
-    - Include a "restore defaults" option in settings dialog
+- [ ] Save settings in localstorage
+  - Include a "restore defaults" option in settings dialog
+- [ ] Close button in upper right of position dropdowns? Or better yet, click outside to close.
 
 # Maybe?
 
@@ -36,7 +37,6 @@
 - [ ] One-click way to switch to relative minor in keychange settings.
 - [ ] Add setting to control scroll/strum behavior. Swipe/drag to: (\*) strum ( ) scroll
 - [ ] Seventh chords
-- [ ] Close button in upper right of position dropdowns? Or better yet, click outside to close.
 - [ ] String styling (different widths, brass/wound bass strings)
 - [ ] Automated product tour
   - Add "Product tour" to the "fretboard is playable" section in the about screen.
