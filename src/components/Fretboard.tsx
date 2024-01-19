@@ -1,5 +1,4 @@
 import { FretboardLocation, Instrument, StringOverlays } from "@/types";
-import { FretboardLabeler } from "@/utils/fretboard-labeler";
 import { PointerEvent, useRef } from "react";
 import "./Fretboard.css";
 
@@ -9,7 +8,6 @@ import "./Fretboard.css";
 interface FretboardProps {
   instrument: Instrument;
   numFrets: number;
-  labeler: FretboardLabeler;
   setStringStop: (location: FretboardLocation) => void;
   playLocation: (location: FretboardLocation) => void;
   stringNodes: Map<number, HTMLElement>;
@@ -19,7 +17,6 @@ interface FretboardProps {
 export default function Fretboard({
   instrument,
   numFrets,
-  labeler,
   setStringStop,
   playLocation,
   stringNodes,
@@ -39,36 +36,30 @@ export default function Fretboard({
     event.target.releasePointerCapture(event.pointerId);
   }
 
-  //
-  // Assemble <String>
-  //
-  const strings = voicing.map((stoppedFret, stringIndex) => {
-    const stringNum = stringIndex + 1;
-    return (
-      <String
-        key={stringNum}
-        instrument={instrument}
-        numFrets={numFrets}
-        stringNum={stringNum}
-        stoppedFret={stoppedFret}
-        onStopFret={(fretNum: number) => {
-          handleStopString(stringNum, fretNum);
-        }}
-        labeler={labeler}
-        stringNodes={stringNodes}
-        onPlayString={() => playLocation([stringNum, stoppedFret])}
-        overlays={overlays[stringIndex]}
-      />
-    );
-  });
-
   return (
     <div
       className="fretboard"
       style={{ "--num-strings": numStrings } as React.CSSProperties}
       onPointerDown={handlePointerDown}
     >
-      {strings}
+      {voicing.map((stoppedFret, stringIndex) => {
+        const stringNum = stringIndex + 1;
+        return (
+          <String
+            key={stringNum}
+            instrument={instrument}
+            numFrets={numFrets}
+            stringNum={stringNum}
+            stoppedFret={stoppedFret}
+            onStopFret={(fretNum: number) => {
+              handleStopString(stringNum, fretNum);
+            }}
+            stringNodes={stringNodes}
+            onPlayString={() => playLocation([stringNum, stoppedFret])}
+            overlays={overlays[stringIndex]}
+          />
+        );
+      })}
     </div>
   );
 }
@@ -82,7 +73,6 @@ interface StringProps {
   stringNum: number;
   stoppedFret: number;
   onStopFret: (fretNum: number) => void;
-  labeler: FretboardLabeler;
   stringNodes: Map<number, HTMLElement>;
   onPlayString: () => void;
   overlays: StringOverlays;
@@ -93,7 +83,6 @@ function String({
   stringNum,
   stoppedFret,
   onStopFret,
-  labeler,
   stringNodes,
   onPlayString,
   overlays = {},
@@ -149,26 +138,28 @@ function String({
     clearPressTimer();
   }
 
-  /*
-  function handleClickMute() {
-    onStopFret(-1);
-    pointerPressed = false;
-  }
-  */
-
   // Assemble <FretNote> list
   const fretNotes = [];
   for (let fretNum = 0; fretNum <= numFrets; fretNum++) {
-    // Add <FretMarker> on first string
-    let fretMarker;
-    if (stringNum === 1 && instrument.fretMarkers?.includes(fretNum)) {
-      fretMarker = (
-        <FretMarker
-          double={!!instrument.doubleFretMarkers?.includes(fretNum)}
-          fretNum={fretNum}
-        />
-      );
+    let label, style, isTransparent;
+    if (overlays[fretNum]) {
+      ({ label, style, isTransparent } = overlays[fretNum]);
+    } else if (stoppedFret === fretNum) {
+      style = "chord";
     }
+
+    /*
+    let label = undefined;
+    let style = undefined;
+    if (stoppedFret === fretNum) {
+      label = labeler.getLocationLabel([stringNum, fretNum]);
+      style = labeler.getLocationStyle([stringNum, fretNum]) ?? "chord";
+      console.log(label, style);
+    } else if (overlays[fretNum]) {
+      ({ label, style } = overlays[fretNum]);
+    }
+*/
+    /*
 
     // Add <FretNoteDot>
     let fretNoteDot;
@@ -184,6 +175,7 @@ function String({
         />
       );
     }
+    */
 
     // Add <FretNote>
     fretNotes.push(
@@ -191,8 +183,19 @@ function String({
         key={stringNum + "," + fretNum}
         onClick={() => handleClickFret(fretNum)}
       >
-        {fretMarker}
-        {fretNoteDot}
+        {stringNum === 1 && instrument.fretMarkers?.includes(fretNum) && (
+          <FretMarker
+            double={!!instrument.doubleFretMarkers?.includes(fretNum)}
+            fretNum={fretNum}
+          />
+        )}
+        {(label !== undefined || style !== undefined) && (
+          <FretNoteOverlay
+            label={label}
+            style={style}
+            isTransparent={isTransparent}
+          />
+        )}
       </FretNote>,
     );
   }
@@ -202,11 +205,7 @@ function String({
     <div
       className={`string ${isMuted ? "muted" : ""}`}
       ref={(node) => {
-        if (node) {
-          stringNodes.set(stringNum, node);
-        } else {
-          stringNodes.delete(stringNum);
-        }
+        node ? stringNodes.set(stringNum, node) : stringNodes.delete(stringNum);
       }}
       onPointerDown={handlePointerDown}
       onPointerLeave={handlePointerLeave}
@@ -248,6 +247,7 @@ function FretNote({ children, onClick }: FretNoteProps) {
   );
 }
 
+/*
 //
 // <FretNoteDot>
 //
@@ -270,31 +270,34 @@ function FretNoteDot({
     </div>
   );
 }
+*/
 
 //
-// <FretNoteDot>
+// <FretNoteOverlay>
 //
 function FretNoteOverlay({
   label,
-  styleString = "",
+  style,
+  isTransparent = false,
 }: {
   label?: string;
-  styleString?: string;
+  style?: string;
+  isTransparent?: boolean;
 }) {
-  const styles = styleString.split(" ");
-  let extraClasses = "";
-  if (styles.includes("chord-tone")) {
-    extraClasses += " opacity-1 bg-accent text-accent-content";
-  }
-  if (styles.includes("chord-root")) {
-    extraClasses += " opacity-1 bg-primary text-primary-content";
-  }
-  if (styles.includes("transparent")) {
-    extraClasses += " opacity-50";
-  }
+  const extraClasses =
+    style === "chord"
+      ? "bg-accent text-accent-content"
+      : style === "chord-root"
+        ? "bg-primary text-primary-content"
+        : style === "scale"
+          ? "text-gray-800"
+          : "";
+
   return (
     <div
-      className={`fret-note-dot absolute bottom-0 z-10 flex size-8 items-center justify-center rounded-full text-black opacity-70 ${extraClasses}`}
+      className={`fret-note-dot absolute bottom-0 z-10 flex size-8 items-center justify-center rounded-full text-black ${extraClasses} ${
+        isTransparent ? "opacity-50" : ""
+      }`}
     >
       {label}
     </div>

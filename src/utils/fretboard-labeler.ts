@@ -1,5 +1,6 @@
-import { FretboardLocation } from "@/types";
+import { FretboardLocation, Key, StringOverlays } from "@/types";
 import { Interval, Note } from "tonal";
+import { Voicing } from "./chord-calculator";
 
 //
 // Types
@@ -17,35 +18,37 @@ export type LabelingStrategy =
  */
 export class FretboardLabeler {
   tuning: number[];
-  scheme: LabelingStrategy;
-  root?: string;
-  tonic: string;
-  preferSharps: boolean;
+  key!: Key;
+  chordRoot: string;
+  chordStrategy: LabelingStrategy;
+  scaleStrategy: LabelingStrategy;
 
   constructor({
     tuning,
-    LabelingStrategy,
-    tonic,
-    root,
-    preferSharps,
+    key,
+    chordRoot,
+    chordStrategy = "none",
+    scaleStrategy = "none",
   }: {
     tuning: number[];
-    LabelingStrategy: LabelingStrategy;
-    tonic: string;
-    root?: string;
-    preferSharps: boolean;
+    key: Key;
+    chordRoot: string;
+    chordStrategy: LabelingStrategy;
+    scaleStrategy: LabelingStrategy;
   }) {
     this.tuning = tuning;
-    this.scheme = LabelingStrategy;
-    this.root = root;
-    this.tonic = tonic;
-    this.preferSharps = preferSharps;
+    this.key = key;
+    this.chordRoot = chordRoot;
+    this.chordStrategy = chordStrategy;
+    this.scaleStrategy = scaleStrategy;
   }
 
-  getLocationLabel(location: FretboardLocation): string {
+  getLocationLabel(
+    location: FretboardLocation,
+    strategy: LabelingStrategy,
+  ): string {
     const midi = this.getLocationMidi(location);
-
-    return this.getMidiLabel(midi, this.scheme);
+    return this.getMidiLabel(midi, strategy);
   }
 
   getMidiLabel(midi: number, scheme: LabelingStrategy) {
@@ -57,29 +60,36 @@ export class FretboardLabeler {
       case "scaleInterval":
       case "chordInterval": {
         const refPitchClass =
-          scheme === "chordInterval" ? this.root : this.tonic;
+          scheme === "chordInterval" ? this.chordRoot : this.key.tonic;
         if (!refPitchClass) {
           return "";
         }
 
-        const refMidi = Note.midi(refPitchClass + 1) ?? 0; // Ex. C1
-        const semitones = (midi - refMidi) % 12;
-        const interval = Interval.get(Interval.fromSemitones(semitones));
-        let intervalName = `${
-          interval.alt === -1 ? "b" : interval.alt === 1 ? "#" : ""
-        }${interval.simple === 8 ? 1 : interval.simple}`;
-        if (scheme === "chordInterval" && intervalName === "1") {
-          intervalName = "R";
-        }
-        return intervalName;
+        const refMidi = this.getMidiFromPitchClass(refPitchClass);
+        const intervalName = this.getMidiIntervalName(refMidi, midi);
+        return (scheme === "chordInterval" && intervalName === "1") ? "R" : intervalName;
       }
       default:
         return "";
     }
   }
 
+  getMidiFromPitchClass(pitchClass: string) {
+    return Note.midi(pitchClass + 1) ?? 0; // Ex. C1
+  }
+
+  getMidiIntervalName(fromMidi: number, toMidi: number) {
+    const semitones = (toMidi - fromMidi) % 12;
+    const interval = Interval.get(Interval.fromSemitones(semitones));
+    return `${interval.alt === -1 ? "b" : interval.alt === 1 ? "#" : ""}${
+      interval.simple === 8 ? 1 : interval.simple
+    }`;
+  }
+
   getMidiPitch(midi: number) {
-    return this.preferSharps ? Note.fromMidiSharps(midi) : Note.fromMidi(midi);
+    return this.key.preferSharps
+      ? Note.fromMidiSharps(midi)
+      : Note.fromMidi(midi);
   }
 
   getLocationPitch(location: FretboardLocation) {
@@ -92,11 +102,11 @@ export class FretboardLabeler {
 
   getLocationStyle(location: FretboardLocation) {
     if (
-      this.root &&
-      Note.chroma(this.root) ===
+      this.chordRoot &&
+      Note.chroma(this.chordRoot) ===
         Note.chroma(this.getLocationPitchClass(location))
     ) {
-      return "root";
+      return "chord-root";
     }
     return;
   }
@@ -106,5 +116,32 @@ export class FretboardLabeler {
       return 0;
     }
     return this.tuning[stringNum - 1] + fretNum;
+  }
+
+  getOverlays(voicing: Voicing, positionNum: number | null = null) {
+    const minFret = positionNum ?? 0;
+    const maxFret = positionNum === null ? 15 : minFret + 4;
+    const overlays = Array.from(this.tuning, (stringMidi, stringIndex) => {
+      const stringOverlays: StringOverlays = {};
+      for (let fret = minFret; fret <= maxFret; fret++) {
+        const midi = stringMidi + fret;
+        const chroma = midi % 12;
+        if (voicing[stringIndex] === fret) {
+          const interval = this.getMidiIntervalName(this.getMidiFromPitchClass(this.chordRoot), midi);
+          stringOverlays[fret] = {
+            label: this.getMidiLabel(midi, this.chordStrategy),
+            style: interval === "1" ? "chord-root" : "chord",
+          };
+        } else if (this.key.scaleChromas.includes(chroma)) {
+          stringOverlays[fret] = {
+            label: this.getMidiLabel(midi, this.scaleStrategy),
+            style: "scale",
+          };
+        }
+      }
+      return stringOverlays;
+    });
+
+    return overlays;
   }
 }

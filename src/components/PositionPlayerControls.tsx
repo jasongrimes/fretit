@@ -1,5 +1,5 @@
 import { Position } from "@/utils/chord-calculator";
-import { FretboardLabeler, LabelingStrategy } from "@/utils/fretboard-labeler";
+import { LabelingStrategy } from "@/utils/fretboard-labeler";
 import {
   IconArrowsMaximize,
   IconArrowsMinimize,
@@ -16,7 +16,7 @@ import { ChangeEvent, useCallback, useRef, useState } from "react";
 interface Props {
   soundEnabled: boolean;
   onSetSoundEnabled: (enabled: boolean) => void;
-  labeler: FretboardLabeler;
+  chordLabeling: LabelingStrategy;
   onSetLabelingStrategy: (scheme: LabelingStrategy) => void;
   chordList: { root: string; roman: string; name: string }[];
   selectedChordNum: string;
@@ -34,7 +34,7 @@ interface Props {
 export default function PositionPlayerControls({
   soundEnabled,
   onSetSoundEnabled,
-  labeler,
+  chordLabeling,
   onSetLabelingStrategy,
   chordList,
   selectedChordNum,
@@ -336,7 +336,7 @@ export default function PositionPlayerControls({
             <select
               className="select select-bordered"
               onChange={handleSelectLabelingStrategy}
-              defaultValue={labeler.scheme}
+              defaultValue={chordLabeling}
             >
               <option value="scaleInterval">Scale degrees (1..7)</option>
               <option value="chordInterval">Chord intervals (R..7)</option>

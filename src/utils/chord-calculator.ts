@@ -1,4 +1,5 @@
-import { Key, Note } from "tonal";
+import { Key } from "@/types";
+import { Note, Key as TonalKey } from "tonal";
 
 /**
  * Chord voicing. A zero-indexed array of strings with the fret number stopped on each.
@@ -245,11 +246,11 @@ export class ChordCalculator {
     this.keyType = keyType;
     this.scale =
       keyType === "major"
-        ? Key.majorKey(keyTonic).scale.slice()
+        ? TonalKey.majorKey(keyTonic).scale.slice()
         : [
-            ...Key.minorKey(keyTonic).natural.scale,
+            ...TonalKey.minorKey(keyTonic).natural.scale,
             // Tack on the 7 from the harmonic minor
-            Key.minorKey(keyTonic).harmonic.scale[6],
+            TonalKey.minorKey(keyTonic).harmonic.scale[6],
           ];
   }
 
@@ -325,4 +326,24 @@ export class ChordCalculator {
     // console.log(`getChordVoicing(${positionIndex}, ${romanNum})`);
     return this.getPosition(positionIndex).chords[romanNum].slice();
   }
+}
+
+export function createKey(keyTonic: string, keyType: string): Key {
+  const scaleNotes =
+    keyType === "minor"
+      ? TonalKey.minorKey(keyTonic).natural.scale
+      : TonalKey.majorKey(keyTonic).scale;
+  const keySignature =
+    keyType === "minor"
+      ? TonalKey.minorKey(keyTonic).keySignature
+      : TonalKey.majorKey(keyTonic).keySignature;
+  
+  return {
+    tonic: keyTonic,
+    type: keyType,
+    keySignature: keySignature,
+    scaleNotes: scaleNotes,
+    scaleChromas: scaleNotes.map((note) => Note.chroma(note) ?? 0),
+    preferSharps: !keySignature || keySignature.startsWith("#"),
+  };
 }

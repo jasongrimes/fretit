@@ -1,12 +1,11 @@
 import Fretboard from "@/components/Fretboard";
 import PositionPlayerControls from "@/components/PositionPlayerControls";
 import useSound from "@/hooks/use-sound.hook";
-import { FretboardLocation, StringOverlays } from "@/types";
-import { ChordCalculator } from "@/utils/chord-calculator";
+import { FretboardLocation } from "@/types";
+import { ChordCalculator, createKey } from "@/utils/chord-calculator";
 import { FretboardLabeler, LabelingStrategy } from "@/utils/fretboard-labeler";
 import { INSTRUMENTS } from "@/utils/instruments";
 import { useRef, useState } from "react";
-import { Key, Note } from "tonal";
 
 export default function PositionPlayer() {
   const instrument = INSTRUMENTS.Guitar;
@@ -37,34 +36,37 @@ export default function PositionPlayer() {
   //
   // TODO: Rework this hacky stuff for setting up labeling and overlays.
   //
+  /*
   const scaleNotes =
     keyType === "minor"
-      ? Key.minorKey(keyTonic).natural.scale
-      : Key.majorKey(keyTonic).scale;
+      ? TonalKey.minorKey(keyTonic).natural.scale
+      : TonalKey.majorKey(keyTonic).scale;
   const keySignature =
     keyType === "minor"
-      ? Key.minorKey(keyTonic).keySignature
-      : Key.majorKey(keyTonic).keySignature;
-  const key = {
+      ? TonalKey.minorKey(keyTonic).keySignature
+      : TonalKey.majorKey(keyTonic).keySignature;
+  const key:Key = {
     tonic: keyTonic,
     type: keyType,
     keySignature: keySignature,
     scaleNotes: scaleNotes,
-    scaleChromas: scaleNotes.map((note) => Note.chroma(note)),
+    scaleChromas: scaleNotes.map((note) => Note.chroma(note) ?? 0),
     preferSharps: !keySignature || keySignature.startsWith("#"),
   };
   // console.log("key", key);
+  */
 
   const labeler = new FretboardLabeler({
     tuning: instrument.tuning,
-    LabelingStrategy: chordLabeling,
-    tonic: keyTonic,
-    root: chordCalculator.getChordRoot(chordNum),
-    preferSharps: key.preferSharps,
+    key: createKey(keyTonic, keyType),
+    chordRoot: chordCalculator.getChordRoot(chordNum),
+    chordStrategy: chordLabeling,
+    scaleStrategy: scaleLabeling,
   });
 
-  // FIXME: Why go through all this if stringLabeling is none?
+  /*
   const overlays = Array.from(instrument.tuning, (stringMidi) => {
+    // TODO: Improve the position data so it's truly the lowest fret in the position, then change this to simply position thru position+5
     let minFret = positions[positionIndex].positionNum - 1;
     let maxFret = positions[positionIndex].positionNum + 3;
     if (minFret < 0) {
@@ -78,6 +80,7 @@ export default function PositionPlayer() {
       if (key.scaleChromas.includes(chroma)) {
         stringOverlays[fret] = {
           label: labeler.getMidiLabel(midi, scaleLabeling),
+          style: "scale",
         };
       }
     }
@@ -85,7 +88,12 @@ export default function PositionPlayer() {
   });
   // console.log(key);
   // console.log(overlays);
-
+*/
+  const overlays = labeler.getOverlays(
+    voicing,
+    positions[positionIndex].positionNum,
+  );
+  //console.log(overlays);
   //
   // Support string animation
   //
@@ -174,7 +182,6 @@ export default function PositionPlayer() {
         <Fretboard
           instrument={instrument}
           numFrets={numFrets}
-          labeler={labeler}
           voicing={voicing}
           setStringStop={setStringStop}
           playLocation={playLocation}
@@ -186,7 +193,6 @@ export default function PositionPlayer() {
         <PositionPlayerControls
           soundEnabled={soundEnabled}
           onSetSoundEnabled={handleSetSoundEnabled}
-          labeler={labeler}
           onSetLabelingStrategy={handleSetLabelingStrategy}
           chordList={chordList}
           selectedChordNum={chordNum}
