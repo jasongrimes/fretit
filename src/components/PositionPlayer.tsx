@@ -193,6 +193,7 @@ export default function PositionPlayer() {
         <PositionPlayerControls
           soundEnabled={soundEnabled}
           onSetSoundEnabled={handleSetSoundEnabled}
+          chordLabeling={chordLabeling}
           onSetLabelingStrategy={handleSetLabelingStrategy}
           chordList={chordList}
           selectedChordNum={chordNum}
