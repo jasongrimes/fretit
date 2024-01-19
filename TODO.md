@@ -7,6 +7,10 @@
   - Pull out string stuff (not all of them)
   - index file to forward definitions
 
+- [ ] Refactor chord calculator to be functional rather than OOP
+  - No more constructor/new
+  - Pass Key into each function
+  
 
 # Next
 
