@@ -108,7 +108,7 @@ export default function PositionPlayerControls({
   return (
     <>
       <div className={` ${maximized ? "w-16" : "w-32"} `}>
-        <ul className="menu fixed z-10 rounded-box bg-base-300 text-base-content">
+        <ul className="menu fixed z-10 rounded-box bg-base-300 text-base-content" aria-label="controls">
           <li>
             <a onClick={handleShowAbout}>
               <IconInfoCircle className="h-5 w-5" />
@@ -118,7 +118,7 @@ export default function PositionPlayerControls({
 
           {/* Settings */}
           <li>
-            <a onClick={handleShowSettings}>
+            <a onClick={handleShowSettings} aria-label="Settings">
               <IconSettings className="h-5 w-5" />
               {!maximized && <>Settings</>}
             </a>
@@ -195,7 +195,7 @@ export default function PositionPlayerControls({
           {chordList.map((chord) => {
             return (
               <li className="w-full" key={chord.roman}>
-                <a
+                <a aria-label={`Select ${chord.name} chord`}
                   className={`flex w-full truncate text-clip px-0 text-center ${
                     selectedChordNum === chord.roman ? "active" : ""
                   }`}

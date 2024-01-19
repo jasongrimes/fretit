@@ -148,7 +148,6 @@ function String({
       style = "chord";
     }
 
-
     // Add <FretNote>
     fretNotes.push(
       <FretNote
@@ -166,6 +165,8 @@ function String({
             label={label}
             style={style}
             isTransparent={isTransparent}
+            string={stringNum}
+            fret={fretNum}
           />
         )}
       </FretNote>,
@@ -226,10 +227,14 @@ function FretNoteOverlay({
   label,
   style,
   isTransparent = false,
+  string,
+  fret,
 }: {
   label?: string;
   style?: string;
   isTransparent?: boolean;
+  string: number;
+  fret: number;
 }) {
   const extraClasses =
     style === "chord"
@@ -241,7 +246,7 @@ function FretNoteOverlay({
           : "";
 
   return (
-    <div
+    <div aria-label={`String ${string}, fret ${fret}`}
       className={`fret-note-dot absolute bottom-0 z-10 flex size-8 items-center justify-center rounded-full text-black ${extraClasses} ${
         isTransparent ? "opacity-50" : ""
       }`}
