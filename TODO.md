@@ -1,28 +1,20 @@
 # Soon
 
-- [ ] Pull components into separate files?
+- [ ] Pull components into separate files
+
   - PositionPlayerControls directory
-  - Pull out a bunch of em
-  - Fretboard directory
-  - Pull out string stuff (not all of them)
+  - Pull out a bunch of em, at least the dialogs.
   - index file to forward definitions
 
 - [ ] Refactor chord calculator to be functional rather than OOP
   - No more constructor/new
   - Pass Key into each function
-  
 
 # Next
 
 - [ ] Tweak Bdim open voicing https://github.com/jasongrimes/fretit/issues/1
 
 - [ ] Make "maximize" hide the header too
-
-- BUG: Scale numbering in (A,D,E,G) minor C position, (C,A,D,E) minor G position, should be adjusted down one fret
-
-  - Maybe: Change the position numbers in each position to be the lowest fret for all chords in the position.
-    Then have the scale span five frets up from there.
-    That will make the position numbers more accurate too.
 
 - [ ] When manually changing string stop, show original chord tone as transparent overlay
 
