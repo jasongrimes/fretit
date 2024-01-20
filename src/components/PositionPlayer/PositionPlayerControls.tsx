@@ -10,7 +10,7 @@ import {
 } from "@tabler/icons-react";
 import { useCallback, useEffect, useState } from "react";
 
-interface Props {
+interface PositionPlayerControlsProps {
   onSetShowModal: (modal: string) => void;
   chordList: { root: string; roman: string; name: string }[];
   selectedChordNum: string;
@@ -29,7 +29,7 @@ export default function PositionPlayerControls({
   positionIndex,
   onSetPositionIndex,
   keyData,
-}: Props) {
+}: PositionPlayerControlsProps) {
   const [maximized, setMaximized] = useState(false);
   const key = keyData;
   const selectedPosition = positions[positionIndex];
@@ -68,7 +68,7 @@ export default function PositionPlayerControls({
 
   return (
     <>
-      <div className={` ${maximized ? "w-16" : "w-32"} `}>
+      <div className={`${maximized ? "w-16" : "w-32"} `}>
         <ul
           className="menu fixed z-10 rounded-box bg-base-300 text-base-content"
           aria-label="controls"
@@ -80,7 +80,6 @@ export default function PositionPlayerControls({
             </a>
           </li>
 
-          {/* Settings */}
           <li>
             <a onClick={() => onSetShowModal("settings")} aria-label="Settings">
               <IconSettings className="h-5 w-5" />
@@ -92,8 +91,7 @@ export default function PositionPlayerControls({
           <li className="menu-title px-0 text-center">
             {maximized ? (
               <>
-                {key.tonic}
-                {key.type === "minor" ? "m" : ""}
+                {key.tonic} {key.type === "minor" ? "m" : ""}
               </>
             ) : (
               <>
@@ -197,21 +195,35 @@ export default function PositionPlayerControls({
             </a>
           </li>
 
-          {/* Maximize */}
-          <li>
-            <a onClick={handleToggleMaximized}>
-              {maximized ? (
-                <IconArrowsMinimize className="h-5 w-5" />
-              ) : (
-                <>
-                  <IconArrowsMaximize className="h-5 w-5" />
-                  Maximize
-                </>
-              )}
-            </a>
-          </li>
+          <MaximizeControl
+            maximized={maximized}
+            onToggleMaximized={handleToggleMaximized}
+          />
         </ul>
       </div>
     </>
+  );
+}
+
+function MaximizeControl({
+  maximized,
+  onToggleMaximized,
+}: {
+  maximized: boolean;
+  onToggleMaximized: () => void;
+}) {
+  return (
+    <li>
+      <a onClick={onToggleMaximized}>
+        {maximized ? (
+          <IconArrowsMinimize className="h-5 w-5" />
+        ) : (
+          <>
+            <IconArrowsMaximize className="h-5 w-5" />
+            Maximize
+          </>
+        )}
+      </a>
+    </li>
   );
 }
