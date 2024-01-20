@@ -105,8 +105,7 @@ export default function PositionPlayer() {
     // TODO: Set an overlay to track the old chord voicing?
   }
 
-  // TODO: Rename to handlePlayLocation? Or maybe handlePlayFretNote?
-  function playLocation([stringNum, fretNum]: FretboardLocation) {
+  function handlePlayFretNote([stringNum, fretNum]: FretboardLocation) {
     play(stringNum, fretNum);
   }
 
@@ -141,7 +140,7 @@ export default function PositionPlayer() {
           numFrets={numFrets}
           voicing={voicing}
           onSetStringStop={handleSetStringStop}
-          playLocation={playLocation}
+          onPlayFretNote={handlePlayFretNote}
           stringNodes={getStringNodes()}
           overlays={overlays}
         />

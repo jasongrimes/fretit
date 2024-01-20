@@ -9,7 +9,7 @@ interface FretboardProps {
   instrument: Instrument;
   numFrets: number;
   onSetStringStop: (location: FretboardLocation) => void;
-  playLocation: (location: FretboardLocation) => void;
+  onPlayFretNote: (location: FretboardLocation) => void;
   stringNodes: Map<number, HTMLElement>;
   voicing: number[];
   overlays: StringOverlays[];
@@ -18,7 +18,7 @@ export default function Fretboard({
   instrument,
   numFrets,
   onSetStringStop,
-  playLocation,
+  onPlayFretNote,
   stringNodes,
   voicing,
   overlays = [],
@@ -27,7 +27,7 @@ export default function Fretboard({
 
   function handleStopString(stringNum: number, fretNum: number) {
     onSetStringStop([stringNum, fretNum]);
-    playLocation([stringNum, fretNum]);
+    onPlayFretNote([stringNum, fretNum]);
   }
 
   function handlePointerDown(event: PointerEvent<HTMLDivElement>) {
@@ -55,7 +55,7 @@ export default function Fretboard({
               handleStopString(stringNum, fretNum);
             }}
             stringNodes={stringNodes}
-            onPlayString={() => playLocation([stringNum, stoppedFret])}
+            onPlayString={() => onPlayFretNote([stringNum, stoppedFret])}
             overlays={overlays[stringIndex]}
           />
         );
@@ -246,7 +246,8 @@ function FretNoteOverlay({
           : "";
 
   return (
-    <div aria-label={`String ${string}, fret ${fret}`}
+    <div
+      aria-label={`String ${string}, fret ${fret}`}
       className={`fret-note-dot absolute bottom-0 z-10 flex size-8 items-center justify-center rounded-full text-black ${extraClasses} ${
         isTransparent ? "opacity-50" : ""
       }`}
