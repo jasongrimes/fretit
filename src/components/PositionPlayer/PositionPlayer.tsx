@@ -31,8 +31,8 @@ export default function PositionPlayer() {
   const chordList = chordCalculator.getChordList();
   const positions = chordCalculator.getPositions();
 
-  // Current fretboard voicing defaults to the selected chord,
-  // but it can be manually changed without changing the chord.
+  // The current voicing on the fretboard defaults to the selected chord,
+  // but the user can manually stop the strings at different frets without changing the selected chord.
   const [voicing, setVoicing] = useState(
     chordCalculator.getChordVoicing(positionIndex, chordNum),
   );
@@ -48,9 +48,7 @@ export default function PositionPlayer() {
   });
   //console.log(overlays);
 
-  //
-  // Support string animation
-  //
+  // Create a map of string DOM nodes so we can play animations on the correct string.
   const stringsRef = useRef<Map<number, HTMLElement> | null>(null);
   function getStringNodes() {
     if (!stringsRef.current) {
@@ -58,7 +56,8 @@ export default function PositionPlayer() {
     }
     return stringsRef.current;
   }
-  function playString(stringNum: number) {
+
+  function playStringAnimation(stringNum: number) {
     if (animationEnabled) {
       const node = getStringNodes().get(stringNum);
       if (node?.classList.contains("plucked")) {
@@ -69,13 +68,11 @@ export default function PositionPlayer() {
     }
   }
 
-  //
-  // Sound player
-  //
+  // Set up the sound player.
   const { play, strum } = useSound({
     tuning: instrument.tuning,
     muted: !soundEnabled,
-    onPlayString: playString,
+    onPlayString: playStringAnimation,
   });
 
   //
@@ -98,6 +95,7 @@ export default function PositionPlayer() {
     strum(newVoicing);
   }
 
+  // TODO: Rename to handleSetStringStop?
   function setStringStop([stringNum, fretNum]: FretboardLocation) {
     const newVoicing = voicing.slice();
     newVoicing[stringNum - 1] = fretNum;
@@ -106,6 +104,7 @@ export default function PositionPlayer() {
     // TODO: Set an overlay to track the old chord voicing?
   }
 
+  // TODO: Rename to handlePlayLocation? Or maybe handlePlayFretNote?
   function playLocation([stringNum, fretNum]: FretboardLocation) {
     play(stringNum, fretNum);
   }
@@ -122,6 +121,8 @@ export default function PositionPlayer() {
     setKeyLetter(keyLetter);
     setKeyAccidental(keyAccidental);
     setKeyType(keyType);
+    // TODO: Don't mutate chordCalculator to deliberately cause a side effect on handleSetChordNum. 
+    // Refactor chordCalculator to inject the key into each function call.
     chordCalculator.setKey(keyLetter + keyAccidental, keyType);
     handleSetChordNum(keyType === "minor" ? "i" : "I");
   }

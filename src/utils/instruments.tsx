@@ -1,4 +1,9 @@
-import { Instrument } from "@/types";
+export interface Instrument {
+  readonly name: string;
+  readonly tuning: number[];
+  readonly fretMarkers: number[];
+  readonly doubleFretMarkers: number[];
+}
 
 export const INSTRUMENTS: Record<string, Instrument> = {
   Guitar: {

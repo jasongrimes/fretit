@@ -21,13 +21,13 @@
 - [ ] SEO-friendly URLs/routing
 
   - /about (shows about dialog)
+  - /settings (shows settings dialog)
   - /{key}/{position}/{chord} ex. /c-major-key/II-position/I-chord-c-major
-  - /position-player baseurl, redirect there from / for now.
+  - /guitar-positions/ baseurl, redirect there from / for now.
 
 # Later
 
-- [ ] Save settings in localstorage
-  - Include a "restore defaults" option in settings dialog
+- [ ] Save settings in query parameters
 - [ ] Close button in upper right of position dropdowns? Or better yet, click outside to close.
 
 # Maybe?
