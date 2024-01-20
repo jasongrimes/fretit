@@ -8,7 +8,7 @@ import {
   IconInfoCircle,
   IconSettings,
 } from "@tabler/icons-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface Props {
   onSetShowModal: (modal: string) => void;
@@ -34,6 +34,17 @@ export default function PositionPlayerControls({
   const key = keyData;
   const selectedPosition = positions[positionIndex];
 
+  useEffect(() => {
+    scrollToPositionNum(positions[positionIndex].positionNum);
+  }, [positions, positionIndex]);
+
+  const handleSetChordNum = useCallback(
+    (roman: string) => {
+      onSetChordNum(roman);
+    },
+    [onSetChordNum],
+  );
+
   function handleToggleMaximized() {
     setMaximized(!maximized);
   }
@@ -43,27 +54,17 @@ export default function PositionPlayerControls({
       return;
     }
     onSetPositionIndex(positionIndex);
-
-    // TODO: Move this scrolling into a useEffect. It fails when changing positions too quickly.
-    scrollToPositionNum(positions[positionIndex].positionNum);
   }
 
   function scrollToPositionNum(num: number) {
-    if (num <= 2) {
+    if (num <= 1) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       document
-        .querySelector(`.fret-note:nth-child(${num - 1})`)
+        .querySelector(`.fret-note:nth-child(${num})`)
         ?.scrollIntoView({ behavior: "smooth" });
     }
   }
-
-  const handleSetChordNum = useCallback(
-    (roman: string) => {
-      onSetChordNum(roman);
-    },
-    [onSetChordNum],
-  );
 
   return (
     <>
@@ -211,8 +212,6 @@ export default function PositionPlayerControls({
           </li>
         </ul>
       </div>
-
-     
     </>
   );
 }
