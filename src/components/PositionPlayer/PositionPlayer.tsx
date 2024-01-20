@@ -114,10 +114,6 @@ export default function PositionPlayer() {
     setSoundEnabled(!soundEnabled);
   }
 
-  function handleSetLabelingStrategy(scheme: LabelingStrategy) {
-    setChordLabeling(scheme);
-  }
-
   function handleSetKey(
     keyLetter: string,
     keyAccidental: string,
@@ -172,7 +168,7 @@ export default function PositionPlayer() {
         keyType={keyType}
         onSetKey={handleSetKey}
         chordLabeling={chordLabeling}
-        onSelectChordLabeling={handleSetLabelingStrategy}
+        onSelectChordLabeling={setChordLabeling}
         scaleLabeling={scaleLabeling}
         onSetScaleLabeling={setScaleLabeling}
       />
