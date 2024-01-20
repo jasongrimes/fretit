@@ -112,26 +112,11 @@ export default function PositionPlayerControls({
             onSetChordNum={handleSetChordNum}
           />
 
-          {/* Position */}
-          <li className={positionIndex === 0 ? "disabled" : ""}>
-            <a
-              className="justify-around"
-              onClick={() => handleSetPositionIndex(positionIndex - 1)}
-            >
-              <IconChevronsUp className="h-5 w-5" />
-            </a>
-          </li>
-
-          <li
-            className={positionIndex >= positions.length - 1 ? "disabled" : ""}
-          >
-            <a
-              className="justify-around"
-              onClick={() => handleSetPositionIndex(positionIndex + 1)}
-            >
-              <IconChevronsDown className="h-5 w-5" />
-            </a>
-          </li>
+          <PositionSpinner
+            positions={positions}
+            positionIndex={positionIndex}
+            onSetPositionIndex={handleSetPositionIndex}
+          />
 
           <MaximizeControl
             maximized={maximized}
@@ -267,6 +252,39 @@ function ChordSelector({
           </li>
         );
       })}
+    </>
+  );
+}
+
+interface PositionSpinnerProps {
+  positions: Position[];
+  positionIndex: number;
+  onSetPositionIndex: (positionIndex: number) => void;
+}
+function PositionSpinner({
+  positions,
+  positionIndex,
+  onSetPositionIndex,
+}: PositionSpinnerProps) {
+  return (
+    <>
+      <li className={positionIndex === 0 ? "disabled" : ""}>
+        <a
+          className="justify-around"
+          onClick={() => onSetPositionIndex(positionIndex - 1)}
+        >
+          <IconChevronsUp className="h-5 w-5" />
+        </a>
+      </li>
+
+      <li className={positionIndex >= positions.length - 1 ? "disabled" : ""}>
+        <a
+          className="justify-around"
+          onClick={() => onSetPositionIndex(positionIndex + 1)}
+        >
+          <IconChevronsDown className="h-5 w-5" />
+        </a>
+      </li>
     </>
   );
 }
