@@ -1,11 +1,5 @@
 # Soon
 
-- [ ] Pull components into separate files
-
-  - PositionPlayerControls directory
-  - Pull out a bunch of em, at least the dialogs.
-  - index file to forward definitions
-
 - [ ] Refactor chord calculator to be functional rather than OOP
   - No more constructor/new
   - Pass Key into each function
@@ -14,21 +8,25 @@
 
 - [ ] Tweak Bdim open voicing https://github.com/jasongrimes/fretit/issues/1
 
+- [ ] Fix intermittent sound failure on iOS https://github.com/jasongrimes/fretit/issues/2
+
 - [ ] Make "maximize" hide the header too
 
 - [ ] When manually changing string stop, show original chord tone as transparent overlay
 
-- [ ] SEO-friendly URLs/routing
+# Later
 
+- [ ] SEO-friendly URLs/routing
   - /about (shows about dialog)
   - /settings (shows settings dialog)
   - /{key}/{position}/{chord} ex. /c-major-key/II-position/I-chord-c-major
   - /guitar-positions/ baseurl, redirect there from / for now.
 
-# Later
-
 - [ ] Save settings in query parameters
-- [ ] Close button in upper right of position dropdowns? Or better yet, click outside to close.
+
+- [ ] Make a fretit.io homepage. Use the description from the README
+
+- [ ] Hide position selector dropdown when clicking outside.
 
 # Maybe?
 
