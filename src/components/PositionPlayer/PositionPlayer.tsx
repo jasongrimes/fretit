@@ -7,6 +7,7 @@ import createOverlays from "@/utils/fretboard-overlays";
 import { INSTRUMENTS } from "@/utils/instruments";
 import createKey from "@/utils/key";
 import { useRef, useState } from "react";
+import AboutDialog from "./AboutDialog";
 import SettingsDialog from "./SettingsDialog";
 
 export default function PositionPlayer() {
@@ -121,7 +122,7 @@ export default function PositionPlayer() {
     setKeyLetter(keyLetter);
     setKeyAccidental(keyAccidental);
     setKeyType(keyType);
-    // TODO: Don't mutate chordCalculator to deliberately cause a side effect on handleSetChordNum. 
+    // TODO: Don't mutate chordCalculator to deliberately cause a side effect on handleSetChordNum.
     // Refactor chordCalculator to inject the key into each function call.
     chordCalculator.setKey(keyLetter + keyAccidental, keyType);
     handleSetChordNum(keyType === "minor" ? "i" : "I");
@@ -173,6 +174,7 @@ export default function PositionPlayer() {
         scaleLabeling={scaleLabeling}
         onSetScaleLabeling={setScaleLabeling}
       />
+      <AboutDialog isOpen={showModal === "about"} onClose={handleCloseModal} />
     </div>
   );
 }
