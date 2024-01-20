@@ -32,7 +32,6 @@ export default function PositionPlayerControls({
 }: PositionPlayerControlsProps) {
   const [maximized, setMaximized] = useState(false);
   const key = keyData;
-  const selectedPosition = positions[positionIndex];
 
   useEffect(() => {
     scrollToPositionNum(positions[positionIndex].positionNum);
@@ -87,8 +86,7 @@ export default function PositionPlayerControls({
             </a>
           </li>
 
-          {/* Key */}
-          <li className="menu-title px-0 text-center">
+          <li className="menu-title px-0 text-center" aria-label="Key">
             {maximized ? (
               <>
                 {key.tonic} {key.type === "minor" ? "m" : ""}
@@ -100,57 +98,13 @@ export default function PositionPlayerControls({
             )}
           </li>
 
-          {/* Position selector */}
-          <li className="w-full">
-            <details className="dropdown dropdown-end">
-              <summary
-                className={
-                  maximized
-                    ? "justify-center gap-0 truncate px-0 after:w-0"
-                    : "justify-center"
-                }
-              >
-                {maximized ? (
-                  <>
-                    {selectedPosition.roman} ({selectedPosition.caged})
-                  </>
-                ) : (
-                  <>
-                    {selectedPosition.label} ({selectedPosition.caged})
-                  </>
-                )}
-              </summary>
-              <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-200 p-2 shadow">
-                <li className="menu-title">
-                  <h2 className="text-lg">Position</h2>
-                </li>
-                <li className="menu-title flex flex-row">
-                  <div className="w-14 pr-4 text-right underline">Fret</div>
-                  <div className="underline">
-                    CAGED {key.type === "minor" ? "i" : "I"}-chord
-                  </div>
-                </li>
-                {positions.map((position, i) => {
-                  return (
-                    <li key={i}>
-                      <a
-                        onClick={() => handleSetPositionIndex(i)}
-                        className={i === positionIndex ? "active" : ""}
-                      >
-                        <div className="w-14 pr-4 text-right">
-                          <b>{position.label}</b>
-                        </div>
-                        <div>
-                          <b>{position.caged}</b>-shape{" "}
-                          {key.type === "minor" ? "i" : "I"}
-                        </div>
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </details>
-          </li>
+          <PositionSelector
+            maximized={maximized}
+            positions={positions}
+            positionIndex={positionIndex}
+            onSetPositionIndex={handleSetPositionIndex}
+            keyData={key}
+          />
 
           {/* Chords */}
           {chordList.map((chord) => {
@@ -224,6 +178,77 @@ function MaximizeControl({
           </>
         )}
       </a>
+    </li>
+  );
+}
+
+interface PositionSelectorProps {
+  maximized: boolean;
+  positions: Position[];
+  positionIndex: number;
+  onSetPositionIndex: (positionIndex: number) => void;
+  keyData: Key;
+}
+function PositionSelector({
+  maximized,
+  positions,
+  positionIndex,
+  onSetPositionIndex,
+  keyData,
+}: PositionSelectorProps) {
+  const key = keyData;
+  const selectedPosition = positions[positionIndex];
+
+  return (
+    <li className="w-full">
+      <details className="dropdown dropdown-end">
+        <summary
+          className={
+            maximized
+              ? "justify-center gap-0 truncate px-0 after:w-0"
+              : "justify-center"
+          }
+        >
+          {maximized ? (
+            <>
+              {selectedPosition.roman} ({selectedPosition.caged})
+            </>
+          ) : (
+            <>
+              {selectedPosition.label} ({selectedPosition.caged})
+            </>
+          )}
+        </summary>
+        <ul className="menu dropdown-content z-[10] w-52 rounded-box bg-base-200 p-2 shadow">
+          <li className="menu-title">
+            <h2 className="text-lg">Select position</h2>
+          </li>
+          <li className="menu-title flex flex-row">
+            <div className="w-14 pr-4 text-right underline">Fret</div>
+            <div className="underline">
+              CAGED {key.type === "minor" ? "i" : "I"}-chord
+            </div>
+          </li>
+          {positions.map((position, i) => {
+            return (
+              <li key={i}>
+                <a
+                  onClick={() => onSetPositionIndex(i)}
+                  className={i === positionIndex ? "active" : ""}
+                >
+                  <div className="w-14 pr-4 text-right">
+                    <b>{position.label}</b>
+                  </div>
+                  <div>
+                    <b>{position.caged}</b>-shape{" "}
+                    {key.type === "minor" ? "i" : "I"}
+                  </div>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </details>
     </li>
   );
 }
