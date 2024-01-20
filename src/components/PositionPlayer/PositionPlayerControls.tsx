@@ -86,17 +86,7 @@ export default function PositionPlayerControls({
             </a>
           </li>
 
-          <li className="menu-title px-0 text-center" aria-label="Key">
-            {maximized ? (
-              <>
-                {key.tonic} {key.type === "minor" ? "m" : ""}
-              </>
-            ) : (
-              <>
-                {key.tonic} {key.type}
-              </>
-            )}
-          </li>
+          <KeyLabel maximized={maximized} keyData={key} />
 
           <PositionSelector
             maximized={maximized}
@@ -125,6 +115,29 @@ export default function PositionPlayerControls({
         </ul>
       </div>
     </>
+  );
+}
+
+function KeyLabel({
+  maximized,
+  keyData,
+}: {
+  maximized: boolean;
+  keyData: Key;
+}) {
+  const key = keyData;
+  return (
+    <li className="menu-title px-0 text-center" aria-label="Key">
+      {maximized ? (
+        <>
+          {key.tonic} {key.type === "minor" ? "m" : ""}
+        </>
+      ) : (
+        <>
+          {key.tonic} {key.type}
+        </>
+      )}
+    </li>
   );
 }
 
