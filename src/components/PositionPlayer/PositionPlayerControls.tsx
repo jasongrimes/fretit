@@ -1,3 +1,4 @@
+import { Key } from "@/types";
 import { Position } from "@/utils/chord-calculator";
 import {
   IconArrowsMaximize,
@@ -18,9 +19,7 @@ interface Props {
   positions: Position[];
   positionIndex: number;
   onSetPositionIndex: (positionIndex: number) => void;
-  keyLetter: string;
-  keyAccidental: string;
-  keyType: string;
+  keyData: Key;
 }
 export default function PositionPlayerControls({
   onSetShowModal,
@@ -30,13 +29,11 @@ export default function PositionPlayerControls({
   positions,
   positionIndex,
   onSetPositionIndex,
-  keyLetter,
-  keyAccidental,
-  keyType,
+  keyData,
 }: Props) {
   const [maximized, setMaximized] = useState(false);
   const aboutDialogRef = useRef<HTMLDialogElement | null>(null);
-
+  const key = keyData;
   const selectedPosition = positions[positionIndex];
 
   function handleToggleMaximized() {
@@ -100,13 +97,12 @@ export default function PositionPlayerControls({
           <li className="menu-title px-0 text-center">
             {maximized ? (
               <>
-                {keyLetter}
-                {keyAccidental} {keyType === "minor" ? "m" : ""}
+                {key.tonic}
+                {key.type === "minor" ? "m" : ""}
               </>
             ) : (
               <>
-                {keyLetter}
-                {keyAccidental} {keyType}
+                {key.tonic} {key.type}
               </>
             )}
           </li>
@@ -138,7 +134,7 @@ export default function PositionPlayerControls({
                 <li className="menu-title flex flex-row">
                   <div className="w-14 pr-4 text-right underline">Fret</div>
                   <div className="underline">
-                    CAGED {keyType === "minor" ? "i" : "I"}-chord
+                    CAGED {key.type === "minor" ? "i" : "I"}-chord
                   </div>
                 </li>
                 {positions.map((position, i) => {
@@ -153,7 +149,7 @@ export default function PositionPlayerControls({
                         </div>
                         <div>
                           <b>{position.caged}</b>-shape{" "}
-                          {keyType === "minor" ? "i" : "I"}
+                          {key.type === "minor" ? "i" : "I"}
                         </div>
                       </a>
                     </li>

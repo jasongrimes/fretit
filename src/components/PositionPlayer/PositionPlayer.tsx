@@ -159,9 +159,7 @@ export default function PositionPlayer() {
           positions={positions}
           positionIndex={positionIndex}
           onSetPositionIndex={handleSetPositionIndex}
-          keyLetter={keyLetter}
-          keyAccidental={keyAccidental}
-          keyType={keyType}
+          keyData={key}
         />
       </div>
       <SettingsDialog
