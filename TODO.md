@@ -1,14 +1,10 @@
 # Soon
 
-- [ ] Refactor chord calculator to be functional rather than OOP
-  - No more constructor/new
-  - Pass Key into each function
-
-# Next
-
 - [ ] Tweak Bdim open voicing https://github.com/jasongrimes/fretit/issues/1
 
 - [ ] Fix intermittent sound failure on iOS https://github.com/jasongrimes/fretit/issues/2
+
+# Next
 
 - [ ] Make "maximize" hide the header too
 
@@ -44,8 +40,3 @@
     - Play through a simple "fly me to the moon" chord melody, or something similar
 - [ ] Ukulele
 
-- [ ] Reorganize business logic?
-  - **Diatonic calculations (by key)**: For a given key, determine diatonic chords, scales, note names, midi numbers and degrees. Pretty much just wrap tonaljs.
-  - **Instrument calculations (fretboard locations by instrument)**: For a given instrument and tuning, determine midi numbers of each fretboard location, and vice-versa.
-  - **Fretboard calculations (grips and positions by key and instrument)**: Grips and positions for a given key and instrument. Subjective, hard-coded.
-  - **Label calculations (by key and strategy)**: How to label each note shown on the fretboard, based on key (or sharp preference, if no key) and strategy (note name, chord interval, scale degree, etc.). Difference contexts (chord tone, stopped string, scale overlay, ...) will use different strategies and styles (ex. temporarily un-stopped chord tone will be transparent, etc.)
