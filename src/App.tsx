@@ -1,6 +1,6 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import PositionPlayer from "@/components/PositionPlayer";
+import PositionPlayer from "@/components/PositionPlayer/PositionPlayer";
 
 function App() {
   return (

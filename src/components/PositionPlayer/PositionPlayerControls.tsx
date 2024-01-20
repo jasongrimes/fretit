@@ -1,4 +1,3 @@
-import { LabelingStrategy } from "@/types";
 import { Position } from "@/utils/chord-calculator";
 import {
   IconArrowsMaximize,
@@ -8,59 +7,40 @@ import {
   IconHeart,
   IconInfoCircle,
   IconSettings,
-  IconVolume,
-  IconVolumeOff,
 } from "@tabler/icons-react";
-import { ChangeEvent, useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 interface Props {
-  soundEnabled: boolean;
-  onSetSoundEnabled: (enabled: boolean) => void;
-  chordLabeling: LabelingStrategy;
-  onSetLabelingStrategy: (scheme: LabelingStrategy) => void;
+  onSetShowModal: (modal: string) => void;
   chordList: { root: string; roman: string; name: string }[];
   selectedChordNum: string;
   onSetChordNum: (chordNum: string) => void;
   positions: Position[];
   positionIndex: number;
   onSetPositionIndex: (positionIndex: number) => void;
-  scaleLabeling: string;
-  onSetScaleLabeling: (scaleLabeling: LabelingStrategy) => void;
   keyLetter: string;
   keyAccidental: string;
   keyType: string;
-  onSetKey: (keyLetter: string, keyAccidental: string, keyType: string) => void;
 }
 export default function PositionPlayerControls({
-  soundEnabled,
-  onSetSoundEnabled,
-  chordLabeling,
-  onSetLabelingStrategy,
+  onSetShowModal,
   chordList,
   selectedChordNum,
   onSetChordNum,
   positions,
   positionIndex,
   onSetPositionIndex,
-  scaleLabeling,
-  onSetScaleLabeling,
   keyLetter,
   keyAccidental,
   keyType,
-  onSetKey,
 }: Props) {
   const [maximized, setMaximized] = useState(false);
   const aboutDialogRef = useRef<HTMLDialogElement | null>(null);
-  const settingsDialogRef = useRef<HTMLDialogElement | null>(null);
 
   const selectedPosition = positions[positionIndex];
 
   function handleToggleMaximized() {
     setMaximized(!maximized);
-  }
-
-  function handleSoundClick() {
-    onSetSoundEnabled(!soundEnabled);
   }
 
   function handleSetPositionIndex(positionIndex: number) {
@@ -90,25 +70,17 @@ export default function PositionPlayerControls({
     [onSetChordNum],
   );
 
-  function handleSelectLabelingStrategy(e: ChangeEvent<HTMLSelectElement>) {
-    onSetLabelingStrategy(e.target.value as LabelingStrategy);
-  }
-
-  function handleSelectScaleLabeling(e: ChangeEvent<HTMLSelectElement>) {
-    onSetScaleLabeling(e.target.value as LabelingStrategy);
-  }
-
   function handleShowAbout() {
     aboutDialogRef.current?.showModal();
-  }
-  function handleShowSettings() {
-    settingsDialogRef.current?.showModal();
   }
 
   return (
     <>
       <div className={` ${maximized ? "w-16" : "w-32"} `}>
-        <ul className="menu fixed z-10 rounded-box bg-base-300 text-base-content" aria-label="controls">
+        <ul
+          className="menu fixed z-10 rounded-box bg-base-300 text-base-content"
+          aria-label="controls"
+        >
           <li>
             <a onClick={handleShowAbout}>
               <IconInfoCircle className="h-5 w-5" />
@@ -118,7 +90,7 @@ export default function PositionPlayerControls({
 
           {/* Settings */}
           <li>
-            <a onClick={handleShowSettings} aria-label="Settings">
+            <a onClick={() => onSetShowModal("settings")} aria-label="Settings">
               <IconSettings className="h-5 w-5" />
               {!maximized && <>Settings</>}
             </a>
@@ -195,7 +167,8 @@ export default function PositionPlayerControls({
           {chordList.map((chord) => {
             return (
               <li className="w-full" key={chord.roman}>
-                <a aria-label={`Select ${chord.name} chord`}
+                <a
+                  aria-label={`Select ${chord.name} chord`}
                   className={`flex w-full truncate text-clip px-0 text-center ${
                     selectedChordNum === chord.roman ? "active" : ""
                   }`}
@@ -248,133 +221,6 @@ export default function PositionPlayerControls({
           </li>
         </ul>
       </div>
-
-      {/* Settings modal */}
-      <dialog
-        ref={settingsDialogRef}
-        id="settings-modal"
-        className="modal modal-bottom sm:modal-middle"
-      >
-        <div className="modal-box">
-          <h3 className="text-lg font-bold">Settings</h3>
-
-          {/* Toggle sound */}
-          <div className="form-control mt-4 max-w-fit">
-            <label className="label cursor-pointer gap-4">
-              <span className="label-text flex gap-2">
-                {soundEnabled ? (
-                  <IconVolume className="h-5 w-5" />
-                ) : (
-                  <IconVolumeOff className="h-5 w-5" />
-                )}
-                Enable sound
-              </span>
-              <input
-                type="checkbox"
-                className="toggle"
-                checked={soundEnabled}
-                onChange={handleSoundClick}
-              />
-            </label>
-          </div>
-          <div className="label pt-0">
-            <span className="label-text-alt">
-              Tip: make sure your device is not in &quot;silent&quot; mode.
-            </span>
-          </div>
-
-          {/* Select key */}
-          <label className="form-control mt-2 w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Key</span>
-            </div>
-            <div className="form-control flex-row gap-2">
-              <select
-                className="select select-bordered"
-                onChange={(e) =>
-                  onSetKey(e.target.value, keyAccidental, keyType)
-                }
-                defaultValue={keyLetter}
-              >
-                <option value="C">C</option>
-                <option value="D">D</option>
-                <option value="E">E</option>
-                <option value="F">F</option>
-                <option value="G">G</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-              </select>
-
-              <select
-                className="select select-bordered"
-                onChange={(e) => onSetKey(keyLetter, e.target.value, keyType)}
-                defaultValue={keyAccidental}
-              >
-                <option value=""></option>
-                <option value="#">#</option>
-                <option value="b">b</option>
-              </select>
-
-              <select
-                className="select select-bordered grow"
-                onChange={(e) =>
-                  onSetKey(keyLetter, keyAccidental, e.target.value)
-                }
-                defaultValue={keyType}
-              >
-                <option value="major">major</option>
-                <option value="minor">minor</option>
-              </select>
-            </div>
-          </label>
-
-          {/* Select chord note labeling scheme */}
-          <label className="form-control mt-4 w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Chord note labels</span>
-            </div>
-            <select
-              className="select select-bordered"
-              onChange={handleSelectLabelingStrategy}
-              defaultValue={chordLabeling}
-            >
-              <option value="scaleInterval">Scale degrees (1..7)</option>
-              <option value="chordInterval">Chord intervals (R..7)</option>
-              <option value="pitchClass">Note names</option>
-              <option value="pitch">Note names + octave</option>
-              <option value="none">None</option>
-            </select>
-          </label>
-
-          {/* Select scale note labels */}
-          <label className="form-control mt-4 w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Scale note labels</span>
-            </div>
-            <select
-              className="select select-bordered"
-              onChange={handleSelectScaleLabeling}
-              defaultValue={scaleLabeling}
-            >
-              <option value="scaleInterval">Scale degrees (1..7)</option>
-              <option value="pitchClass">Note names</option>
-              <option value="pitch">Note names + octave</option>
-              <option value="none">None</option>
-            </select>
-          </label>
-
-          <div className="modal-action">
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn">Close</button>
-            </form>
-          </div>
-        </div>
-        {/* there a second form with 'modal-backdrop' class and it covers the screen so we can close the modal when clicked outside */}
-        <form method="dialog" className="modal-backdrop">
-          <button>close</button>
-        </form>
-      </dialog>
 
       {/* About modal */}
       <dialog

@@ -1,5 +1,5 @@
 import Fretboard from "@/components/Fretboard";
-import PositionPlayerControls from "@/components/PositionPlayerControls";
+import PositionPlayerControls from "@/components/PositionPlayer/PositionPlayerControls";
 import useSound from "@/hooks/use-sound.hook";
 import { FretboardLocation, LabelingStrategy } from "@/types";
 import { ChordCalculator } from "@/utils/chord-calculator";
@@ -7,11 +7,14 @@ import createOverlays from "@/utils/fretboard-overlays";
 import { INSTRUMENTS } from "@/utils/instruments";
 import createKey from "@/utils/key";
 import { useRef, useState } from "react";
+import SettingsDialog from "./SettingsDialog";
 
 export default function PositionPlayer() {
   const instrument = INSTRUMENTS.Guitar;
   const numFrets = 15;
   const animationEnabled = true;
+
+  const [showModal, setShowModal] = useState("none"); // none | settings | about
 
   const [soundEnabled, setSoundEnabled] = useState(true);
   // prettier-ignore
@@ -107,8 +110,8 @@ export default function PositionPlayer() {
     play(stringNum, fretNum);
   }
 
-  function handleSetSoundEnabled(enabled: boolean) {
-    setSoundEnabled(enabled);
+  function handleToggleSound() {
+    setSoundEnabled(!soundEnabled);
   }
 
   function handleSetLabelingStrategy(scheme: LabelingStrategy) {
@@ -127,8 +130,15 @@ export default function PositionPlayer() {
     handleSetChordNum(keyType === "minor" ? "i" : "I");
   }
 
+  function handleCloseModal() {
+    setShowModal("none");
+  }
+
   return (
-    <div className="fretboard-player mx-auto flex max-w-lg  overflow-x-hidden">
+    <div
+      id="position-player"
+      className="mx-auto flex max-w-lg overflow-x-hidden"
+    >
       <div className="flex-grow">
         <Fretboard
           instrument={instrument}
@@ -142,24 +152,32 @@ export default function PositionPlayer() {
       </div>
       <div className="flex-grow-0 pl-2 pr-2">
         <PositionPlayerControls
-          soundEnabled={soundEnabled}
-          onSetSoundEnabled={handleSetSoundEnabled}
-          chordLabeling={chordLabeling}
-          onSetLabelingStrategy={handleSetLabelingStrategy}
+          onSetShowModal={setShowModal}
           chordList={chordList}
           selectedChordNum={chordNum}
           onSetChordNum={handleSetChordNum}
           positions={positions}
           positionIndex={positionIndex}
           onSetPositionIndex={handleSetPositionIndex}
-          scaleLabeling={scaleLabeling}
-          onSetScaleLabeling={setScaleLabeling}
           keyLetter={keyLetter}
           keyAccidental={keyAccidental}
           keyType={keyType}
-          onSetKey={handleSetKey}
         />
       </div>
+      <SettingsDialog
+        isOpen={showModal === "settings"}
+        onClose={handleCloseModal}
+        isSoundEnabled={soundEnabled}
+        onToggleSound={handleToggleSound}
+        keyLetter={keyLetter}
+        keyAccidental={keyAccidental}
+        keyType={keyType}
+        onSetKey={handleSetKey}
+        chordLabeling={chordLabeling}
+        onSelectChordLabeling={handleSetLabelingStrategy}
+        scaleLabeling={scaleLabeling}
+        onSetScaleLabeling={setScaleLabeling}
+      />
     </div>
   );
 }
