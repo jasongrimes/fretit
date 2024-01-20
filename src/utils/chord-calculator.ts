@@ -1,4 +1,5 @@
-import { Note, Key as TonalKey } from "tonal";
+import { Key } from "@/types";
+import { Note } from "tonal";
 
 /**
  * Chord voicing. A zero-indexed array of strings with the fret number stopped on each.
@@ -225,104 +226,75 @@ const triadSuffixes: Record<string, Record<string, string>> = {
   minor: { i: "m", "ii°": "°", bIII: "", iv: "m", v: "m", bVI: "", bVII: "", "vii°": "°", V: "", V7: "7" },
 }
 
-export class ChordCalculator {
-  keyTonic!: string;
-  keyType!: string;
-  scale!: string[];
-
-  constructor({
-    keyTonic,
-    keyType,
-  }: {
-    keyTonic: string;
-    keyType: string; // "major" | "minor";
-  }) {
-    this.setKey(keyTonic, keyType);
-  }
-
-  setKey(keyTonic: string, keyType: string) {
-    this.keyTonic = keyTonic;
-    this.keyType = keyType;
-    this.scale =
-      keyType === "major"
-        ? TonalKey.majorKey(keyTonic).scale.slice()
-        : [
-            ...TonalKey.minorKey(keyTonic).natural.scale,
-            // Tack on the 7 from the harmonic minor
-            TonalKey.minorKey(keyTonic).harmonic.scale[6],
-          ];
-  }
-
-  getChordRoot(romanNum: string) {
-    return this.scale[chordNumIndex[this.keyType][romanNum]];
-  }
-
-  getChordName(romanNum: string) {
-    return this.getChordRoot(romanNum) + triadSuffixes[this.keyType][romanNum];
-  }
-
-  getChordList() {
-    return Object.keys(chordNumIndex[this.keyType]).map((roman) => {
-      return {
-        roman,
-        root: this.getChordRoot(roman),
-        name: this.getChordName(roman),
-      };
+export function getPositions(key: Key): Position[] {
+  const positions = key.type === "minor" ? cMinorPositions : cMajorPositions;
+  return positions
+    .map((position) => {
+      return hydratePosition(position, key);
+    })
+    .sort((a, b) => {
+      return a.positionNum - b.positionNum;
     });
-  }
+}
 
-  getPosition(positionIndex: number): Position {
-    return this.getPositions()[positionIndex];
-  }
-
-  getPositions(): Position[] {
-    const positions =
-      this.keyType === "minor" ? cMinorPositions : cMajorPositions;
-    return positions
-      .map((position) => {
-        // Transpose the C Major positions to the current key.
-        const keyChroma = Note.chroma(this.keyTonic) ?? 0;
-        const cPositionNum = position.positionNum ?? 0;
-        const transposedPosition = cPositionNum + keyChroma;
-        const newPositionNum = transposedPosition % 12;
-        const positionOffset = transposedPosition - newPositionNum;
-        const roman = romanPositions[newPositionNum];
-        const newPosition: Position = {
-          ...position,
-          positionNum: newPositionNum,
-          roman: roman,
-          label: roman === "O" ? "Open" : roman,
-          chords: {},
-        };
-        Object.keys(position.chords).forEach((roman) => {
-          // In open position, check if there's an alternate voicing for this chord (by key and chord num)
-          if (
-            newPositionNum === 0 &&
-            openPositionVoicings[this.keyTonic]?.[roman]
-          ) {
-            newPosition.chords[roman] =
-              openPositionVoicings[this.keyTonic][roman];
-          } else {
-            newPosition.chords[roman] = position.chords[roman].map(
-              (fretNum) => {
-                if (fretNum === -1) {
-                  return fretNum;
-                }
-                return fretNum + keyChroma - positionOffset;
-              },
-            );
-          }
-        });
-
-        return newPosition;
-      })
-      .sort((a, b) => {
-        return a.positionNum - b.positionNum;
+// Convert a PositionTemplate to a Position in a given key.
+function hydratePosition(position: PositionTemplate, key: Key): Position {
+  const keyChroma = Note.chroma(key.tonic) ?? 0;
+  const cPositionNum = position.positionNum ?? 0;
+  const transposedPosition = cPositionNum + keyChroma;
+  const newPositionNum = transposedPosition % 12;
+  const positionOffset = transposedPosition - newPositionNum;
+  const roman = romanPositions[newPositionNum];
+  const newPosition: Position = {
+    ...position,
+    positionNum: newPositionNum,
+    roman: roman,
+    label: roman === "O" ? "Open" : roman,
+    chords: {},
+  };
+  Object.keys(position.chords).forEach((roman) => {
+    // In open position, check if there's an alternate voicing for this chord (by key and chord num)
+    if (newPositionNum === 0 && openPositionVoicings[key.tonic]?.[roman]) {
+      newPosition.chords[roman] = openPositionVoicings[key.tonic][roman];
+    } else {
+      newPosition.chords[roman] = position.chords[roman].map((fretNum) => {
+        if (fretNum === -1) {
+          return fretNum;
+        }
+        return fretNum + keyChroma - positionOffset;
       });
-  }
+    }
+  });
 
-  getChordVoicing(positionIndex: number, romanNum: string) {
-    // console.log(`getChordVoicing(${positionIndex}, ${romanNum})`);
-    return this.getPosition(positionIndex).chords[romanNum].slice();
-  }
+  return newPosition;
+}
+
+export function getChordList(key: Key) {
+  return Object.keys(chordNumIndex[key.type]).map((roman) => {
+    return {
+      roman,
+      root: getChordRoot(key, roman),
+      name: getChordName(key, roman),
+    };
+  });
+}
+
+export function getChordRoot(key: Key, roman: string) {
+  return key.scaleNotes[chordNumIndex[key.type][roman]];
+}
+
+function getChordName(key: Key, roman: string) {
+  return getChordRoot(key, roman) + triadSuffixes[key.type][roman];
+}
+
+export function getChordVoicing(
+  key: Key,
+  positionIndex: number,
+  roman: string,
+) {
+  return getPosition(key, positionIndex).chords[roman].slice();
+}
+
+function getPosition(key: Key, positionIndex: number): Position {
+  return getPositions(key)[positionIndex];
 }

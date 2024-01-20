@@ -2,10 +2,15 @@ import Fretboard from "@/components/Fretboard";
 import PositionPlayerControls from "@/components/PositionPlayer/PositionPlayerControls";
 import useSound from "@/hooks/use-sound.hook";
 import { FretboardLocation, LabelingStrategy } from "@/types";
-import { ChordCalculator } from "@/utils/chord-calculator";
+import {
+  getChordList,
+  getChordRoot,
+  getChordVoicing,
+  getPositions,
+} from "@/utils/chord-calculator";
 import createOverlays from "@/utils/fretboard-overlays";
 import { INSTRUMENTS } from "@/utils/instruments";
-import createKey from "@/utils/key";
+import createKey, { Key } from "@/utils/key";
 import { useRef, useState } from "react";
 import AboutDialog from "./AboutDialog";
 import SettingsDialog from "./SettingsDialog";
@@ -16,7 +21,6 @@ export default function PositionPlayer() {
   const animationEnabled = true;
 
   const [showModal, setShowModal] = useState("none"); // none | settings | about
-
   const [soundEnabled, setSoundEnabled] = useState(true);
   // prettier-ignore
   const [chordLabeling, setChordLabeling] = useState<LabelingStrategy>("scaleInterval");
@@ -28,21 +32,20 @@ export default function PositionPlayer() {
   const [chordNum, setChordNum] = useState("I");
 
   const key = createKey(keyLetter + keyAccidental, keyType);
-  const chordCalculator = new ChordCalculator({ keyTonic: key.tonic, keyType });
-  const chordList = chordCalculator.getChordList();
-  const positions = chordCalculator.getPositions();
+  const chordList = getChordList(key);
+  const positions = getPositions(key);
 
   // The current voicing on the fretboard defaults to the selected chord,
   // but the user can manually stop the strings at different frets without changing the selected chord.
   const [voicing, setVoicing] = useState(
-    chordCalculator.getChordVoicing(positionIndex, chordNum),
+    getChordVoicing(key, positionIndex, chordNum),
   );
 
   const overlays = createOverlays({
     tuning: instrument.tuning,
     voicing: voicing,
     key: key,
-    chordRoot: chordCalculator.getChordRoot(chordNum),
+    chordRoot: getChordRoot(key, chordNum),
     chordStrategy: chordLabeling,
     scaleStrategy: scaleLabeling,
     position: positions[positionIndex].positionNum,
@@ -88,10 +91,10 @@ export default function PositionPlayer() {
   function handleSetChordNum(
     chordNum: string,
     positionIdx: number = positionIndex,
+    inKey: Key = key,
   ) {
-    // console.log(`handleSetChordNum(${chordNum}, ${positionIdx})`);
     setChordNum(chordNum);
-    const newVoicing = chordCalculator.getChordVoicing(positionIdx, chordNum);
+    const newVoicing = getChordVoicing(inKey, positionIdx, chordNum);
     setVoicing(newVoicing);
     strum(newVoicing);
   }
@@ -122,10 +125,11 @@ export default function PositionPlayer() {
     setKeyLetter(keyLetter);
     setKeyAccidental(keyAccidental);
     setKeyType(keyType);
+    const newKey = createKey(keyLetter + keyAccidental, keyType);
     // TODO: Don't mutate chordCalculator to deliberately cause a side effect on handleSetChordNum.
     // Refactor chordCalculator to inject the key into each function call.
-    chordCalculator.setKey(keyLetter + keyAccidental, keyType);
-    handleSetChordNum(keyType === "minor" ? "i" : "I");
+    // chordCalculator.setKey(keyLetter + keyAccidental, keyType);
+    handleSetChordNum(keyType === "minor" ? "i" : "I", positionIndex, newKey);
   }
 
   function handleCloseModal() {
