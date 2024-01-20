@@ -1,4 +1,4 @@
-import { FretboardLocation, Instrument, StringOverlays } from "@/types";
+import { Instrument, StringOverlays } from "@/types";
 import { PointerEvent, useRef } from "react";
 import "./Fretboard.css";
 
@@ -8,8 +8,8 @@ import "./Fretboard.css";
 interface FretboardProps {
   instrument: Instrument;
   numFrets: number;
-  onSetStringStop: (location: FretboardLocation) => void;
-  onPlayFretNote: (location: FretboardLocation) => void;
+  onSetStringStop: (stringNum: number, fretNum: number) => void;
+  onPlayFretNote: (stringNum: number, fretNum: number) => void;
   stringNodes: Map<number, HTMLElement>;
   voicing: number[];
   overlays: StringOverlays[];
@@ -26,8 +26,8 @@ export default function Fretboard({
   const numStrings = instrument.tuning.length;
 
   function handleStopString(stringNum: number, fretNum: number) {
-    onSetStringStop([stringNum, fretNum]);
-    onPlayFretNote([stringNum, fretNum]);
+    onSetStringStop(stringNum, fretNum);
+    onPlayFretNote(stringNum, fretNum);
   }
 
   function handlePointerDown(event: PointerEvent<HTMLDivElement>) {
@@ -55,7 +55,7 @@ export default function Fretboard({
               handleStopString(stringNum, fretNum);
             }}
             stringNodes={stringNodes}
-            onPlayString={() => onPlayFretNote([stringNum, stoppedFret])}
+            onPlayString={() => onPlayFretNote(stringNum, stoppedFret)}
             overlays={overlays[stringIndex]}
           />
         );

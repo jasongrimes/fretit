@@ -1,7 +1,7 @@
 import Fretboard from "@/components/Fretboard";
 import PositionPlayerControls from "@/components/PositionPlayer/PositionPlayerControls";
 import useSound from "@/hooks/use-sound.hook";
-import { FretboardLocation, LabelingStrategy } from "@/types";
+import { LabelingStrategy } from "@/types";
 import {
   getChordList,
   getChordRoot,
@@ -98,14 +98,14 @@ export default function PositionPlayer() {
     strum(newVoicing);
   }
 
-  function handleSetStringStop([stringNum, fretNum]: FretboardLocation) {
+  function handleSetStringStop(stringNum: number, fretNum: number) {
     const newVoicing = voicing.slice();
     newVoicing[stringNum - 1] = fretNum;
     setVoicing(newVoicing);
     // TODO: Set an overlay to track the old chord voicing?
   }
 
-  function handlePlayFretNote([stringNum, fretNum]: FretboardLocation) {
+  function handlePlayFretNote(stringNum: number, fretNum: number) {
     play(stringNum, fretNum);
   }
 
