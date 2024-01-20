@@ -22,8 +22,8 @@ export default function PositionPlayer() {
 
   const [showModal, setShowModal] = useState("none"); // none | settings | about
   const [soundEnabled, setSoundEnabled] = useState(true);
-  // prettier-ignore
-  const [chordLabeling, setChordLabeling] = useState<LabelingStrategy>("scaleInterval");
+  const [chordLabeling, setChordLabeling] =
+    useState<LabelingStrategy>("scaleInterval");
   const [scaleLabeling, setScaleLabeling] = useState<LabelingStrategy>("none");
   const [keyType, setKeyType] = useState("major");
   const [keyLetter, setKeyLetter] = useState("C");
@@ -34,7 +34,6 @@ export default function PositionPlayer() {
   const key = createKey(keyLetter + keyAccidental, keyType);
   const chordList = getChordList(key);
   const positions = getPositions(key);
-
   // The current voicing on the fretboard defaults to the selected chord,
   // but the user can manually stop the strings at different frets without changing the selected chord.
   const [voicing, setVoicing] = useState(
@@ -99,12 +98,10 @@ export default function PositionPlayer() {
     strum(newVoicing);
   }
 
-  // TODO: Rename to handleSetStringStop?
-  function setStringStop([stringNum, fretNum]: FretboardLocation) {
+  function handleSetStringStop([stringNum, fretNum]: FretboardLocation) {
     const newVoicing = voicing.slice();
     newVoicing[stringNum - 1] = fretNum;
     setVoicing(newVoicing);
-    // console.log(newVoicing);
     // TODO: Set an overlay to track the old chord voicing?
   }
 
@@ -126,9 +123,6 @@ export default function PositionPlayer() {
     setKeyAccidental(keyAccidental);
     setKeyType(keyType);
     const newKey = createKey(keyLetter + keyAccidental, keyType);
-    // TODO: Don't mutate chordCalculator to deliberately cause a side effect on handleSetChordNum.
-    // Refactor chordCalculator to inject the key into each function call.
-    // chordCalculator.setKey(keyLetter + keyAccidental, keyType);
     handleSetChordNum(keyType === "minor" ? "i" : "I", positionIndex, newKey);
   }
 
@@ -146,7 +140,7 @@ export default function PositionPlayer() {
           instrument={instrument}
           numFrets={numFrets}
           voicing={voicing}
-          setStringStop={setStringStop}
+          onSetStringStop={handleSetStringStop}
           playLocation={playLocation}
           stringNodes={getStringNodes()}
           overlays={overlays}

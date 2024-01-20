@@ -8,7 +8,7 @@ import "./Fretboard.css";
 interface FretboardProps {
   instrument: Instrument;
   numFrets: number;
-  setStringStop: (location: FretboardLocation) => void;
+  onSetStringStop: (location: FretboardLocation) => void;
   playLocation: (location: FretboardLocation) => void;
   stringNodes: Map<number, HTMLElement>;
   voicing: number[];
@@ -17,7 +17,7 @@ interface FretboardProps {
 export default function Fretboard({
   instrument,
   numFrets,
-  setStringStop,
+  onSetStringStop,
   playLocation,
   stringNodes,
   voicing,
@@ -26,7 +26,7 @@ export default function Fretboard({
   const numStrings = instrument.tuning.length;
 
   function handleStopString(stringNum: number, fretNum: number) {
-    setStringStop([stringNum, fretNum]);
+    onSetStringStop([stringNum, fretNum]);
     playLocation([stringNum, fretNum]);
   }
 
