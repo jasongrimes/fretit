@@ -106,27 +106,11 @@ export default function PositionPlayerControls({
             keyData={key}
           />
 
-          {/* Chords */}
-          {chordList.map((chord) => {
-            return (
-              <li className="w-full" key={chord.roman}>
-                <a
-                  aria-label={`Select ${chord.name} chord`}
-                  className={`flex w-full truncate text-clip px-0 text-center ${
-                    selectedChordNum === chord.roman ? "active" : ""
-                  }`}
-                  onClick={() => handleSetChordNum(chord.roman)}
-                >
-                  <span className="w-1/2 text-right text-base-content">
-                    {chord.roman}
-                  </span>
-                  <span className="w-1/2 text-left text-accent">
-                    {chord.name}
-                  </span>
-                </a>
-              </li>
-            );
-          })}
+          <ChordSelector
+            chordList={chordList}
+            selectedChordNum={selectedChordNum}
+            onSetChordNum={handleSetChordNum}
+          />
 
           {/* Position */}
           <li className={positionIndex === 0 ? "disabled" : ""}>
@@ -250,5 +234,39 @@ function PositionSelector({
         </ul>
       </details>
     </li>
+  );
+}
+
+interface ChordSelectorProps {
+  chordList: { root: string; roman: string; name: string }[];
+  selectedChordNum: string;
+  onSetChordNum: (chordNum: string) => void;
+}
+function ChordSelector({
+  chordList,
+  selectedChordNum,
+  onSetChordNum,
+}: ChordSelectorProps) {
+  return (
+    <>
+      {chordList.map((chord) => {
+        return (
+          <li className="w-full" key={chord.roman}>
+            <a
+              aria-label={`Select ${chord.name} chord`}
+              className={`flex w-full truncate text-clip px-0 text-center ${
+                selectedChordNum === chord.roman ? "active" : ""
+              }`}
+              onClick={() => onSetChordNum(chord.roman)}
+            >
+              <span className="w-1/2 text-right text-base-content">
+                {chord.roman}
+              </span>
+              <span className="w-1/2 text-left text-accent">{chord.name}</span>
+            </a>
+          </li>
+        );
+      })}
+    </>
   );
 }
