@@ -12,6 +12,6 @@ which is harder to do with traditional, separate diagrams.
 Adding the dimension of sound to the visual diagrams,
 and making them playable so you can experiment and tie them to your personal experience,
 activates multimodal memory techniques 
-which increase learning speed and retention according to a variety of research.
+which increase learning speed and retention according to a variety of studies.
 
 Also, it's pretty fun. Try it at [fretit.io](https://fretit.io).
