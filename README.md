@@ -1,4 +1,4 @@
-# Fret It: interactive, playable, editable fretboard diagrams.
+# Fret It: Interactive, playable, editable fretboard diagrams.
 
 Fret It is a colleciton of web applications for learning fretted instruments like guitar.
 It provides interactive diagrams which change in place and produce sound at the same time.
