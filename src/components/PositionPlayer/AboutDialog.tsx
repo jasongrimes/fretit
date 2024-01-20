@@ -42,7 +42,7 @@ export default function AboutDialog({ isOpen, onClose }: AboutDialogProps) {
           </span>
         </p>
 
-        <p className="my-2 bg-base-300 p-2">
+        <p className="mt-5 mb-2 bg-base-300 p-2">
           <span className="mb-1 block font-bold text-secondary">
             Learn more
           </span>
