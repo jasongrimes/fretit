@@ -1,7 +1,5 @@
 # Soon
 
-- [ ] Tweak Bdim open voicing https://github.com/jasongrimes/fretit/issues/1
-
 - [ ] Fix intermittent sound failure on iOS https://github.com/jasongrimes/fretit/issues/2
 
 # Next
