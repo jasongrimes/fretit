@@ -188,7 +188,11 @@ const cMinorPositions: PositionTemplate[] = [
 
 // A few alternate voicings for open positions, by key tonic and chord number.
 const openPositionVoicings: Record<string, DiatonicChords> = {
+  C: {
+    "vii°": [-1, 3, 4, 3, 2, -1], // Bdim
+  },
   A: {
+    "ii°": [-1, 3, 4, 3, 2, -1], // Bdim
     ii: [2, 3, 4, 4, 2, -1], // Bm
     iii: [0, 2, 1, 2, -1, -1], // C#m
     "vii°": [-1, 0, 1, 0, 2, -1], // G#dim
