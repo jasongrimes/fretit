@@ -103,12 +103,9 @@ export default function PositionPlayer({maximized, onToggleMaximized}: PositionP
   }
 
   function handleSetStringStop(stringNum: number, fretNum: number) {
-    // const oldOverlay = overlays[stringNum - 1][fretNum];
     const newVoicing = voicing.slice();
     newVoicing[stringNum - 1] = fretNum;
     setVoicing(newVoicing);
-    // overlays[stringNum - 1][fretNum] = oldOverlay;
-    console.log(overlays);
   }
 
   function handlePlayFretNote(stringNum: number, fretNum: number) {
