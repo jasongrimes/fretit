@@ -26,6 +26,9 @@
 
 # Maybe?
 
+- [ ] When changing key, consider defaulting to the current position by CAGED shape rather than positionIndex.
+  (Experiment to see which is the more useful default.)
+
 - [-] Label minor CAGED positions as minor (ex. Cm shape instead of C shape)?
 - [ ] Generate images for each key/position/chord, use in SEO-friendly structured data for google images, social sharing, etc.
 - [ ] One-click way to switch to relative minor in keychange settings.
