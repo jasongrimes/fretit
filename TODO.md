@@ -4,7 +4,7 @@
 
 # Next
 
-- [ ] When manually changing string stop, show original chord tone as transparent overlay
+- [ ] When manually changing string stop, show original chord tone as a transparent overlay
 
 # Later
 

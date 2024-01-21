@@ -40,14 +40,14 @@ export default function PositionPlayer({maximized, onToggleMaximized}: PositionP
   const positions = getPositions(key);
   // The current voicing on the fretboard defaults to the selected chord,
   // but the user can manually stop the strings at different frets without changing the selected chord.
-  const [voicing, setVoicing] = useState(
-    getChordVoicing(key, positionIndex, chordNum),
-  );
+  const chordVoicing = getChordVoicing(key, positionIndex, chordNum);
+  const [voicing, setVoicing] = useState(chordVoicing);
 
   const overlays = createOverlays({
     tuning: instrument.tuning,
-    voicing: voicing,
     key: key,
+    voicing: voicing,
+    originalVoicing: chordVoicing,
     chordRoot: getChordRoot(key, chordNum),
     chordStrategy: chordLabeling,
     scaleStrategy: scaleLabeling,
@@ -103,10 +103,12 @@ export default function PositionPlayer({maximized, onToggleMaximized}: PositionP
   }
 
   function handleSetStringStop(stringNum: number, fretNum: number) {
+    // const oldOverlay = overlays[stringNum - 1][fretNum];
     const newVoicing = voicing.slice();
     newVoicing[stringNum - 1] = fretNum;
     setVoicing(newVoicing);
-    // TODO: Set an overlay to track the old chord voicing?
+    // overlays[stringNum - 1][fretNum] = oldOverlay;
+    console.log(overlays);
   }
 
   function handlePlayFretNote(stringNum: number, fretNum: number) {

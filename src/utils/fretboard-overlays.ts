@@ -16,23 +16,25 @@ export type StringOverlays = Record<
   { label: string; type?: string; style?: string; isTransparent?: boolean }
 >;
 
-export default function createOverlays ({
+export default function createOverlays({
   tuning,
-  voicing,
   key,
+  voicing,
+  originalVoicing,
   chordRoot,
   chordStrategy = "none",
   scaleStrategy = "none",
   position,
 }: {
   tuning: number[];
-  voicing: Voicing;
   key: Key;
+  voicing: Voicing;
+  originalVoicing: Voicing;
   chordRoot: string;
   chordStrategy: LabelingStrategy;
   scaleStrategy: LabelingStrategy;
   position?: number;
-  }): StringOverlays[] {
+}): StringOverlays[] {
   const numFrets = 15;
   const minFret = position ?? 0;
   const maxFret = position === undefined ? 15 : minFret + 4;
@@ -40,17 +42,28 @@ export default function createOverlays ({
 
   const overlays = Array.from(tuning, (stringMidi, stringIndex) => {
     const stoppedFret = voicing[stringIndex];
+    const originalStoppedFret = originalVoicing[stringIndex];
     const stringOverlays: StringOverlays = {};
     for (let fret = 0; fret <= numFrets; fret++) {
       const midi = stringMidi + fret;
       const chroma = midi % 12;
+      const interval = getIntervalName(chordRootMidi, midi);
       if (stoppedFret === fret) {
-        const interval = getIntervalName(chordRootMidi, midi);
         stringOverlays[fret] = {
           label: getMidiLabel(midi, chordStrategy, key, chordRootMidi),
           style: interval === "1" ? "chord-root" : "chord",
         };
-      } else if (fret >= minFret && fret <= maxFret && key.scaleChromas.includes(chroma)) {
+      } else if (originalStoppedFret === fret) {
+        stringOverlays[fret] = {
+          label: getMidiLabel(midi, chordStrategy, key, chordRootMidi),
+          style: interval === "1" ? "chord-root" : "chord",
+          isTransparent: true,
+        };
+      } else if (
+        fret >= minFret &&
+        fret <= maxFret &&
+        key.scaleChromas.includes(chroma)
+      ) {
         stringOverlays[fret] = {
           label: getMidiLabel(midi, scaleStrategy, key, key.scaleChromas[0]),
           style: "scale",
@@ -106,6 +119,6 @@ function getMidiPitch(midi: number, key: Key) {
     const octave = Math.floor(midi / 12) - 1;
     return pitchClass + octave;
   }
-  
+
   return key.preferSharps ? Note.fromMidiSharps(midi) : Note.fromMidi(midi);
 }

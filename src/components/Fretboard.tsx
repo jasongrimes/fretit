@@ -249,7 +249,7 @@ function FretNoteOverlay({
     <div
       aria-label={`String ${string}, fret ${fret}`}
       className={`fret-note-dot absolute bottom-0 z-10 flex size-8 items-center justify-center rounded-full text-black ${extraClasses} ${
-        isTransparent ? "opacity-50" : ""
+        isTransparent ? "opacity-40" : ""
       }`}
     >
       {label}
