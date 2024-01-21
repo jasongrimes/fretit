@@ -15,7 +15,11 @@ import { useRef, useState } from "react";
 import AboutDialog from "./AboutDialog";
 import SettingsDialog from "./SettingsDialog";
 
-export default function PositionPlayer() {
+interface PositionPlayerProps {
+  maximized: boolean;
+  onToggleMaximized: () => void;
+}
+export default function PositionPlayer({maximized, onToggleMaximized}: PositionPlayerProps) {
   const instrument = INSTRUMENTS.Guitar;
   const numFrets = 15;
   const animationEnabled = true;
@@ -155,6 +159,8 @@ export default function PositionPlayer() {
           positionIndex={positionIndex}
           onSetPositionIndex={handleSetPositionIndex}
           keyData={key}
+          maximized={maximized}
+          onToggleMaximized={onToggleMaximized}
         />
       </div>
       <SettingsDialog

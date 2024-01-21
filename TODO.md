@@ -4,8 +4,6 @@
 
 # Next
 
-- [ ] Make "maximize" hide the header too
-
 - [ ] When manually changing string stop, show original chord tone as transparent overlay
 
 # Later

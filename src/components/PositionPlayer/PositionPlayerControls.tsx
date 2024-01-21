@@ -8,7 +8,7 @@ import {
   IconInfoCircle,
   IconSettings,
 } from "@tabler/icons-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 interface PositionPlayerControlsProps {
   onSetShowModal: (modal: string) => void;
@@ -19,6 +19,8 @@ interface PositionPlayerControlsProps {
   positionIndex: number;
   onSetPositionIndex: (positionIndex: number) => void;
   keyData: Key;
+  maximized: boolean;
+  onToggleMaximized: () => void;
 }
 export default function PositionPlayerControls({
   onSetShowModal,
@@ -29,8 +31,9 @@ export default function PositionPlayerControls({
   positionIndex,
   onSetPositionIndex,
   keyData,
+  maximized,
+  onToggleMaximized,
 }: PositionPlayerControlsProps) {
-  const [maximized, setMaximized] = useState(false);
   const key = keyData;
 
   useEffect(() => {
@@ -44,10 +47,6 @@ export default function PositionPlayerControls({
     [onSetChordNum],
   );
 
-  function handleToggleMaximized() {
-    setMaximized(!maximized);
-  }
-
   function handleSetPositionIndex(positionIndex: number) {
     if (positionIndex < 0 || positionIndex > positions.length - 1) {
       return;
@@ -56,7 +55,7 @@ export default function PositionPlayerControls({
   }
 
   function scrollToPositionNum(num: number) {
-    if (num <= 1) {
+    if (num <= 2) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       document
@@ -110,7 +109,7 @@ export default function PositionPlayerControls({
 
           <MaximizeControl
             maximized={maximized}
-            onToggleMaximized={handleToggleMaximized}
+            onToggleMaximized={onToggleMaximized}
           />
         </ul>
       </div>
