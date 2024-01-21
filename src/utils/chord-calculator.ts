@@ -241,10 +241,18 @@ export function getPositions(key: Key): Position[] {
 function hydratePosition(position: PositionTemplate, key: Key): Position {
   const keyChroma = Note.chroma(key.tonic) ?? 0;
   const cPositionNum = position.positionNum ?? 0;
-  const transposedPosition = cPositionNum + keyChroma;
-  const newPositionNum = transposedPosition % 12;
-  const positionOffset = transposedPosition - newPositionNum;
+  // Move the new position up the neck by the required number of semitones for the new key,
+  // wrapping around if it goes above the 12th fret.
+  let newPositionNum = (cPositionNum + keyChroma) % 12;
+  // If the key has a special open-position voicing, use that instead of the 11th position.
+  if (newPositionNum === 11 && openPositionVoicings[key.tonic]) {
+    newPositionNum = 0;
+  }
+  // Track whether we dropped down an octave.
+  const octaveOffset = (cPositionNum + keyChroma) !== newPositionNum ? 12 : 0;
+  // Set the roman numeral for the new position.
   const roman = romanPositions[newPositionNum];
+  // Create the new position
   const newPosition: Position = {
     ...position,
     positionNum: newPositionNum,
@@ -252,16 +260,18 @@ function hydratePosition(position: PositionTemplate, key: Key): Position {
     label: roman === "O" ? "Open" : roman,
     chords: {},
   };
+  // Transpose each fret number in each chord voicing.
   Object.keys(position.chords).forEach((roman) => {
-    // In open position, check if there's an alternate voicing for this chord (by key and chord num)
     if (newPositionNum === 0 && openPositionVoicings[key.tonic]?.[roman]) {
       newPosition.chords[roman] = openPositionVoicings[key.tonic][roman];
     } else {
       newPosition.chords[roman] = position.chords[roman].map((fretNum) => {
+        // If string is muted (-1), don't transpose it.
         if (fretNum === -1) {
-          return fretNum;
+           return fretNum;
         }
-        return fretNum + keyChroma - positionOffset;
+        // return fretNum + keyChroma - octaveOffset;
+        return fretNum + keyChroma - octaveOffset;
       });
     }
   });
