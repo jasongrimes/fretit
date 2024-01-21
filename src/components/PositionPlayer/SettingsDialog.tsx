@@ -135,8 +135,8 @@ export default function SettingsDialog({
             onChange={handleSelectChordLabeling}
             defaultValue={chordLabeling}
           >
-            <option value="scaleInterval">Scale degrees (1..7)</option>
             <option value="chordInterval">Chord intervals (R..7)</option>
+            <option value="scaleInterval">Scale degrees (1..7)</option>
             <option value="pitchClass">Note names</option>
             <option value="pitch">Note names + octave</option>
             <option value="none">None</option>
