@@ -38,7 +38,8 @@ describe("When selecting chords", () => {
     ],
   ])("%s has overlays %o", async (chordName, overlays) => {
     const user = userEvent.setup() as unknown as typeof userEvent;
-    render(<PositionPlayer />);
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    render(<PositionPlayer maximized={false} onToggleMaximized={() => {}}/>);
 
     await user.click(screen.getByLabelText(`Select ${chordName} chord`));
     overlays.forEach(([stringNum, fretNum, label]) => {
@@ -57,7 +58,8 @@ describe("When setting chord labels for C chord", () => {
     ["Note names + octave", "C3 E3 G3 C4 E4"],
   ])("Selecting '%s' shows %s", async (labelStrategy, expected) => {
     const user = userEvent.setup();
-    render(<PositionPlayer />);
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    render(<PositionPlayer maximized={false} onToggleMaximized={() => {}} />);
 
     await user.selectOptions(
       screen.getByRole("combobox", {
