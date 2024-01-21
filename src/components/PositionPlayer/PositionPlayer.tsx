@@ -24,7 +24,7 @@ export default function PositionPlayer() {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [chordLabeling, setChordLabeling] =
     useState<LabelingStrategy>("scaleInterval");
-  const [scaleLabeling, setScaleLabeling] = useState<LabelingStrategy>("none");
+  const [scaleLabeling, setScaleLabeling] = useState<LabelingStrategy>("scaleInterval");
   const [keyType, setKeyType] = useState("major");
   const [keyLetter, setKeyLetter] = useState("C");
   const [keyAccidental, setKeyAccidental] = useState("");

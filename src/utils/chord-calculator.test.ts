@@ -17,9 +17,15 @@ describe("Getting chords in keys", () => {
 
 describe("Getting positions in keys", () => {
   test.each([
+    ["C", "major", 0, "O", "C"],
+    ["A", "major", 0, "O", "A"],
+    ["G", "major", 0, "O", "G"],
+    ["E", "major", 0, "O", "E"],
+    ["D", "major", 0, "O", "D"],
     ["C", "major", 4, "IX", "D"],
-    ["G", "major", 2, "VII", "C"],
     ["C", "minor", 3, "VII", "E"],
+    ["G", "major", 2, "IV", "D"],
+    ["G", "minor", 1, "II", "E"],
   ])(
     "%s %s position at index %d is %s (%s shape)",
     (keyTonic, keyType, index, roman, caged) => {
