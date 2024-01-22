@@ -1,13 +1,7 @@
 # Soon
 
-- [ ] Fix intermittent sound failure on iOS https://github.com/jasongrimes/fretit/issues/2
-
-# Next
-
-
-# Later
-
 - [ ] SEO-friendly URLs/routing
+  - Tanstack router?
   - /about (shows about dialog)
   - /settings (shows settings dialog)
   - /{key}/{position}/{chord} ex. /c-major-key/II-position/I-chord-c-major
@@ -15,11 +9,22 @@
 
 - [ ] Save settings in query parameters
 
+
+# Next
+
 - [ ] Make a fretit.io homepage. Use the description from the README
 
 - [ ] Hide position selector dropdown when clicking outside.
 
+# Later
+
+- [ ] Fix intermittent sound failure on iOS https://github.com/jasongrimes/fretit/issues/2
+
+
+
 # Maybe?
+
+- [ ] Host the soundfont locally instead of using the built-in CDN.
 
 - [ ] When changing key, consider defaulting to the current position by CAGED shape rather than positionIndex.
   (Experiment to see which is the more useful default.)
