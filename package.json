@@ -16,12 +16,15 @@
     "@sentry/react": "^7.93.0",
     "@sentry/vite-plugin": "^2.10.2",
     "@tabler/icons-react": "^2.44.0",
+    "@tanstack/react-router": "^1.8.3",
+    "@tanstack/router-devtools": "^1.8.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "smplr": "^0.12.1",
     "tonal": "^5.1.2"
   },
   "devDependencies": {
+    "@tanstack/router-vite-plugin": "^1.8.2",
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.2",
