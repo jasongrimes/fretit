@@ -11,18 +11,17 @@ import {
 import createOverlays from "@/utils/fretboard-overlays";
 import { INSTRUMENTS } from "@/utils/instruments";
 import createKey, { Key } from "@/utils/key";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import AboutDialog from "./AboutDialog";
 import SettingsDialog from "./SettingsDialog";
+import { MaximizedContext } from "@/providers/maximized";
 
-interface PositionPlayerProps {
-  maximized: boolean;
-  onToggleMaximized: () => void;
-}
-export default function PositionPlayer({maximized, onToggleMaximized}: PositionPlayerProps) {
+export default function PositionPlayer() {
   const instrument = INSTRUMENTS.Guitar;
   const numFrets = 15;
   const animationEnabled = true;
+
+  const {maximized, setMaximized} = useContext(MaximizedContext);
 
   const [showModal, setShowModal] = useState("none"); // none | settings | about
   const [soundEnabled, setSoundEnabled] = useState(true);
@@ -116,6 +115,10 @@ export default function PositionPlayer({maximized, onToggleMaximized}: PositionP
     setSoundEnabled(!soundEnabled);
   }
 
+  function handleToggleMaximized() {
+    setMaximized(!maximized);
+  }
+
   function handleSetKey(
     keyLetter: string,
     keyAccidental: string,
@@ -159,7 +162,7 @@ export default function PositionPlayer({maximized, onToggleMaximized}: PositionP
           onSetPositionIndex={handleSetPositionIndex}
           keyData={key}
           maximized={maximized}
-          onToggleMaximized={onToggleMaximized}
+          onToggleMaximized={handleToggleMaximized}
         />
       </div>
       <SettingsDialog
