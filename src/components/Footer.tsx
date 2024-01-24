@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="footer footer-center absolute bottom-0 bg-base-300 p-4 text-base-content">
+    <footer className="footer footer-center shrink-0  bg-base-300 p-4 text-base-content">
       <aside>
         <p className="leading-loose">
           Made with ❤️ by {" "}
