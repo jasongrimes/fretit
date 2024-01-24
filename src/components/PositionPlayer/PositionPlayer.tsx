@@ -1,4 +1,5 @@
 import Fretboard from "@/components/Fretboard";
+import Header from "@/components/Header";
 import PositionPlayerControls from "@/components/PositionPlayer/PositionPlayerControls";
 import useSound from "@/hooks/use-sound.hook";
 import { LabelingStrategy } from "@/types";
@@ -14,21 +15,21 @@ import createKey, { Key } from "@/utils/key";
 import { useRef, useState } from "react";
 import AboutDialog from "./AboutDialog";
 import SettingsDialog from "./SettingsDialog";
+import { Link } from "@tanstack/react-router";
 
-interface PositionPlayerProps {
-  maximized: boolean;
-  onToggleMaximized: () => void;
-}
-export default function PositionPlayer({maximized, onToggleMaximized}: PositionPlayerProps) {
+export default function PositionPlayer() {
   const instrument = INSTRUMENTS.Guitar;
   const numFrets = 15;
   const animationEnabled = true;
+
+  const [maximized, setMaximized] = useState(false);
 
   const [showModal, setShowModal] = useState("none"); // none | settings | about
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [chordLabeling, setChordLabeling] =
     useState<LabelingStrategy>("scaleInterval");
-  const [scaleLabeling, setScaleLabeling] = useState<LabelingStrategy>("scaleInterval");
+  const [scaleLabeling, setScaleLabeling] =
+    useState<LabelingStrategy>("scaleInterval");
   const [keyType, setKeyType] = useState("major");
   const [keyLetter, setKeyLetter] = useState("C");
   const [keyAccidental, setKeyAccidental] = useState("");
@@ -116,6 +117,10 @@ export default function PositionPlayer({maximized, onToggleMaximized}: PositionP
     setSoundEnabled(!soundEnabled);
   }
 
+  function handleToggleMaximized() {
+    setMaximized(!maximized);
+  }
+
   function handleSetKey(
     keyLetter: string,
     keyAccidental: string,
@@ -133,50 +138,62 @@ export default function PositionPlayer({maximized, onToggleMaximized}: PositionP
   }
 
   return (
-    <div
-      id="position-player"
-      className="mx-auto flex max-w-lg overflow-x-hidden"
-    >
-      <div className="flex-grow">
-        <Fretboard
-          instrument={instrument}
-          numFrets={numFrets}
-          voicing={voicing}
-          onSetStringStop={handleSetStringStop}
-          onPlayFretNote={handlePlayFretNote}
-          stringNodes={getStringNodes()}
-          overlays={overlays}
-        />
-      </div>
-      <div className="flex-grow-0 pl-2 pr-2">
-        <PositionPlayerControls
-          onSetShowModal={setShowModal}
-          chordList={chordList}
-          selectedChordNum={chordNum}
-          onSetChordNum={handleSetChordNum}
-          positions={positions}
-          positionIndex={positionIndex}
-          onSetPositionIndex={handleSetPositionIndex}
-          keyData={key}
-          maximized={maximized}
-          onToggleMaximized={onToggleMaximized}
-        />
-      </div>
-      <SettingsDialog
-        isOpen={showModal === "settings"}
-        onClose={handleCloseModal}
-        isSoundEnabled={soundEnabled}
-        onToggleSound={handleToggleSound}
-        keyLetter={keyLetter}
-        keyAccidental={keyAccidental}
-        keyType={keyType}
-        onSetKey={handleSetKey}
-        chordLabeling={chordLabeling}
-        onSelectChordLabeling={setChordLabeling}
-        scaleLabeling={scaleLabeling}
-        onSetScaleLabeling={setScaleLabeling}
-      />
-      <AboutDialog isOpen={showModal === "about"} onClose={handleCloseModal} />
-    </div>
+    <>
+      {!maximized && (
+        <Header>
+          <Link className="btn btn-ghost text-xl md:text-2xl" to="/positions">Position Player</Link>
+        </Header>
+      )}
+      <main className=" max-w-[100vw] pb-4">
+        <div
+          id="position-player"
+          className="mx-auto flex max-w-lg overflow-x-hidden"
+        >
+          <div className="flex-grow">
+            <Fretboard
+              instrument={instrument}
+              numFrets={numFrets}
+              voicing={voicing}
+              onSetStringStop={handleSetStringStop}
+              onPlayFretNote={handlePlayFretNote}
+              stringNodes={getStringNodes()}
+              overlays={overlays}
+            />
+          </div>
+          <div className="flex-grow-0 pl-2 pr-2">
+            <PositionPlayerControls
+              onSetShowModal={setShowModal}
+              chordList={chordList}
+              selectedChordNum={chordNum}
+              onSetChordNum={handleSetChordNum}
+              positions={positions}
+              positionIndex={positionIndex}
+              onSetPositionIndex={handleSetPositionIndex}
+              keyData={key}
+              maximized={maximized}
+              onToggleMaximized={handleToggleMaximized}
+            />
+          </div>
+          <SettingsDialog
+            isOpen={showModal === "settings"}
+            onClose={handleCloseModal}
+            isSoundEnabled={soundEnabled}
+            onToggleSound={handleToggleSound}
+            keyLetter={keyLetter}
+            keyAccidental={keyAccidental}
+            keyType={keyType}
+            onSetKey={handleSetKey}
+            chordLabeling={chordLabeling}
+            onSelectChordLabeling={setChordLabeling}
+            scaleLabeling={scaleLabeling}
+            onSetScaleLabeling={setScaleLabeling}
+          />
+          <AboutDialog
+            isOpen={showModal === "about"}
+            onClose={handleCloseModal}
+          />
+        </div>
+      </main>
+    </>
   );
 }

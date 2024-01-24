@@ -1,24 +1,19 @@
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import PositionPlayer from "@/components/PositionPlayer";
-import { useState } from "react";
+// Import the generated route tree
+import { Router, RouterProvider } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
+
+// Create a new router instance
+const router = new Router({ routeTree });
+
+// Register the router instance for type safety
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
 
 function App() {
-  const [maximized, setMaximized] = useState(false);
-
-  function handleToggleMaximized() {
-    setMaximized(!maximized);
-  }
-
-  return (
-    <div className="relative min-h-screen">
-      {!maximized && <Header />}
-      <main className=" max-w-[100vw] pb-24">
-        <PositionPlayer maximized={maximized} onToggleMaximized={handleToggleMaximized} />
-      </main>
-      <Footer />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
