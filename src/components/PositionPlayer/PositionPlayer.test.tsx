@@ -1,7 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, test, vi } from "vitest";
 
+import { createTestRouter } from "@/test/test-utils";
+import { RouterProvider } from "@tanstack/react-router";
 import PositionPlayer from "./PositionPlayer";
 
 vi.mock("@/utils/sound-player", () => {
@@ -13,6 +15,8 @@ vi.mock("@/utils/sound-player", () => {
     default: SoundPlayer,
   };
 });
+
+const router = createTestRouter(PositionPlayer);
 
 describe("When selecting chords", () => {
   test.each([
@@ -38,8 +42,10 @@ describe("When selecting chords", () => {
     ],
   ])("%s has overlays %o", async (chordName, overlays) => {
     const user = userEvent.setup() as unknown as typeof userEvent;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    render(<PositionPlayer maximized={false} onToggleMaximized={() => {}}/>);
+    render(<RouterProvider router={router} />);
+    await waitFor(() =>
+      expect(screen.queryByText("Position Player")).toBeInTheDocument(),
+    );
 
     await user.click(screen.getByLabelText(`Select ${chordName} chord`));
     overlays.forEach(([stringNum, fretNum, label]) => {
@@ -58,8 +64,10 @@ describe("When setting chord labels for C chord", () => {
     ["Note names + octave", "C3 E3 G3 C4 E4"],
   ])("Selecting '%s' shows %s", async (labelStrategy, expected) => {
     const user = userEvent.setup();
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    render(<PositionPlayer maximized={false} onToggleMaximized={() => {}} />);
+    render(<RouterProvider router={router} />);
+    await waitFor(() =>
+      expect(screen.queryByText("Position Player")).toBeInTheDocument(),
+    );
 
     await user.selectOptions(
       screen.getByRole("combobox", {
