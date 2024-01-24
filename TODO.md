@@ -1,14 +1,6 @@
 # Soon
 
-- [ ] Nested routes for /about and /settings
-- [ ] State in query params
-
-# Next
-
 - [ ] Footer nav
-
-- [ ] favicon and whatnot
-
 
 - [ ] Add a couple more alternate voicings, see https://github.com/jasongrimes/fretit/issues
 
@@ -17,6 +9,7 @@
 
 - [ ] Fix intermittent sound failure on iOS https://github.com/jasongrimes/fretit/issues/2
 
+- [ ] State in query params
 
 # Maybe?
 
