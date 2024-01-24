@@ -6,11 +6,11 @@ import { FileRoute, lazyRouteComponent } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as PositionsImport } from './routes/positions'
+import { Route as IndexImport } from './routes/index'
 
 // Create Virtual Routes
 
 const AboutComponentImport = new FileRoute('/about').createRoute()
-const IndexComponentImport = new FileRoute('/').createRoute()
 
 // Create/Update Routes
 
@@ -29,22 +29,17 @@ const PositionsRoute = PositionsImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexComponentRoute = IndexComponentImport.update({
+const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
-} as any).update({
-  component: lazyRouteComponent(
-    () => import('./routes/index.component'),
-    'component',
-  ),
-})
+} as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
-      preLoaderRoute: typeof IndexComponentImport
+      preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
     '/positions': {
@@ -61,7 +56,7 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren([
-  IndexComponentRoute,
+  IndexRoute,
   PositionsRoute,
   AboutComponentRoute,
 ])
