@@ -23,10 +23,10 @@ export default function AboutDialog({ isOpen, onClose }: AboutDialogProps) {
       className="modal modal-bottom sm:modal-middle"
     >
       <div className="modal-box">
-        <h2 className="text-2xl font-bold">About</h2>
+        <h2 className="text-2xl font-bold">About the Position Player</h2>
 
         <p className="py-4">
-          A tool for exploring chord positions on guitar, showing how all chords
+          This is a tool for exploring chord positions on guitar. It shows how all chords
           in a key can be found right next to each other, in five different
           positions on the neck.
         </p>
