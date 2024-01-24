@@ -1,30 +1,27 @@
 # Soon
 
-- [ ] SEO-friendly URLs/routing
-  - Tanstack router?
-  - /about (shows about dialog)
-  - /settings (shows settings dialog)
-  - /{key}/{position}/{chord} ex. /c-major-key/II-position/I-chord-c-major
-  - /guitar-positions/ baseurl, redirect there from / for now.
-
-- [ ] Save settings in query parameters
-
+- [ ] State in query params
 
 # Next
 
-- [ ] Make a fretit.io homepage. Use the description from the README
+- [ ] Footer nav
 
-- [ ] Hide position selector dropdown when clicking outside.
+- [ ] favicon and whatnot
+
+
+- [ ] Add a couple more alternate voicings, see https://github.com/jasongrimes/fretit/issues
+
 
 # Later
 
 - [ ] Fix intermittent sound failure on iOS https://github.com/jasongrimes/fretit/issues/2
 
 
-
 # Maybe?
 
 - [ ] Host the soundfont locally instead of using the built-in CDN.
+
+- [ ] Hide position selector dropdown when clicking outside.
 
 - [ ] When changing key, consider defaulting to the current position by CAGED shape rather than positionIndex.
   (Experiment to see which is the more useful default.)
