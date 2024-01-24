@@ -12,10 +12,9 @@ import {
 import createOverlays from "@/utils/fretboard-overlays";
 import { INSTRUMENTS } from "@/utils/instruments";
 import createKey, { Key } from "@/utils/key";
+import { Link, Outlet } from "@tanstack/react-router";
 import { useRef, useState } from "react";
-import AboutDialog from "./AboutDialog";
 import SettingsDialog from "./SettingsDialog";
-import { Link } from "@tanstack/react-router";
 
 export default function PositionPlayer() {
   const instrument = INSTRUMENTS.Guitar;
@@ -141,7 +140,9 @@ export default function PositionPlayer() {
     <>
       {!maximized && (
         <Header>
-          <Link className="btn btn-ghost text-xl md:text-2xl" to="/positions">Position Player</Link>
+          <Link className="btn btn-ghost text-xl md:text-2xl" to="/positions">
+            Position Player
+          </Link>
         </Header>
       )}
       <main className=" max-w-[100vw] pb-4">
@@ -188,12 +189,9 @@ export default function PositionPlayer() {
             scaleLabeling={scaleLabeling}
             onSetScaleLabeling={setScaleLabeling}
           />
-          <AboutDialog
-            isOpen={showModal === "about"}
-            onClose={handleCloseModal}
-          />
         </div>
       </main>
+      <Outlet />
     </>
   );
 }

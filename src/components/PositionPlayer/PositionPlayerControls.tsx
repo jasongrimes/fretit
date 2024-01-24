@@ -8,6 +8,7 @@ import {
   IconInfoCircle,
   IconSettings,
 } from "@tabler/icons-react";
+import { Link } from "@tanstack/react-router";
 import { useCallback, useEffect } from "react";
 
 interface PositionPlayerControlsProps {
@@ -72,10 +73,10 @@ export default function PositionPlayerControls({
           aria-label="controls"
         >
           <li>
-            <a onClick={() => onSetShowModal("about")} aria-label="About">
+            <Link to="/positions/about" aria-label="About">
               <IconInfoCircle className="h-5 w-5" />
               {!maximized && <>About</>}
-            </a>
+            </Link>
           </li>
 
           <li>

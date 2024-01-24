@@ -1,5 +1,6 @@
 # Soon
 
+- [ ] Nested routes for /about and /settings
 - [ ] State in query params
 
 # Next
