@@ -19,11 +19,21 @@ export default function Home() {
               <span className=" bg-gradient-to-r from-yellow-100 to-yellow-500 [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
                 Fret It
               </span>{" "}
-              is a collection of web-based tools for learning to play guitar.
+              is a collection of web-based tools for learning to play guitar,
+              based on the free book{" "}
+              <a
+                className="link"
+                target="_blank"
+                href="https://fretboardfoundation.com"
+                rel="noreferrer"
+              >
+                Fretboard Foundation
+              </a>
+              .
             </p>
             <p className="pb-6">
-              It uses interactive, playable, editable fretboard diagrams to
-              leverage multimodal memory techniques for acquiring skills faster
+              With interactive, playable, editable fretboard diagrams, it
+              leverages multimodal memory techniques for acquiring skills faster
               and retaining them longer.
             </p>
             <p className="pb-6">Also, it&apos;s pretty fun.</p>
