@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <div className="hero min-h-screen bg-base-200 pb-32">
+      <div className="hero min-h-[calc(100vh-116px)] bg-base-200">
         <div className="hero-content text-left text-lg">
           <div className="max-w-md">
             <h1 className="text-center text-5xl font-bold">

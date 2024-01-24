@@ -3,7 +3,7 @@ import { Outlet } from "@tanstack/react-router";
 
 export default function Layout() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <div className="grow">
         <Outlet />
       </div>
