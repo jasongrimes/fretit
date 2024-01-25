@@ -202,6 +202,7 @@ const openPositionVoicings: Record<string, DiatonicChords> = {
     iii: [2, 3, 4, 4, 2, -1], // Bm
   },
   E: {
+    ii: [2, 2, 2, 4, 4, 2], // F#m
     iii: [-1, 0, 1, 1, 2, 4], // G#m
     v: [2, 3, 4, 4, 2, -1], // Bm
     V: [2, 4, 4, 4, 2, -1], // B
@@ -210,6 +211,7 @@ const openPositionVoicings: Record<string, DiatonicChords> = {
     "vii°": [-1, -1, 2, 1, 0, 2], // D#dim
   },
   D: {
+    iii: [2, 2, 2, 4, 4, 2], // F#m
     vi: [2, 3, 4, 4, 2, -1], // Bm
     "vii°": [0, 2, 0, 2, -1, -1], // C#dim
   },
@@ -254,7 +256,7 @@ function hydratePosition(position: PositionTemplate, key: Key): Position {
     newPositionNum = 0;
   }
   // Track whether we dropped down an octave.
-  const octaveOffset = (cPositionNum + keyChroma) !== newPositionNum ? 12 : 0;
+  const octaveOffset = cPositionNum + keyChroma !== newPositionNum ? 12 : 0;
   // Set the roman numeral for the new position.
   const roman = romanPositions[newPositionNum];
   // Create the new position
@@ -273,7 +275,7 @@ function hydratePosition(position: PositionTemplate, key: Key): Position {
       newPosition.chords[roman] = position.chords[roman].map((fretNum) => {
         // If string is muted (-1), don't transpose it.
         if (fretNum === -1) {
-           return fretNum;
+          return fretNum;
         }
         // return fretNum + keyChroma - octaveOffset;
         return fretNum + keyChroma - octaveOffset;
