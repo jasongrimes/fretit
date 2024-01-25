@@ -32,9 +32,9 @@ export default function Home() {
               .
             </p>
             <p className="pb-6">
-              With interactive, playable, editable fretboard diagrams, it
-              leverages multimodal memory techniques for acquiring skills faster
-              and retaining them longer.
+              Interactive, playable, editable fretboard diagrams leverage
+              multimodal memory techniques for acquiring skills faster and
+              retaining them longer.
             </p>
             <p className="pb-6">Also, it&apos;s pretty fun.</p>
             <div className="text-center">
